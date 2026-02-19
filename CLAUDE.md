@@ -114,7 +114,24 @@ In dev, all `/api/*` requests are proxied to `app.nocodebackend.com`:
 - `/api/data` — data CRUD (cookie transform enabled)
 - `/api/public-data` — public reads (no cookie transform needed)
 
-In production, configure your hosting to proxy or redirect these paths to `app.nocodebackend.com`, or update the base URLs in `api.js` to use the full NCB domain.
+In production (Netlify), a **Netlify Edge Function** (`netlify/edge-functions/api-proxy.js`) handles the same proxy + cookie transform. It intercepts all `/api/*` requests, forwards them to NCB, and strips `__Secure-`/`__Host-` prefixes and `Domain=` attributes from Set-Cookie headers. This is required because NCB sets `Domain=app.nocodebackend.com` and `SameSite=Lax` on cookies, which browsers reject on cross-origin requests.
+
+**Important**: Direct API calls from the browser to `app.nocodebackend.com` do NOT work for auth — the cookies won't be sent cross-origin. Always use the proxy (relative `/api/*` paths).
+
+## Deployment (Netlify)
+
+Hosted on Netlify via GitHub integration. Config in `netlify.toml`:
+- **Build command**: `npm run build`
+- **Publish directory**: `dist`
+- **SPA fallback**: `/* → /index.html` (200 rewrite)
+- **API proxy**: Handled by edge function at `netlify/edge-functions/api-proxy.js` (not `_redirects`)
+
+Deploy flow:
+1. Push to GitHub → Netlify auto-builds
+2. Edge function deploys alongside static files
+3. `public/_redirects` only handles the SPA fallback
+
+**Drag-and-drop deploys won't work** — edge functions require Git-connected or CLI deploys.
 
 ### Database Schema (24 Tables)
 
