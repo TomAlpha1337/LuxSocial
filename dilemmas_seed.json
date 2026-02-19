@@ -1,0 +1,1101 @@
+[
+  {
+    "question": "Would you rather Always have perfect abs but no internet?",
+    "option_a": "Perfect abs, no internet",
+    "option_b": "Unlimited internet, no abs",
+    "category": "Lifestyle",
+    "tags": [
+      "fitness",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Eat pizza for breakfast every day, or ice cream for dinner every day?",
+    "option_a": "Pizza for breakfast",
+    "option_b": "Ice cream for dinner",
+    "category": "Food",
+    "tags": [
+      "pizza",
+      "icecream"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Sweat mayo when exercising, or cry ketchup when sad?",
+    "option_a": "Sweat mayo",
+    "option_b": "Cry ketchup",
+    "category": "Funny",
+    "tags": [
+      "gross",
+      "funny"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only travel to sunny beaches forever, or only to snowy mountains forever?",
+    "option_a": "Sunny beaches",
+    "option_b": "Snowy mountains",
+    "category": "Travel",
+    "tags": [
+      "beach",
+      "mountain"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use Instagram again, or never use WhatsApp again?",
+    "option_a": "No Instagram",
+    "option_b": "No WhatsApp",
+    "category": "Tech",
+    "tags": [
+      "social",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never drink coffee again, or never eat pizza again?",
+    "option_a": "No coffee",
+    "option_b": "No pizza",
+    "category": "Food",
+    "tags": [
+      "coffee",
+      "pizza"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run a marathon once, or do 100 push-ups daily for a year?",
+    "option_a": "Marathon once",
+    "option_b": "100 push-ups daily",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Free flights forever or free hotels forever?",
+    "option_a": "Free flights",
+    "option_b": "Free hotels",
+    "category": "Travel",
+    "tags": [
+      "flights",
+      "hotels"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be invisible for a day, or fly for a day?",
+    "option_a": "Invisible for a day",
+    "option_b": "Fly for a day",
+    "category": "Lifestyle",
+    "tags": [
+      "superpower"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Give up Netflix forever, or TikTok forever?",
+    "option_a": "No Netflix",
+    "option_b": "No TikTok",
+    "category": "Entertainment",
+    "tags": [
+      "streaming",
+      "social"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel to the past or to the future?",
+    "option_a": "Past",
+    "option_b": "Future",
+    "category": "Travel",
+    "tags": [
+      "time",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh uncontrollably at everything or cry at everything?",
+    "option_a": "Laugh always",
+    "option_b": "Cry always",
+    "category": "Funny",
+    "tags": [
+      "laugh",
+      "cry"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone super funny or super smart?",
+    "option_a": "Funny partner",
+    "option_b": "Smart partner",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never sleep again or never eat again?",
+    "option_a": "Never sleep",
+    "option_b": "Never eat",
+    "category": "Lifestyle",
+    "tags": [
+      "sleep",
+      "food"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always eat burgers or always eat salads?",
+    "option_a": "Always burgers",
+    "option_b": "Always salads",
+    "category": "Food",
+    "tags": [
+      "burgers",
+      "salad"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be the fastest runner or the strongest lifter?",
+    "option_a": "Fastest runner",
+    "option_b": "Strongest lifter",
+    "category": "Sports",
+    "tags": [
+      "running",
+      "lifting"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use a flip phone or only use dial-up internet?",
+    "option_a": "Flip phone",
+    "option_b": "Dial-up internet",
+    "category": "Tech",
+    "tags": [
+      "retro",
+      "tech"
+    ],
+    "is_mystery": 0
+  }
+]

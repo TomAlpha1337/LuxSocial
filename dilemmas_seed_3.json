@@ -1,0 +1,2402 @@
+[
+  {
+    "question": "Would you rather Only listen to Drake or Only listen to Taylor Swift?",
+    "option_a": "Only listen to Drake",
+    "option_b": "Only listen to Taylor Swift",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only talk in emojis or Only talk in memes?",
+    "option_a": "Only talk in emojis",
+    "option_b": "Only talk in memes",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Wear Crocs forever or Wear socks with sandals forever?",
+    "option_a": "Wear Crocs forever",
+    "option_b": "Wear socks with sandals forever",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never need to sleep or Never need to eat?",
+    "option_a": "Never need to sleep",
+    "option_b": "Never need to eat",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always win in FIFA or Always win in Fortnite?",
+    "option_a": "Always win in FIFA",
+    "option_b": "Always win in Fortnite",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Wear Crocs forever or Wear socks with sandals forever?",
+    "option_a": "Wear Crocs forever",
+    "option_b": "Wear socks with sandals forever",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel with friends or Travel with partner?",
+    "option_a": "Travel with friends",
+    "option_b": "Travel with partner",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp loudly in every class or Sneeze every time your crush appears?",
+    "option_a": "Burp loudly in every class",
+    "option_b": "Sneeze every time your crush appears",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Eat ramen every day or Eat tacos every day?",
+    "option_a": "Eat ramen every day",
+    "option_b": "Eat tacos every day",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use TikTok again or Never use Instagram again?",
+    "option_a": "Never use TikTok again",
+    "option_b": "Never use Instagram again",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Play Fortnite forever or Play Minecraft forever?",
+    "option_a": "Play Fortnite forever",
+    "option_b": "Play Minecraft forever",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be ghosted or Be left on read?",
+    "option_a": "Be ghosted",
+    "option_b": "Be left on read",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use TikTok again or Never use Instagram again?",
+    "option_a": "Never use TikTok again",
+    "option_b": "Never use Instagram again",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never need to sleep or Never need to eat?",
+    "option_a": "Never need to sleep",
+    "option_b": "Never need to eat",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be ghosted or Be left on read?",
+    "option_a": "Be ghosted",
+    "option_b": "Be left on read",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone hot but boring or Date someone average but super fun?",
+    "option_a": "Date someone hot but boring",
+    "option_b": "Date someone average but super fun",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Give up burgers forever or Give up fries forever?",
+    "option_a": "Give up burgers forever",
+    "option_b": "Give up fries forever",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh like a goat or Snore like a chainsaw?",
+    "option_a": "Laugh like a goat",
+    "option_b": "Snore like a chainsaw",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never pay for clothes or Never pay for sneakers?",
+    "option_a": "Never pay for clothes",
+    "option_b": "Never pay for sneakers",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Give up burgers forever or Give up fries forever?",
+    "option_a": "Give up burgers forever",
+    "option_b": "Give up fries forever",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use TikTok again or Never use Instagram again?",
+    "option_a": "Never use TikTok again",
+    "option_b": "Never use Instagram again",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel with friends or Travel with partner?",
+    "option_a": "Travel with friends",
+    "option_b": "Travel with partner",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use TikTok again or Never use Instagram again?",
+    "option_a": "Never use TikTok again",
+    "option_b": "Never use Instagram again",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp loudly in every class or Sneeze every time your crush appears?",
+    "option_a": "Burp loudly in every class",
+    "option_b": "Sneeze every time your crush appears",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use Snapchat or Only use WhatsApp?",
+    "option_a": "Only use Snapchat",
+    "option_b": "Only use WhatsApp",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel with friends or Travel with partner?",
+    "option_a": "Travel with friends",
+    "option_b": "Travel with partner",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never lose at ping pong or Never lose at pool?",
+    "option_a": "Never lose at ping pong",
+    "option_b": "Never lose at pool",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a pro footballer or Be a pro basketball player?",
+    "option_a": "Be a pro footballer",
+    "option_b": "Be a pro basketball player",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use Snapchat or Only use WhatsApp?",
+    "option_a": "Only use Snapchat",
+    "option_b": "Only use WhatsApp",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to Coachella or Go to Tomorrowland?",
+    "option_a": "Go to Coachella",
+    "option_b": "Go to Tomorrowland",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use TikTok again or Never use Instagram again?",
+    "option_a": "Never use TikTok again",
+    "option_b": "Never use Instagram again",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your selfies or Lose all your memes?",
+    "option_a": "Lose all your selfies",
+    "option_b": "Lose all your memes",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Spring Break in Miami or Summer in Ibiza?",
+    "option_a": "Spring Break in Miami",
+    "option_b": "Summer in Ibiza",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel the world with no phone or Stay home with unlimited WiFi?",
+    "option_a": "Travel the world with no phone",
+    "option_b": "Stay home with unlimited WiFi",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone hot but boring or Date someone average but super fun?",
+    "option_a": "Date someone hot but boring",
+    "option_b": "Date someone average but super fun",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never lose at ping pong or Never lose at pool?",
+    "option_a": "Never lose at ping pong",
+    "option_b": "Never lose at pool",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Wear Crocs forever or Wear socks with sandals forever?",
+    "option_a": "Wear Crocs forever",
+    "option_b": "Wear socks with sandals forever",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel the world with no phone or Stay home with unlimited WiFi?",
+    "option_a": "Travel the world with no phone",
+    "option_b": "Stay home with unlimited WiFi",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh like a goat or Snore like a chainsaw?",
+    "option_a": "Laugh like a goat",
+    "option_b": "Snore like a chainsaw",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to a BTS concert or Go to a Travis Scott concert?",
+    "option_a": "Go to a BTS concert",
+    "option_b": "Go to a Travis Scott concert",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to Coachella or Go to Tomorrowland?",
+    "option_a": "Go to Coachella",
+    "option_b": "Go to Tomorrowland",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat McDonald's or Only eat KFC?",
+    "option_a": "Only eat McDonald's",
+    "option_b": "Only eat KFC",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a pro footballer or Be a pro basketball player?",
+    "option_a": "Be a pro footballer",
+    "option_b": "Be a pro basketball player",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Drink only bubble tea or Drink only soda?",
+    "option_a": "Drink only bubble tea",
+    "option_b": "Drink only soda",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel with friends or Travel with partner?",
+    "option_a": "Travel with friends",
+    "option_b": "Travel with partner",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never pay for clothes or Never pay for sneakers?",
+    "option_a": "Never pay for clothes",
+    "option_b": "Never pay for sneakers",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run as fast as Usain Bolt or Jump as high as Michael Jordan?",
+    "option_a": "Run as fast as Usain Bolt",
+    "option_b": "Jump as high as Michael Jordan",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Eat ramen every day or Eat tacos every day?",
+    "option_a": "Eat ramen every day",
+    "option_b": "Eat tacos every day",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always have pineapple on pizza or Never eat pizza again?",
+    "option_a": "Always have pineapple on pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use Snapchat or Only use WhatsApp?",
+    "option_a": "Only use Snapchat",
+    "option_b": "Only use WhatsApp",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never need to sleep or Never need to eat?",
+    "option_a": "Never need to sleep",
+    "option_b": "Never need to eat",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Drink only bubble tea or Drink only soda?",
+    "option_a": "Drink only bubble tea",
+    "option_b": "Drink only soda",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Spring Break in Miami or Summer in Ibiza?",
+    "option_a": "Spring Break in Miami",
+    "option_b": "Summer in Ibiza",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run as fast as Usain Bolt or Jump as high as Michael Jordan?",
+    "option_a": "Run as fast as Usain Bolt",
+    "option_b": "Jump as high as Michael Jordan",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to a BTS concert or Go to a Travis Scott concert?",
+    "option_a": "Go to a BTS concert",
+    "option_b": "Go to a Travis Scott concert",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat McDonald's or Only eat KFC?",
+    "option_a": "Only eat McDonald's",
+    "option_b": "Only eat KFC",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run as fast as Usain Bolt or Jump as high as Michael Jordan?",
+    "option_a": "Run as fast as Usain Bolt",
+    "option_b": "Jump as high as Michael Jordan",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run as fast as Usain Bolt or Jump as high as Michael Jordan?",
+    "option_a": "Run as fast as Usain Bolt",
+    "option_b": "Jump as high as Michael Jordan",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only talk in emojis or Only talk in memes?",
+    "option_a": "Only talk in emojis",
+    "option_b": "Only talk in memes",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Give up burgers forever or Give up fries forever?",
+    "option_a": "Give up burgers forever",
+    "option_b": "Give up fries forever",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use TikTok again or Never use Instagram again?",
+    "option_a": "Never use TikTok again",
+    "option_b": "Never use Instagram again",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never pay for clothes or Never pay for sneakers?",
+    "option_a": "Never pay for clothes",
+    "option_b": "Never pay for sneakers",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat McDonald's or Only eat KFC?",
+    "option_a": "Only eat McDonald's",
+    "option_b": "Only eat KFC",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run as fast as Usain Bolt or Jump as high as Michael Jordan?",
+    "option_a": "Run as fast as Usain Bolt",
+    "option_b": "Jump as high as Michael Jordan",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp loudly in every class or Sneeze every time your crush appears?",
+    "option_a": "Burp loudly in every class",
+    "option_b": "Sneeze every time your crush appears",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Play Fortnite forever or Play Minecraft forever?",
+    "option_a": "Play Fortnite forever",
+    "option_b": "Play Minecraft forever",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp loudly in every class or Sneeze every time your crush appears?",
+    "option_a": "Burp loudly in every class",
+    "option_b": "Sneeze every time your crush appears",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat McDonald's or Only eat KFC?",
+    "option_a": "Only eat McDonald's",
+    "option_b": "Only eat KFC",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have long-distance love or See your partner daily but no phone contact?",
+    "option_a": "Have long-distance love",
+    "option_b": "See your partner daily but no phone contact",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use Snapchat or Only use WhatsApp?",
+    "option_a": "Only use Snapchat",
+    "option_b": "Only use WhatsApp",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never use TikTok again or Never use Instagram again?",
+    "option_a": "Never use TikTok again",
+    "option_b": "Never use Instagram again",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have Ronaldo's skills or Have Messi's skills?",
+    "option_a": "Have Ronaldo's skills",
+    "option_b": "Have Messi's skills",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to Coachella or Go to Tomorrowland?",
+    "option_a": "Go to Coachella",
+    "option_b": "Go to Tomorrowland",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always win in FIFA or Always win in Fortnite?",
+    "option_a": "Always win in FIFA",
+    "option_b": "Always win in Fortnite",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Wear Crocs forever or Wear socks with sandals forever?",
+    "option_a": "Wear Crocs forever",
+    "option_b": "Wear socks with sandals forever",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat McDonald's or Only eat KFC?",
+    "option_a": "Only eat McDonald's",
+    "option_b": "Only eat KFC",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have long-distance love or See your partner daily but no phone contact?",
+    "option_a": "Have long-distance love",
+    "option_b": "See your partner daily but no phone contact",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Play Fortnite forever or Play Minecraft forever?",
+    "option_a": "Play Fortnite forever",
+    "option_b": "Play Minecraft forever",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run as fast as Usain Bolt or Jump as high as Michael Jordan?",
+    "option_a": "Run as fast as Usain Bolt",
+    "option_b": "Jump as high as Michael Jordan",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Spring Break in Miami or Summer in Ibiza?",
+    "option_a": "Spring Break in Miami",
+    "option_b": "Summer in Ibiza",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp loudly in every class or Sneeze every time your crush appears?",
+    "option_a": "Burp loudly in every class",
+    "option_b": "Sneeze every time your crush appears",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Drink only bubble tea or Drink only soda?",
+    "option_a": "Drink only bubble tea",
+    "option_b": "Drink only soda",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Spring Break in Miami or Summer in Ibiza?",
+    "option_a": "Spring Break in Miami",
+    "option_b": "Summer in Ibiza",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always win in FIFA or Always win in Fortnite?",
+    "option_a": "Always win in FIFA",
+    "option_b": "Always win in Fortnite",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have long-distance love or See your partner daily but no phone contact?",
+    "option_a": "Have long-distance love",
+    "option_b": "See your partner daily but no phone contact",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Live in New York or Live in Los Angeles?",
+    "option_a": "Live in New York",
+    "option_b": "Live in Los Angeles",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have long-distance love or See your partner daily but no phone contact?",
+    "option_a": "Have long-distance love",
+    "option_b": "See your partner daily but no phone contact",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your selfies or Lose all your memes?",
+    "option_a": "Lose all your selfies",
+    "option_b": "Lose all your memes",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Get 1,000 Tinder matches or Get 1 real true love?",
+    "option_a": "Get 1,000 Tinder matches",
+    "option_b": "Get 1 real true love",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be in Stranger Things or Be in Euphoria?",
+    "option_a": "Be in Stranger Things",
+    "option_b": "Be in Euphoria",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have the latest iPhone or Have the latest PlayStation?",
+    "option_a": "Have the latest iPhone",
+    "option_b": "Have the latest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be in Stranger Things or Be in Euphoria?",
+    "option_a": "Be in Stranger Things",
+    "option_b": "Be in Euphoria",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel with friends or Travel with partner?",
+    "option_a": "Travel with friends",
+    "option_b": "Travel with partner",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be ghosted or Be left on read?",
+    "option_a": "Be ghosted",
+    "option_b": "Be left on read",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Play Fortnite forever or Play Minecraft forever?",
+    "option_a": "Play Fortnite forever",
+    "option_b": "Play Minecraft forever",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have the latest iPhone or Have the latest PlayStation?",
+    "option_a": "Have the latest iPhone",
+    "option_b": "Have the latest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a pro footballer or Be a pro basketball player?",
+    "option_a": "Be a pro footballer",
+    "option_b": "Be a pro basketball player",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited data or Have unlimited gas money?",
+    "option_a": "Have unlimited data",
+    "option_b": "Have unlimited gas money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Eat ramen every day or Eat tacos every day?",
+    "option_a": "Eat ramen every day",
+    "option_b": "Eat tacos every day",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Drink only bubble tea or Drink only soda?",
+    "option_a": "Drink only bubble tea",
+    "option_b": "Drink only soda",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh like a goat or Snore like a chainsaw?",
+    "option_a": "Laugh like a goat",
+    "option_b": "Snore like a chainsaw",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone hot but boring or Date someone average but super fun?",
+    "option_a": "Date someone hot but boring",
+    "option_b": "Date someone average but super fun",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never pay for clothes or Never pay for sneakers?",
+    "option_a": "Never pay for clothes",
+    "option_b": "Never pay for sneakers",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp loudly in every class or Sneeze every time your crush appears?",
+    "option_a": "Burp loudly in every class",
+    "option_b": "Sneeze every time your crush appears",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have the latest iPhone or Have the latest PlayStation?",
+    "option_a": "Have the latest iPhone",
+    "option_b": "Have the latest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone hot but boring or Date someone average but super fun?",
+    "option_a": "Date someone hot but boring",
+    "option_b": "Date someone average but super fun",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Get 1,000 Tinder matches or Get 1 real true love?",
+    "option_a": "Get 1,000 Tinder matches",
+    "option_b": "Get 1 real true love",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Dance every time you hear music or Sing every time you talk?",
+    "option_a": "Dance every time you hear music",
+    "option_b": "Sing every time you talk",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch YouTube or Only scroll TikTok?",
+    "option_a": "Only watch YouTube",
+    "option_b": "Only scroll TikTok",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone hot but boring or Date someone average but super fun?",
+    "option_a": "Date someone hot but boring",
+    "option_b": "Date someone average but super fun",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date your crush for one month or Have a loyal partner for life?",
+    "option_a": "Date your crush for one month",
+    "option_b": "Have a loyal partner for life",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always have pineapple on pizza or Never eat pizza again?",
+    "option_a": "Always have pineapple on pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be in Stranger Things or Be in Euphoria?",
+    "option_a": "Be in Stranger Things",
+    "option_b": "Be in Euphoria",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone hot but boring or Date someone average but super fun?",
+    "option_a": "Date someone hot but boring",
+    "option_b": "Date someone average but super fun",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp loudly in every class or Sneeze every time your crush appears?",
+    "option_a": "Burp loudly in every class",
+    "option_b": "Sneeze every time your crush appears",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a pro footballer or Be a pro basketball player?",
+    "option_a": "Be a pro footballer",
+    "option_b": "Be a pro basketball player",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never need to sleep or Never need to eat?",
+    "option_a": "Never need to sleep",
+    "option_b": "Never need to eat",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only listen to Drake or Only listen to Taylor Swift?",
+    "option_a": "Only listen to Drake",
+    "option_b": "Only listen to Taylor Swift",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have Ronaldo's skills or Have Messi's skills?",
+    "option_a": "Have Ronaldo's skills",
+    "option_b": "Have Messi's skills",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always have pineapple on pizza or Never eat pizza again?",
+    "option_a": "Always have pineapple on pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only talk in emojis or Only talk in memes?",
+    "option_a": "Only talk in emojis",
+    "option_b": "Only talk in memes",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have the latest iPhone or Have the latest PlayStation?",
+    "option_a": "Have the latest iPhone",
+    "option_b": "Have the latest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Play Fortnite forever or Play Minecraft forever?",
+    "option_a": "Play Fortnite forever",
+    "option_b": "Play Minecraft forever",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have the latest iPhone or Have the latest PlayStation?",
+    "option_a": "Have the latest iPhone",
+    "option_b": "Have the latest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh like a goat or Snore like a chainsaw?",
+    "option_a": "Laugh like a goat",
+    "option_b": "Snore like a chainsaw",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only listen to Drake or Only listen to Taylor Swift?",
+    "option_a": "Only listen to Drake",
+    "option_b": "Only listen to Taylor Swift",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Get 1,000 Tinder matches or Get 1 real true love?",
+    "option_a": "Get 1,000 Tinder matches",
+    "option_b": "Get 1 real true love",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh like a goat or Snore like a chainsaw?",
+    "option_a": "Laugh like a goat",
+    "option_b": "Snore like a chainsaw",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel the world with no phone or Stay home with unlimited WiFi?",
+    "option_a": "Travel the world with no phone",
+    "option_b": "Stay home with unlimited WiFi",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only use Snapchat or Only use WhatsApp?",
+    "option_a": "Only use Snapchat",
+    "option_b": "Only use WhatsApp",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always have pineapple on pizza or Never eat pizza again?",
+    "option_a": "Always have pineapple on pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have long-distance love or See your partner daily but no phone contact?",
+    "option_a": "Have long-distance love",
+    "option_b": "See your partner daily but no phone contact",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Drink only bubble tea or Drink only soda?",
+    "option_a": "Drink only bubble tea",
+    "option_b": "Drink only soda",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a pro footballer or Be a pro basketball player?",
+    "option_a": "Be a pro footballer",
+    "option_b": "Be a pro basketball player",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Laugh like a goat or Snore like a chainsaw?",
+    "option_a": "Laugh like a goat",
+    "option_b": "Snore like a chainsaw",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Get 1,000 Tinder matches or Get 1 real true love?",
+    "option_a": "Get 1,000 Tinder matches",
+    "option_b": "Get 1 real true love",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to a BTS concert or Go to a Travis Scott concert?",
+    "option_a": "Go to a BTS concert",
+    "option_b": "Go to a Travis Scott concert",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be TikTok famous or Be YouTube famous?",
+    "option_a": "Be TikTok famous",
+    "option_b": "Be YouTube famous",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch YouTube or Only scroll TikTok?",
+    "option_a": "Only watch YouTube",
+    "option_b": "Only scroll TikTok",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only talk in emojis or Only talk in memes?",
+    "option_a": "Only talk in emojis",
+    "option_b": "Only talk in memes",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Run as fast as Usain Bolt or Jump as high as Michael Jordan?",
+    "option_a": "Run as fast as Usain Bolt",
+    "option_b": "Jump as high as Michael Jordan",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be in Stranger Things or Be in Euphoria?",
+    "option_a": "Be in Stranger Things",
+    "option_b": "Be in Euphoria",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Give up burgers forever or Give up fries forever?",
+    "option_a": "Give up burgers forever",
+    "option_b": "Give up fries forever",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never pay for clothes or Never pay for sneakers?",
+    "option_a": "Never pay for clothes",
+    "option_b": "Never pay for sneakers",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have Ronaldo's skills or Have Messi's skills?",
+    "option_a": "Have Ronaldo's skills",
+    "option_b": "Have Messi's skills",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Live in New York or Live in Los Angeles?",
+    "option_a": "Live in New York",
+    "option_b": "Live in Los Angeles",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have the latest iPhone or Have the latest PlayStation?",
+    "option_a": "Have the latest iPhone",
+    "option_b": "Have the latest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never pay for clothes or Never pay for sneakers?",
+    "option_a": "Never pay for clothes",
+    "option_b": "Never pay for sneakers",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Give up burgers forever or Give up fries forever?",
+    "option_a": "Give up burgers forever",
+    "option_b": "Give up fries forever",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only talk in emojis or Only talk in memes?",
+    "option_a": "Only talk in emojis",
+    "option_b": "Only talk in memes",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to a BTS concert or Go to a Travis Scott concert?",
+    "option_a": "Go to a BTS concert",
+    "option_b": "Go to a Travis Scott concert",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only talk in emojis or Only talk in memes?",
+    "option_a": "Only talk in emojis",
+    "option_b": "Only talk in memes",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird",
+      "lol"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Give up burgers forever or Give up fries forever?",
+    "option_a": "Give up burgers forever",
+    "option_b": "Give up fries forever",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your selfies or Lose all your memes?",
+    "option_a": "Lose all your selfies",
+    "option_b": "Lose all your memes",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel the world with no phone or Stay home with unlimited WiFi?",
+    "option_a": "Travel the world with no phone",
+    "option_b": "Stay home with unlimited WiFi",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a pro footballer or Be a pro basketball player?",
+    "option_a": "Be a pro footballer",
+    "option_b": "Be a pro basketball player",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always ace exams without studying or Always win video games?",
+    "option_a": "Always ace exams without studying",
+    "option_b": "Always win video games",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to a BTS concert or Go to a Travis Scott concert?",
+    "option_a": "Go to a BTS concert",
+    "option_b": "Go to a Travis Scott concert",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date someone hot but boring or Date someone average but super fun?",
+    "option_a": "Date someone hot but boring",
+    "option_b": "Date someone average but super fun",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat McDonald's or Only eat KFC?",
+    "option_a": "Only eat McDonald's",
+    "option_b": "Only eat KFC",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never lose at ping pong or Never lose at pool?",
+    "option_a": "Never lose at ping pong",
+    "option_b": "Never lose at pool",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge",
+      "training"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel with friends or Travel with partner?",
+    "option_a": "Travel with friends",
+    "option_b": "Travel with partner",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel the world with no phone or Stay home with unlimited WiFi?",
+    "option_a": "Travel the world with no phone",
+    "option_b": "Stay home with unlimited WiFi",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch Netflix or Only watch Disney+?",
+    "option_a": "Only watch Netflix",
+    "option_b": "Only watch Disney+",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies",
+      "games"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Go to Coachella or Go to Tomorrowland?",
+    "option_a": "Go to Coachella",
+    "option_b": "Go to Tomorrowland",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always have pineapple on pizza or Never eat pizza again?",
+    "option_a": "Always have pineapple on pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste",
+      "diet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel with friends or Travel with partner?",
+    "option_a": "Travel with friends",
+    "option_b": "Travel with partner",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure",
+      "vacation"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never pay for clothes or Never pay for sneakers?",
+    "option_a": "Never pay for clothes",
+    "option_b": "Never pay for sneakers",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily",
+      "habit"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have long-distance love or See your partner daily but no phone contact?",
+    "option_a": "Have long-distance love",
+    "option_b": "See your partner daily but no phone contact",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have long-distance love or See your partner daily but no phone contact?",
+    "option_a": "Have long-distance love",
+    "option_b": "See your partner daily but no phone contact",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship",
+      "romance"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have the latest iPhone or Have the latest PlayStation?",
+    "option_a": "Have the latest iPhone",
+    "option_b": "Have the latest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet",
+      "apps"
+    ],
+    "is_mystery": 0
+  }
+]

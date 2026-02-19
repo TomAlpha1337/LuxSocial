@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "nocodebackend": {
+      "command": "node",
+      "args": ["mcp-server.js"],
+      "env": {
+        "NCB_INSTANCE": "53058_luxsocial"
+      }
+    }
+  }
+}

@@ -1,0 +1,1102 @@
+[
+  {
+    "question": "Would you rather Have free unlimited sushi forever, or free unlimited steak forever?",
+    "option_a": "Unlimited sushi",
+    "option_b": "Unlimited steak",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be able to teleport anywhere instantly, or be able to read minds?",
+    "option_a": "Teleport",
+    "option_b": "Read minds",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Play video games with bad graphics but great story, or great graphics but no story?",
+    "option_a": "Bad graphics, good story",
+    "option_b": "Great graphics, no story",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never be able to text again, or never be able to call again?",
+    "option_a": "No texting",
+    "option_b": "No calling",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have your dream job but low salary, or boring job with high salary?",
+    "option_a": "Dream job, low pay",
+    "option_b": "Boring job, high pay",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Find love online or Find love in real life?",
+    "option_a": "Find love online",
+    "option_b": "Find love in real life",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel first class once or Travel economy free forever?",
+    "option_a": "Travel first class once",
+    "option_b": "Travel economy free forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lift twice your weight or Run twice as fast?",
+    "option_a": "Lift twice your weight",
+    "option_b": "Run twice as fast",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Fall in love every week or Never fall in love again?",
+    "option_a": "Fall in love every week",
+    "option_b": "Never fall in love again",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Visit outer space or Visit the deepest ocean?",
+    "option_a": "Visit outer space",
+    "option_b": "Visit the deepest ocean",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your photos or Lose all your contacts?",
+    "option_a": "Lose all your photos",
+    "option_b": "Lose all your contacts",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Live in the city forever or Live in the countryside forever?",
+    "option_a": "Live in the city forever",
+    "option_b": "Live in the countryside forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never charge your phone or Never pay for WiFi?",
+    "option_a": "Never charge your phone",
+    "option_b": "Never pay for WiFi",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always have the newest iPhone or Always have the newest PlayStation?",
+    "option_a": "Always have the newest iPhone",
+    "option_b": "Always have the newest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a famous singer or Be a famous actor?",
+    "option_a": "Be a famous singer",
+    "option_b": "Be a famous actor",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat chocolate forever or Never eat chocolate again?",
+    "option_a": "Only eat chocolate forever",
+    "option_b": "Never eat chocolate again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel first class once or Travel economy free forever?",
+    "option_a": "Travel first class once",
+    "option_b": "Travel economy free forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Speak like a robot or Walk like a penguin?",
+    "option_a": "Speak like a robot",
+    "option_b": "Walk like a penguin",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Fall in love every week or Never fall in love again?",
+    "option_a": "Fall in love every week",
+    "option_b": "Never fall in love again",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have clown shoes forever or Have a clown nose forever?",
+    "option_a": "Have clown shoes forever",
+    "option_b": "Have a clown nose forever",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always be 5 minutes late or Always be 30 minutes early?",
+    "option_a": "Always be 5 minutes late",
+    "option_b": "Always be 30 minutes early",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Live in the city forever or Live in the countryside forever?",
+    "option_a": "Live in the city forever",
+    "option_b": "Live in the countryside forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always have the newest iPhone or Always have the newest PlayStation?",
+    "option_a": "Always have the newest iPhone",
+    "option_b": "Always have the newest PlayStation",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never play video games or Never watch movies?",
+    "option_a": "Never play video games",
+    "option_b": "Never watch movies",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have pineapple on every pizza or Never eat pizza again?",
+    "option_a": "Have pineapple on every pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a famous singer or Be a famous actor?",
+    "option_a": "Be a famous singer",
+    "option_b": "Be a famous actor",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always sing instead of talk or Always dance instead of walk?",
+    "option_a": "Always sing instead of talk",
+    "option_b": "Always dance instead of walk",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never play video games or Never watch movies?",
+    "option_a": "Never play video games",
+    "option_b": "Never watch movies",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Use only Windows forever or Use only Mac forever?",
+    "option_a": "Use only Windows forever",
+    "option_b": "Use only Mac forever",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date your celebrity crush once or Have a perfect partner for life?",
+    "option_a": "Date your celebrity crush once",
+    "option_b": "Have a perfect partner for life",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lift twice your weight or Run twice as fast?",
+    "option_a": "Lift twice your weight",
+    "option_b": "Run twice as fast",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always sing instead of talk or Always dance instead of walk?",
+    "option_a": "Always sing instead of talk",
+    "option_b": "Always dance instead of walk",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch horror movies or Only watch cartoons?",
+    "option_a": "Only watch horror movies",
+    "option_b": "Only watch cartoons",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel first class once or Travel economy free forever?",
+    "option_a": "Travel first class once",
+    "option_b": "Travel economy free forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat chocolate forever or Never eat chocolate again?",
+    "option_a": "Only eat chocolate forever",
+    "option_b": "Never eat chocolate again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel every weekend but never abroad or Travel abroad once a year only?",
+    "option_a": "Travel every weekend but never abroad",
+    "option_b": "Travel abroad once a year only",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Listen only to rock music or Listen only to pop music?",
+    "option_a": "Listen only to rock music",
+    "option_b": "Listen only to pop music",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your photos or Lose all your contacts?",
+    "option_a": "Lose all your photos",
+    "option_b": "Lose all your contacts",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel every weekend but never abroad or Travel abroad once a year only?",
+    "option_a": "Travel every weekend but never abroad",
+    "option_b": "Travel abroad once a year only",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Listen only to rock music or Listen only to pop music?",
+    "option_a": "Listen only to rock music",
+    "option_b": "Listen only to pop music",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Eat spicy food every day or Eat super bland food every day?",
+    "option_a": "Eat spicy food every day",
+    "option_b": "Eat super bland food every day",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never need sleep or Never need food?",
+    "option_a": "Never need sleep",
+    "option_b": "Never need food",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always sing instead of talk or Always dance instead of walk?",
+    "option_a": "Always sing instead of talk",
+    "option_b": "Always dance instead of walk",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Visit outer space or Visit the deepest ocean?",
+    "option_a": "Visit outer space",
+    "option_b": "Visit the deepest ocean",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Fall in love every week or Never fall in love again?",
+    "option_a": "Fall in love every week",
+    "option_b": "Never fall in love again",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never get tired or Never get injured?",
+    "option_a": "Never get tired",
+    "option_b": "Never get injured",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never play video games or Never watch movies?",
+    "option_a": "Never play video games",
+    "option_b": "Never watch movies",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Find love online or Find love in real life?",
+    "option_a": "Find love online",
+    "option_b": "Find love in real life",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always be 5 minutes late or Always be 30 minutes early?",
+    "option_a": "Always be 5 minutes late",
+    "option_b": "Always be 30 minutes early",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have clown shoes forever or Have a clown nose forever?",
+    "option_a": "Have clown shoes forever",
+    "option_b": "Have a clown nose forever",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Live in the city forever or Live in the countryside forever?",
+    "option_a": "Live in the city forever",
+    "option_b": "Live in the countryside forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Live in the city forever or Live in the countryside forever?",
+    "option_a": "Live in the city forever",
+    "option_b": "Live in the countryside forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have pineapple on every pizza or Never eat pizza again?",
+    "option_a": "Have pineapple on every pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Use only Windows forever or Use only Mac forever?",
+    "option_a": "Use only Windows forever",
+    "option_b": "Use only Mac forever",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Burp every time you talk or Fart every time you laugh?",
+    "option_a": "Burp every time you talk",
+    "option_b": "Fart every time you laugh",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch horror movies or Only watch cartoons?",
+    "option_a": "Only watch horror movies",
+    "option_b": "Only watch cartoons",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch horror movies or Only watch cartoons?",
+    "option_a": "Only watch horror movies",
+    "option_b": "Only watch cartoons",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always be the heartbreaker or Always be heartbroken?",
+    "option_a": "Always be the heartbreaker",
+    "option_b": "Always be heartbroken",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be able to do 1000 pushups or Be able to squat 500kg?",
+    "option_a": "Be able to do 1000 pushups",
+    "option_b": "Be able to squat 500kg",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel first class once or Travel economy free forever?",
+    "option_a": "Travel first class once",
+    "option_b": "Travel economy free forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have unlimited money but no friends or Have many friends but no money?",
+    "option_a": "Have unlimited money but no friends",
+    "option_b": "Have many friends but no money",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Speak like a robot or Walk like a penguin?",
+    "option_a": "Speak like a robot",
+    "option_b": "Walk like a penguin",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be able to do 1000 pushups or Be able to squat 500kg?",
+    "option_a": "Be able to do 1000 pushups",
+    "option_b": "Be able to squat 500kg",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be able to do 1000 pushups or Be able to squat 500kg?",
+    "option_a": "Be able to do 1000 pushups",
+    "option_b": "Be able to squat 500kg",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Listen only to rock music or Listen only to pop music?",
+    "option_a": "Listen only to rock music",
+    "option_b": "Listen only to pop music",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat chocolate forever or Never eat chocolate again?",
+    "option_a": "Only eat chocolate forever",
+    "option_b": "Never eat chocolate again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your photos or Lose all your contacts?",
+    "option_a": "Lose all your photos",
+    "option_b": "Lose all your contacts",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your photos or Lose all your contacts?",
+    "option_a": "Lose all your photos",
+    "option_b": "Lose all your contacts",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always be 5 minutes late or Always be 30 minutes early?",
+    "option_a": "Always be 5 minutes late",
+    "option_b": "Always be 30 minutes early",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always be the heartbreaker or Always be heartbroken?",
+    "option_a": "Always be the heartbreaker",
+    "option_b": "Always be heartbroken",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have clown shoes forever or Have a clown nose forever?",
+    "option_a": "Have clown shoes forever",
+    "option_b": "Have a clown nose forever",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always win soccer games or Always win basketball games?",
+    "option_a": "Always win soccer games",
+    "option_b": "Always win basketball games",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never get tired or Never get injured?",
+    "option_a": "Never get tired",
+    "option_b": "Never get injured",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Use only Windows forever or Use only Mac forever?",
+    "option_a": "Use only Windows forever",
+    "option_b": "Use only Mac forever",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel every weekend but never abroad or Travel abroad once a year only?",
+    "option_a": "Travel every weekend but never abroad",
+    "option_b": "Travel abroad once a year only",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Speak like a robot or Walk like a penguin?",
+    "option_a": "Speak like a robot",
+    "option_b": "Walk like a penguin",
+    "category": "Funny",
+    "tags": [
+      "funny",
+      "weird"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Use only Windows forever or Use only Mac forever?",
+    "option_a": "Use only Windows forever",
+    "option_b": "Use only Mac forever",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lose all your photos or Lose all your contacts?",
+    "option_a": "Lose all your photos",
+    "option_b": "Lose all your contacts",
+    "category": "Tech",
+    "tags": [
+      "tech",
+      "internet"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never get tired or Never get injured?",
+    "option_a": "Never get tired",
+    "option_b": "Never get injured",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Live forever or Die peacefully at 60?",
+    "option_a": "Live forever",
+    "option_b": "Die peacefully at 60",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always win soccer games or Always win basketball games?",
+    "option_a": "Always win soccer games",
+    "option_b": "Always win basketball games",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel first class once or Travel economy free forever?",
+    "option_a": "Travel first class once",
+    "option_b": "Travel economy free forever",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only watch horror movies or Only watch cartoons?",
+    "option_a": "Only watch horror movies",
+    "option_b": "Only watch cartoons",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always be the heartbreaker or Always be heartbroken?",
+    "option_a": "Always be the heartbreaker",
+    "option_b": "Always be heartbroken",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have pineapple on every pizza or Never eat pizza again?",
+    "option_a": "Have pineapple on every pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Listen only to rock music or Listen only to pop music?",
+    "option_a": "Listen only to rock music",
+    "option_b": "Listen only to pop music",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date your celebrity crush once or Have a perfect partner for life?",
+    "option_a": "Date your celebrity crush once",
+    "option_b": "Have a perfect partner for life",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Have pineapple on every pizza or Never eat pizza again?",
+    "option_a": "Have pineapple on every pizza",
+    "option_b": "Never eat pizza again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never get tired or Never get injured?",
+    "option_a": "Never get tired",
+    "option_b": "Never get injured",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Eat spicy food every day or Eat super bland food every day?",
+    "option_a": "Eat spicy food every day",
+    "option_b": "Eat super bland food every day",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Only eat chocolate forever or Never eat chocolate again?",
+    "option_a": "Only eat chocolate forever",
+    "option_b": "Never eat chocolate again",
+    "category": "Food",
+    "tags": [
+      "food",
+      "taste"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Be a famous singer or Be a famous actor?",
+    "option_a": "Be a famous singer",
+    "option_b": "Be a famous actor",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Date your celebrity crush once or Have a perfect partner for life?",
+    "option_a": "Date your celebrity crush once",
+    "option_b": "Have a perfect partner for life",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Find love online or Find love in real life?",
+    "option_a": "Find love online",
+    "option_b": "Find love in real life",
+    "category": "Love",
+    "tags": [
+      "dating",
+      "relationship"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lift twice your weight or Run twice as fast?",
+    "option_a": "Lift twice your weight",
+    "option_b": "Run twice as fast",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Listen only to rock music or Listen only to pop music?",
+    "option_a": "Listen only to rock music",
+    "option_b": "Listen only to pop music",
+    "category": "Entertainment",
+    "tags": [
+      "music",
+      "movies"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Never get tired or Never get injured?",
+    "option_a": "Never get tired",
+    "option_b": "Never get injured",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Travel every weekend but never abroad or Travel abroad once a year only?",
+    "option_a": "Travel every weekend but never abroad",
+    "option_b": "Travel abroad once a year only",
+    "category": "Travel",
+    "tags": [
+      "travel",
+      "adventure"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Lift twice your weight or Run twice as fast?",
+    "option_a": "Lift twice your weight",
+    "option_b": "Run twice as fast",
+    "category": "Sports",
+    "tags": [
+      "fitness",
+      "challenge"
+    ],
+    "is_mystery": 0
+  },
+  {
+    "question": "Would you rather Always be 5 minutes late or Always be 30 minutes early?",
+    "option_a": "Always be 5 minutes late",
+    "option_b": "Always be 30 minutes early",
+    "category": "Lifestyle",
+    "tags": [
+      "life",
+      "daily"
+    ],
+    "is_mystery": 0
+  }
+]
