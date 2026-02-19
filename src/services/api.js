@@ -131,7 +131,7 @@ export const auth = {
 // DILEMMAS
 // ============================================================
 export const dilemmas = {
-  getAll: () => read('dilemmas', 'record_status=active'),
+  getAll: () => read('dilemmas', 'record_status=active&limit=500'),
   getById: (id) => read('dilemmas', `id=${id}`),
   create: (data) => create('dilemmas', data),
   update: (id, data) => update('dilemmas', id, data),
@@ -146,7 +146,7 @@ export const dilemmas = {
 // ============================================================
 export const votes = {
   cast: (data) => create('votes', data),
-  getByUser: (userId) => read('votes', `user_id=${userId}`),
+  getByUser: (userId) => read('votes', `user_id=${userId}&limit=500`),
   getByDilemma: (dilemmaId) => read('votes', `dilemma_id=${dilemmaId}`),
   check: (userId, dilemmaId) => read('votes', `user_id=${userId}&dilemma_id=${dilemmaId}`),
 };
@@ -177,7 +177,7 @@ export const friendships = {
 // ACTIVITIES (Feed)
 // ============================================================
 export const activities = {
-  getFeed: () => read('activities', 'visibility=public&is_deleted=0'),
+  getFeed: () => read('activities', 'visibility=public&is_deleted=0&limit=100'),
   getFriendsFeed: (vis) => read('activities', `visibility=${vis}&is_deleted=0`),
   getByUser: (userId) => read('activities', `actor_id=${userId}&is_deleted=0`),
   create: (data) => create('activities', data),
@@ -327,13 +327,13 @@ export const admin = {
   getStats: () => read('admin_stats'),
   getActivity: () => read('admin_activity'),
   getBannedUsers: () => read('users', 'is_banned=1'),
-  getAllUsers: () => read('users'),
+  getAllUsers: () => read('users', 'limit=500'),
   searchUsers: (query) => read('users', `username=${query}`),
   banUser: (id) => update('users', id, { is_banned: 1 }),
   unbanUser: (id) => update('users', id, { is_banned: 0 }),
   giveXP: (id, currentXP, amount) => update('users', id, { xp: currentXP + amount }),
-  getAllVotes: () => read('votes'),
-  getAllDilemmas: () => read('dilemmas'),
+  getAllVotes: () => read('votes', 'limit=500'),
+  getAllDilemmas: () => read('dilemmas', 'limit=500'),
 };
 
 // ============================================================
