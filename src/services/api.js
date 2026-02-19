@@ -231,13 +231,75 @@ export const dailyCounters = {
 // LEADERBOARDS
 // ============================================================
 export const leaderboards = {
-  getDaily: (key) => read('leaderboards', `period_type=daily&period_key=${key}`),
-  getWeekly: (key) => read('leaderboards', `period_type=weekly&period_key=${key}`),
-  getSeason: (key) => read('leaderboards', `period_type=season&period_key=${key}`),
-  getOverall: () => read('leaderboards', 'period_type=overall'),
+  getDaily: (key) => read('leaderboards', `period_type=daily&period_key=${key}&limit=100`),
+  getWeekly: (key) => read('leaderboards', `period_type=weekly&period_key=${key}&limit=100`),
+  getSeason: (key) => read('leaderboards', `period_type=season&period_key=${key}&limit=100`),
+  getOverall: () => read('leaderboards', 'period_type=overall&limit=100'),
+  getByUserAndPeriod: (userId, periodType, periodKey) =>
+    read('leaderboards', `user_id=${userId}&period_type=${periodType}&period_key=${periodKey}`),
   update: (id, data) => update('leaderboards', id, data),
   create: (data) => create('leaderboards', data),
 };
+
+// ── Leaderboard upsert helper ────────────────────────────
+// Finds existing entry for user+period or creates one, then adds points.
+async function upsertLeaderboard(userId, periodType, periodKey, pointsToAdd, username, avatarUrl) {
+  try {
+    const existing = await leaderboards.getByUserAndPeriod(userId, periodType, periodKey);
+    const arr = Array.isArray(existing) ? existing : existing ? [existing] : [];
+    if (arr.length > 0) {
+      const entry = arr[0];
+      await leaderboards.update(entry.id, {
+        points: (entry.points || 0) + pointsToAdd,
+        updated_at: new Date().toISOString(),
+      });
+    } else {
+      await leaderboards.create({
+        user_id: userId,
+        period_type: periodType,
+        period_key: periodKey,
+        points: pointsToAdd,
+        rank: 0,
+        username: username || '',
+        avatar_url: avatarUrl || '',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    }
+  } catch { /* non-critical */ }
+}
+
+// ── Record XP helper ─────────────────────────────────────
+// Updates user XP and writes leaderboard entries for all active periods.
+export async function recordXp(userId, xpAmount, user = {}) {
+  if (!userId || !xpAmount) return;
+  const now = new Date();
+  const dailyKey = now.toISOString().slice(0, 10);
+  // ISO week: YYYY-Www
+  const jan4 = new Date(now.getFullYear(), 0, 4);
+  const weekNum = Math.ceil(((now - jan4) / 86400000 + jan4.getDay() + 1) / 7);
+  const weeklyKey = `${now.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+  const username = user.username || user.name || '';
+  const avatarUrl = user.avatar_url || '';
+
+  // Write leaderboard entries (fire-and-forget)
+  const promises = [
+    upsertLeaderboard(userId, 'daily', dailyKey, xpAmount, username, avatarUrl),
+    upsertLeaderboard(userId, 'weekly', weeklyKey, xpAmount, username, avatarUrl),
+  ];
+
+  // If there's an active season, write a season entry too
+  try {
+    const activeSeason = await seasons.getActive();
+    const seasonArr = Array.isArray(activeSeason) ? activeSeason : activeSeason ? [activeSeason] : [];
+    if (seasonArr.length > 0) {
+      const s = seasonArr[0];
+      promises.push(upsertLeaderboard(userId, 'season', `season-${s.id}`, xpAmount, username, avatarUrl));
+    }
+  } catch { /* no active season */ }
+
+  await Promise.allSettled(promises);
+}
 
 // ============================================================
 // MILESTONES & BADGES
@@ -257,8 +319,8 @@ export const badges = {
 // SEASONS & EVENTS
 // ============================================================
 export const seasons = {
-  getActive: () => read('seasons', 'record_status=active'),
-  getAll: () => read('seasons'),
+  getActive: () => read('seasons', 'status=active'),
+  getAll: () => read('seasons', 'limit=50'),
   create: (data) => create('seasons', data),
   update: (id, data) => update('seasons', id, data),
 };

@@ -240,8 +240,15 @@ export default function FriendsScreen() {
           setSearchLoading(false);
           return;
         }
-        const res = await API.auth.searchByUsername(encodeURIComponent(query));
-        setSearchResults(Array.isArray(res) ? res : [res].filter(Boolean));
+        // NCB like: filter is unreliable — fetch all users and filter client-side
+        const allUsers = await API.admin.getAllUsers();
+        const usersArr = Array.isArray(allUsers) ? allUsers : [];
+        const q = query.toLowerCase();
+        const res = usersArr.filter((u) =>
+          u.id !== user.id &&
+          (u.username || '').toLowerCase().includes(q)
+        );
+        setSearchResults(res);
       } catch {
         setSearchResults([]);
       }

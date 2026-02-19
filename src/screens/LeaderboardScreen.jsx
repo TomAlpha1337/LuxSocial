@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Crown, ChevronUp, ChevronDown, Flame, Star, TrendingUp, TrendingDown, Award, Zap, Medal, Swords, Clock, Minus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { leaderboards, admin } from '../services/api';
+import { leaderboards, admin, seasons } from '../services/api';
 import { XP_LEVELS } from '../utils/constants';
 
 // ── Keyframes ───────────────────────────────────────────────
@@ -314,19 +314,34 @@ export default function LeaderboardScreen() {
     setLoading(true);
     try {
       let data;
-      const today = new Date().toISOString().slice(0, 10);
-      const weekKey = today; // simplified
-      if (period === 'daily') data = await leaderboards.getDaily(today);
-      else if (period === 'weekly') data = await leaderboards.getWeekly(weekKey);
-      else if (period === 'season') data = await leaderboards.getSeason('s1');
-      else {
-        // "All Time" — read from users table directly, map to leaderboard shape
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      const jan4 = new Date(now.getFullYear(), 0, 4);
+      const weekNum = Math.ceil(((now - jan4) / 86400000 + jan4.getDay() + 1) / 7);
+      const weekKey = `${now.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+
+      if (period === 'daily') {
+        data = await leaderboards.getDaily(today);
+      } else if (period === 'weekly') {
+        data = await leaderboards.getWeekly(weekKey);
+      } else if (period === 'season') {
+        // Find active season dynamically
+        const activeSeason = await seasons.getActive().catch(() => []);
+        const seasonArr = Array.isArray(activeSeason) ? activeSeason : activeSeason ? [activeSeason] : [];
+        if (seasonArr.length > 0) {
+          data = await leaderboards.getSeason(`season-${seasonArr[0].id}`);
+        } else {
+          data = [];
+        }
+      } else {
+        // "All Time" — read from users table directly
         const users = await admin.getAllUsers();
         const usersArr = Array.isArray(users) ? users : [];
         data = usersArr
           .filter((u) => u.record_status !== 'banned')
           .map((u) => ({
             id: u.id,
+            user_id: u.id,
             username: u.username,
             avatar_url: u.avatar_url,
             points: u.xp || 0,
@@ -336,7 +351,19 @@ export default function LeaderboardScreen() {
           }));
       }
 
-      const rows = Array.isArray(data) ? data : data ? [data] : [];
+      let rows = Array.isArray(data) ? data : data ? [data] : [];
+
+      // For period-based entries, enrich with user data if username missing
+      if (period !== 'all' && rows.length > 0 && !rows[0].username) {
+        const allUsers = await admin.getAllUsers().catch(() => []);
+        const usersMap = {};
+        (Array.isArray(allUsers) ? allUsers : []).forEach((u) => { usersMap[u.id] = u; });
+        rows = rows.map((r) => {
+          const u = usersMap[r.user_id] || {};
+          return { ...r, id: r.user_id || r.id, username: r.username || u.username || 'User', avatar_url: r.avatar_url || u.avatar_url };
+        });
+      }
+
       setEntries(rows.sort((a, b) => (b.points || 0) - (a.points || 0)));
     } catch {
       setEntries([]);

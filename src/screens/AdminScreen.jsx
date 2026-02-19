@@ -774,17 +774,28 @@ export default function AdminScreen() {
     if (!seasonForm.name.trim() || !seasonForm.start_date || !seasonForm.end_date) {
       showToast('Please fill in all season fields', 'error'); return;
     }
-    const newSeason = {
-      id: 's_' + Date.now(), ...seasonForm, status: 'active',
-      description: `A new competitive season: ${seasonForm.name}`,
-    };
     try {
-      const res = await API.seasons.create(newSeason);
-      setCurrentSeason(res || newSeason);
+      const res = await API.seasons.create({
+        name: seasonForm.name,
+        start_date: seasonForm.start_date,
+        end_date: seasonForm.end_date,
+        status: 'active',
+        created_at: new Date().toISOString(),
+      });
+      setCurrentSeason(res || { ...seasonForm, status: 'active' });
       setShowSeasonForm(false);
       setSeasonForm({ name: '', start_date: '', end_date: '' });
       showToast('New season created');
     } catch { showToast('Failed to create season', 'error'); }
+  };
+
+  const handleEndSeason = async () => {
+    if (!currentSeason?.id) return;
+    try {
+      await API.seasons.update(currentSeason.id, { status: 'completed' });
+      showToast('Season ended');
+      setCurrentSeason(null);
+    } catch { showToast('Failed to end season', 'error'); }
   };
 
   const handleCreateEvent = async () => {
@@ -1259,50 +1270,64 @@ export default function AdminScreen() {
             {/* Current Season */}
             <h2 style={s.sectionTitle}><Trophy size={20} color={C.gold} /> Current Season</h2>
             {currentSeason ? (
-              <div style={s.seasonCard}>
-                <div style={s.seasonGlow} />
-                <div style={{ position: 'relative', zIndex: 1 }}>
-                  <div style={s.flexBetween}>
-                    <div>
-                      <h3 style={{
-                        fontSize: 20, fontWeight: 800, margin: '0 0 6px 0',
-                        background: `linear-gradient(135deg, ${C.gold}, ${C.goldLight})`,
-                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                      }}>{currentSeason.name}</h3>
-                      <p style={{ fontSize: 13, color: C.textMuted, margin: 0 }}>{currentSeason.description}</p>
+              <>
+                <div style={s.seasonCard}>
+                  <div style={s.seasonGlow} />
+                  <div style={{ position: 'relative', zIndex: 1 }}>
+                    <div style={s.flexBetween}>
+                      <div>
+                        <h3 style={{
+                          fontSize: 20, fontWeight: 800, margin: '0 0 6px 0',
+                          background: `linear-gradient(135deg, ${C.gold}, ${C.goldLight})`,
+                          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                        }}>{currentSeason.name}</h3>
+                        <p style={{ fontSize: 13, color: C.textMuted, margin: 0 }}>{currentSeason.description}</p>
+                      </div>
+                      <span style={{ ...s.badge, ...s.badgeActive, fontSize: 12, padding: '6px 14px' }}>
+                        {currentSeason.status?.toUpperCase() || 'ACTIVE'}
+                      </span>
                     </div>
-                    <span style={{ ...s.badge, ...s.badgeActive, fontSize: 12, padding: '6px 14px' }}>
-                      {currentSeason.status?.toUpperCase() || 'ACTIVE'}
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', gap: 24, marginTop: 16 }}>
-                    <div>
-                      <p style={{ fontSize: 11, color: C.textDim, margin: '0 0 2px 0', textTransform: 'uppercase', letterSpacing: 1 }}>Start</p>
-                      <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: C.text }}>
-                        <Calendar size={13} style={{ marginRight: 4, verticalAlign: 'middle', color: C.gold }} />{formatDate(currentSeason.start_date)}
-                      </p>
+                    <div style={{ display: 'flex', gap: 24, marginTop: 16 }}>
+                      <div>
+                        <p style={{ fontSize: 11, color: C.textDim, margin: '0 0 2px 0', textTransform: 'uppercase', letterSpacing: 1 }}>Start</p>
+                        <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: C.text }}>
+                          <Calendar size={13} style={{ marginRight: 4, verticalAlign: 'middle', color: C.gold }} />{formatDate(currentSeason.start_date)}
+                        </p>
+                      </div>
+                      <div>
+                        <p style={{ fontSize: 11, color: C.textDim, margin: '0 0 2px 0', textTransform: 'uppercase', letterSpacing: 1 }}>End</p>
+                        <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: C.text }}>
+                          <Calendar size={13} style={{ marginRight: 4, verticalAlign: 'middle', color: C.purple }} />{formatDate(currentSeason.end_date)}
+                        </p>
+                      </div>
+                      {currentSeason.end_date && (() => {
+                        const cd = getCountdown(currentSeason.end_date);
+                        return cd ? (
+                          <div>
+                            <p style={{ fontSize: 11, color: C.textDim, margin: '0 0 2px 0', textTransform: 'uppercase', letterSpacing: 1 }}>Remaining</p>
+                            <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: cd.expired ? C.red : C.green }}>
+                              <Timer size={13} style={{ marginRight: 4, verticalAlign: 'middle' }} />{cd.text}
+                            </p>
+                          </div>
+                        ) : null;
+                      })()}
                     </div>
-                    <div>
-                      <p style={{ fontSize: 11, color: C.textDim, margin: '0 0 2px 0', textTransform: 'uppercase', letterSpacing: 1 }}>End</p>
-                      <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: C.text }}>
-                        <Calendar size={13} style={{ marginRight: 4, verticalAlign: 'middle', color: C.purple }} />{formatDate(currentSeason.end_date)}
-                      </p>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+                      <button
+                        onClick={handleEndSeason}
+                        style={{
+                          padding: '8px 18px', borderRadius: 10, border: `1px solid ${C.red}33`,
+                          background: `${C.red}15`, color: C.red, fontSize: 13, fontWeight: 700,
+                          cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
+                        }}
+                      >
+                        <Power size={14} /> End Season
+                      </button>
                     </div>
-                    {currentSeason.end_date && (() => {
-                      const cd = getCountdown(currentSeason.end_date);
-                      return cd ? (
-                        <div>
-                          <p style={{ fontSize: 11, color: C.textDim, margin: '0 0 2px 0', textTransform: 'uppercase', letterSpacing: 1 }}>Remaining</p>
-                          <p style={{ fontSize: 14, fontWeight: 600, margin: 0, color: cd.expired ? C.red : C.green }}>
-                            <Timer size={13} style={{ marginRight: 4, verticalAlign: 'middle' }} />{cd.text}
-                          </p>
-                        </div>
-                      ) : null;
-                    })()}
                   </div>
                 </div>
-              </div>
-            ) : <div style={{ ...s.emptyState, ...s.chartCard }}>No active season.</div>}
+              </>
+            ) : <div style={{ ...s.emptyState, ...s.chartCard }}>No active season. Create one below.</div>}
 
             <div style={{ marginBottom: 20 }}>
               <button style={s.btnSecondary} onClick={() => setShowSeasonForm(v => !v)}>

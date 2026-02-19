@@ -7,7 +7,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import {
   dilemmas as dilemmasApi, votes as votesApi, activities as activitiesApi,
-  auth as authApi, featuredTracking, events as eventsApi,
+  auth as authApi, featuredTracking, events as eventsApi, recordXp,
 } from '../services/api';
 import { CATEGORIES, POINTS, DEFAULT_DAILY_PLAYS, FEATURED_XP_MULTIPLIER } from '../utils/constants';
 import { useAchievements } from '../hooks/useAchievements';
@@ -880,6 +880,9 @@ export default function PlayScreen() {
         updateUser({ xp: newXp });
       })
       .catch(() => {}); // silently ignore
+
+    // Record XP in leaderboard entries (daily/weekly/season)
+    recordXp(user.id, totalXpEarned, user).catch(() => {});
 
     // Create an activity record for the feed
     activitiesApi.create({

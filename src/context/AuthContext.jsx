@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { auth as authApi, dailyLogins, streaks as streaksApi } from '../services/api';
+import { auth as authApi, dailyLogins, streaks as streaksApi, recordXp } from '../services/api';
 import { DAILY_BONUS_XP, STREAK_MILESTONES } from '../utils/constants';
 
 const AuthContext = createContext(null);
@@ -111,6 +111,9 @@ export function AuthProvider({ children }) {
 
           const totalBonus = bonusXp + milestoneBonus;
           await authApi.updateUser(u.id, { xp: currentXp + totalBonus });
+
+          // Record in leaderboard entries
+          recordXp(u.id, totalBonus, u).catch(() => {});
 
           if (milestoneInfo) {
             setStreakMilestone(milestoneInfo);
