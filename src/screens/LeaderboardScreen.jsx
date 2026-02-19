@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Crown, ChevronUp, ChevronDown, Flame, Star, TrendingUp, TrendingDown, Award, Zap, Medal, Swords, Clock, Minus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { leaderboards } from '../services/api';
+import { leaderboards, admin } from '../services/api';
 import { XP_LEVELS } from '../utils/constants';
 
 // ── Keyframes ───────────────────────────────────────────────
@@ -301,7 +301,7 @@ function RankChange({ change }) {
 // ── Component ───────────────────────────────────────────────
 export default function LeaderboardScreen() {
   const { user } = useAuth();
-  const [period, setPeriod] = useState('weekly');
+  const [period, setPeriod] = useState('all');
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const userRowRef = useRef(null);
@@ -319,7 +319,22 @@ export default function LeaderboardScreen() {
       if (period === 'daily') data = await leaderboards.getDaily(today);
       else if (period === 'weekly') data = await leaderboards.getWeekly(weekKey);
       else if (period === 'season') data = await leaderboards.getSeason('s1');
-      else data = await leaderboards.getOverall();
+      else {
+        // "All Time" — read from users table directly, map to leaderboard shape
+        const users = await admin.getAllUsers();
+        const usersArr = Array.isArray(users) ? users : [];
+        data = usersArr
+          .filter((u) => u.record_status !== 'banned')
+          .map((u) => ({
+            id: u.id,
+            username: u.username,
+            avatar_url: u.avatar_url,
+            points: u.xp || 0,
+            xp: u.xp || 0,
+            level: u.level || 1,
+            current_streak: u.current_streak || 0,
+          }));
+      }
 
       const rows = Array.isArray(data) ? data : data ? [data] : [];
       setEntries(rows.sort((a, b) => (b.points || 0) - (a.points || 0)));

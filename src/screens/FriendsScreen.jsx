@@ -136,6 +136,8 @@ export default function FriendsScreen() {
   const [sentRequests, setSentRequests] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
+  const [suggestedLoading, setSuggestedLoading] = useState(false);
   const searchTimeout = useRef(null);
 
   // Load friends and requests
@@ -195,6 +197,30 @@ export default function FriendsScreen() {
     }
     load();
   }, [user?.id]);
+
+  // Load suggested friends when Find tab is active
+  useEffect(() => {
+    if (activeTab !== 'find' || !user?.id) return;
+    let cancelled = false;
+    (async () => {
+      setSuggestedLoading(true);
+      try {
+        const allUsers = await API.admin.getAllUsers();
+        const usersArr = Array.isArray(allUsers) ? allUsers : [];
+        const friendIds = new Set(friends.map((f) => f.id));
+        const suggestions = usersArr.filter(
+          (u) => u.id !== user.id && !friendIds.has(u.id) && u.record_status !== 'banned'
+        );
+        // Sort by XP descending so most active users show first
+        suggestions.sort((a, b) => (b.xp || 0) - (a.xp || 0));
+        if (!cancelled) setSuggestedUsers(suggestions.slice(0, 10));
+      } catch {
+        if (!cancelled) setSuggestedUsers([]);
+      }
+      if (!cancelled) setSuggestedLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, [activeTab, user?.id, friends]);
 
   // Search debounced
   const handleSearch = useCallback((query) => {
@@ -671,35 +697,162 @@ export default function FriendsScreen() {
         {/* Results */}
         <div style={{ padding: '8px 20px 100px' }}>
           {searchResults.length === 0 && searchQuery.trim() === '' && (
-            <div style={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center',
-              justifyContent: 'center', padding: '48px 20px', textAlign: 'center',
-            }}>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                style={{
-                  width: 80, height: 80, borderRadius: '50%',
-                  background: 'linear-gradient(135deg, rgba(0,212,255,0.1), rgba(191,90,242,0.08))',
-                  border: '1px solid rgba(0,212,255,0.15)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  marginBottom: 20, animation: 'frFloat 3s ease-in-out infinite',
-                }}
-              >
-                <Users size={32} color={CYAN_LIGHT} style={{ opacity: 0.6 }} />
-              </motion.div>
-              <div style={{
-                fontSize: 18, fontWeight: 700, color: 'rgba(255,255,255,0.7)', marginBottom: 8,
-              }}>
-                Find new friends
-              </div>
-              <div style={{
-                fontSize: 14, color: MUTED, maxWidth: 280, lineHeight: 1.6,
-              }}>
-                Search for users by their username and grow your social circle.
-              </div>
-            </div>
+            <>
+              {/* Suggested Friends Section */}
+              {suggestedLoading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: 32 }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+                    style={{
+                      width: 28, height: 28,
+                      border: '3px solid rgba(191,90,242,0.1)',
+                      borderTopColor: PURPLE,
+                      borderRadius: '50%',
+                    }}
+                  />
+                </div>
+              ) : suggestedUsers.length > 0 ? (
+                <div style={{ paddingTop: 8 }}>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16,
+                  }}>
+                    <Sparkles size={16} color={PURPLE_LIGHT} />
+                    <span style={{
+                      fontSize: 15, fontWeight: 700, color: 'rgba(255,255,255,0.8)',
+                      letterSpacing: -0.2,
+                    }}>
+                      Suggested for you
+                    </span>
+                  </div>
+                  {suggestedUsers.map((sUser, i) => {
+                    const level = getLevelInfo(sUser.xp ?? 0);
+                    const alreadySent = sentRequests.has(sUser.id);
+                    return (
+                      <motion.div
+                        key={sUser.id}
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05, ease: 'easeOut' }}
+                        onClick={() => navigate(`/profile/${sUser.id}`)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 14,
+                          padding: '14px 16px', borderRadius: 18,
+                          background: 'rgba(255,255,255,0.02)',
+                          border: '1px solid rgba(191,90,242,0.08)',
+                          marginBottom: 10, cursor: 'pointer',
+                          transition: 'all 0.25s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = 'rgba(191,90,242,0.25)';
+                          e.currentTarget.style.background = 'rgba(191,90,242,0.04)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = 'rgba(191,90,242,0.08)';
+                          e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                        }}
+                      >
+                        {/* Avatar */}
+                        <div style={{
+                          width: 46, height: 46, borderRadius: '50%', flexShrink: 0, padding: 2,
+                          background: 'linear-gradient(135deg, rgba(191,90,242,0.4), rgba(0,212,255,0.3))',
+                        }}>
+                          <div style={{
+                            width: '100%', height: '100%', borderRadius: '50%',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: 15, fontWeight: 700, color: GOLD, letterSpacing: 0.5,
+                            background: 'linear-gradient(135deg, rgba(191,90,242,0.15), rgba(0,212,255,0.1))',
+                            overflow: 'hidden',
+                          }}>
+                            {sUser.avatar_url ? (
+                              <img src={sUser.avatar_url} alt={sUser.username}
+                                style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                            ) : getInitials(sUser.username)}
+                          </div>
+                        </div>
+
+                        {/* Info */}
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{
+                            fontSize: 15, fontWeight: 600, color: '#eee',
+                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                          }}>
+                            {sUser.username || 'User'}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 3 }}>
+                            <span style={{
+                              display: 'inline-flex', alignItems: 'center', gap: 3,
+                              padding: '2px 8px', borderRadius: 10,
+                              background: 'rgba(191,90,242,0.1)',
+                              border: '1px solid rgba(191,90,242,0.15)',
+                              fontSize: 11, fontWeight: 600, color: PURPLE_LIGHT,
+                            }}>
+                              <Star size={10} color={PURPLE_LIGHT} fill={PURPLE_LIGHT} />
+                              Lv.{level.level}
+                            </span>
+                            <span style={{ fontSize: 12, color: MUTED, fontWeight: 500 }}>
+                              {sUser.xp || 0} XP
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Add button */}
+                        {alreadySent ? (
+                          <span style={{
+                            display: 'inline-flex', alignItems: 'center', gap: 4,
+                            fontSize: 12, fontWeight: 600, color: CYAN, padding: '8px 12px',
+                            borderRadius: 12, background: 'rgba(0,212,255,0.08)',
+                            border: '1px solid rgba(0,212,255,0.15)',
+                          }}>
+                            <Send size={13} /> Sent
+                          </span>
+                        ) : (
+                          <motion.button
+                            whileTap={{ scale: 0.92 }}
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: 5,
+                              padding: '8px 14px', borderRadius: 12, border: 'none', cursor: 'pointer',
+                              fontSize: 12, fontWeight: 700, flexShrink: 0,
+                              background: 'linear-gradient(135deg, #BF5AF2, #9B30E0)',
+                              color: '#fff', boxShadow: '0 2px 12px rgba(191,90,242,0.3)',
+                            }}
+                            onClick={(e) => { e.stopPropagation(); handleAddFriend(sUser); }}
+                          >
+                            <UserPlus size={14} /> Add
+                          </motion.button>
+                        )}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center',
+                  justifyContent: 'center', padding: '48px 20px', textAlign: 'center',
+                }}>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+                    style={{
+                      width: 80, height: 80, borderRadius: '50%',
+                      background: 'linear-gradient(135deg, rgba(0,212,255,0.1), rgba(191,90,242,0.08))',
+                      border: '1px solid rgba(0,212,255,0.15)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      marginBottom: 20, animation: 'frFloat 3s ease-in-out infinite',
+                    }}
+                  >
+                    <Users size={32} color={CYAN_LIGHT} style={{ opacity: 0.6 }} />
+                  </motion.div>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: 'rgba(255,255,255,0.7)', marginBottom: 8 }}>
+                    No suggestions yet
+                  </div>
+                  <div style={{ fontSize: 14, color: MUTED, maxWidth: 280, lineHeight: 1.6 }}>
+                    Search for users by their username and grow your social circle.
+                  </div>
+                </div>
+              )}
+            </>
           )}
           {searchResults.length === 0 && searchQuery.trim() !== '' && !searchLoading && (
             <div style={{

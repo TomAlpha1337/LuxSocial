@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Gamepad2, Swords, Trophy, User } from 'lucide-react';
+import { Home, Gamepad2, Swords, Trophy, Users } from 'lucide-react';
 
 /* ── Tab definitions ─────────────────────────────────────── */
 const TABS = [
@@ -8,7 +8,7 @@ const TABS = [
   { label: 'Games',   icon: Gamepad2, path: '/play' },
   { label: 'Play',    icon: Swords,   path: '/direct',      isCenter: true },
   { label: 'Ranks',   icon: Trophy,   path: '/leaderboard' },
-  { label: 'Profile', icon: User,     path: '/profile' },
+  { label: 'Friends', icon: Users,    path: '/friends' },
 ];
 
 /* ── Color tokens ────────────────────────────────────────── */
