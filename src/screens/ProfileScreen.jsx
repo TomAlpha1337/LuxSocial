@@ -391,7 +391,7 @@ export default function ProfileScreen() {
       await API.friendships.sendRequest({
         user_id: user.id,
         friend_id: userId,
-        status: 'pending',
+        record_status: 'pending',
         requested_at: new Date().toISOString(),
       });
       setFriendStatus('pending');
@@ -848,7 +848,7 @@ export default function ProfileScreen() {
                         setShowTitlePicker(false);
                         // Persist to server (fire-and-forget)
                         if (user?.id) {
-                          API.auth.updateUser(user.id, { selected_title: t.title }).catch(() => {});
+                          API.auth.updateUser(user.id, { selected_title: t.title }).catch((err) => console.warn('[NCB]', err.message));
                         }
                       }}
                       style={{

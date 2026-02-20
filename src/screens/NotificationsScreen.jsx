@@ -453,7 +453,7 @@ export default function NotificationsScreen() {
     items
       .filter((item) => !item.is_read)
       .forEach((item) => {
-        notificationsApi.markRead(item.id).catch(() => {});
+        notificationsApi.markRead(item.id).catch((err) => console.warn('[NCB]', err.message));
       });
   }
 
@@ -461,7 +461,7 @@ export default function NotificationsScreen() {
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, is_read: true } : item))
     );
-    notificationsApi.markRead(id).catch(() => {});
+    notificationsApi.markRead(id).catch((err) => console.warn('[NCB]', err.message));
   }
 
   const unreadCount = items.filter((item) => !item.is_read).length;

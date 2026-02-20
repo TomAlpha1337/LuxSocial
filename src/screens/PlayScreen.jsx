@@ -841,15 +841,14 @@ export default function PlayScreen() {
       const chosenText = option === 'a' ? dilemma.option_a : dilemma.option_b;
       activitiesApi.create({
         actor_id: user.id,
-        actor_name: user.username || user.name || user.email || 'User',
         verb: 'answered',
-        description: `chose "${chosenText.length > 60 ? chosenText.slice(0, 57) + '...' : chosenText}"`,
-        target_type: 'dilemma',
-        target_id: dilemma.id,
+        object_type: 'dilemma',
+        object_id: dilemma.id,
+        context_text: `chose "${chosenText.length > 60 ? chosenText.slice(0, 57) + '...' : chosenText}"`,
         visibility: 'public',
         is_deleted: 0,
         created_at: new Date().toISOString(),
-      }).catch(() => {});
+      }).catch((err) => console.warn('[NCB] activity create:', err.message));
 
       // Fire-and-forget: update the dilemma's vote counts
       const voteField = option === 'a' ? 'votes_a_count' : 'votes_b_count';
@@ -875,7 +874,7 @@ export default function PlayScreen() {
           const userPct = option === 'a'
             ? Math.round((totalA / total) * 100)
             : Math.round((totalB / total) * 100);
-          checkAchievements({ chosenOption: option, dilemma, userPct }).catch(() => {});
+          checkAchievements({ chosenOption: option, dilemma, userPct }).catch((err) => console.warn('[NCB]', err.message));
         }, 200);
       }, 400);
 
@@ -929,20 +928,22 @@ export default function PlayScreen() {
         // Also update local auth context so UI reflects new XP
         updateUser({ xp: newXp });
       })
-      .catch(() => {}); // silently ignore
+      .catch((err) => console.warn('[NCB]', err.message));
 
     // Record XP in leaderboard entries (daily/weekly/season)
-    recordXp(user.id, totalXpEarned, user).catch(() => {});
+    recordXp(user.id, totalXpEarned, user).catch((err) => console.warn('[NCB] recordXp:', err.message));
 
     // Create an activity record for the feed
     activitiesApi.create({
       actor_id: user.id,
-      actor_name: user.name || user.email || 'User',
       verb: 'answered',
-      description: `Answered ${answeredCount} dilemmas and earned ${totalXpEarned} XP`,
+      object_type: 'dilemma',
+      object_id: 0,
+      context_text: `Answered ${answeredCount} dilemmas and earned ${totalXpEarned} XP`,
       visibility: 'public',
       is_deleted: 0,
-    }).catch(() => {}); // silently ignore
+      created_at: new Date().toISOString(),
+    }).catch((err) => console.warn('[NCB] session activity:', err.message)); // silently ignore
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [completed]);
@@ -975,15 +976,14 @@ export default function PlayScreen() {
     const chosenText = option === 'a' ? featuredDilemma.option_a : featuredDilemma.option_b;
     activitiesApi.create({
       actor_id: user.id,
-      actor_name: user.username || user.name || 'Anonymous',
       verb: 'answered',
-      description: `answered featured: chose "${chosenText.length > 60 ? chosenText.slice(0, 57) + '...' : chosenText}"`,
-      target_type: 'dilemma',
-      target_id: featuredDilemma.id,
+      object_type: 'dilemma',
+      object_id: featuredDilemma.id,
+      context_text: `answered featured: chose "${chosenText.length > 60 ? chosenText.slice(0, 57) + '...' : chosenText}"`,
       visibility: 'public',
       is_deleted: 0,
       created_at: new Date().toISOString(),
-    }).catch(() => {});
+    }).catch((err) => console.warn('[NCB] featured activity:', err.message));
 
     // Record featured tracking (no user_id)
     const todayStr = new Date().toISOString().slice(0, 10);
@@ -1012,7 +1012,7 @@ export default function PlayScreen() {
         const userPct = option === 'a'
           ? Math.round((totalA / total) * 100)
           : Math.round((totalB / total) * 100);
-        checkAchievements({ chosenOption: option, dilemma: featuredDilemma, userPct }).catch(() => {});
+        checkAchievements({ chosenOption: option, dilemma: featuredDilemma, userPct }).catch((err) => console.warn('[NCB]', err.message));
       }, 200);
     }, 400);
 

@@ -69,9 +69,15 @@ The largest/most complex screens: `PlayScreen.jsx` (core game loop), `ProfileScr
 
 **NCB `like:` filter is broken**: The `column=like:value` partial match filter does not work. Use client-side filtering instead (fetch all rows, then `.filter()` in JS). See `FriendsScreen.jsx` search for an example.
 
+**NCB does NOT auto-create columns or tables**: Both CREATE and UPDATE reject unknown column names with `"Unknown column"` or `"Error creating record"` errors. New columns must be added via the NCB dashboard. New tables must also be created via the dashboard before any API operations.
+
 **XP tracking**: The `recordXp(userId, xpAmount, user)` helper in `api.js` updates leaderboard entries for daily/weekly/season periods. Call it alongside any `authApi.updateUser(id, { xp })` call. It's already wired into `PlayScreen` (session complete) and `AuthContext` (daily login bonus).
 
-**Friendships are bidirectional**: `getFriends(userId)` queries both `user_id=X` and `friend_id=X` directions, then deduplicates. `checkExisting(userId, friendId)` checks both directions before sending a new request. When extracting a friend's user ID from a friendship record, always check which side the current user is on: `f.user_id === userId ? f.friend_id : f.user_id`.
+**Friendships are bidirectional**: `getFriends(userId)` queries both `user_id=X` and `friend_id=X` directions, then deduplicates. `checkExisting(userId, friendId)` checks both directions before sending a new request. When extracting a friend's user ID from a friendship record, always check which side the current user is on: `f.user_id === userId ? f.friend_id : f.user_id`. The friendship status field is `record_status` (the actual DB column name) — values: `pending`, `accepted`, `rejected`.
+
+**Friend enrichment pattern**: `getFriends()` returns raw friendship records, NOT user profiles. To display friend names/avatars, enrich them by fetching each friend's user profile with `auth.getUser(friendId)`. See `DirectScreen.jsx` and `FriendsScreen.jsx` for examples.
+
+**Activity creation**: Create an activity record for every user-visible action (votes, featured answers, etc.) so the Feed page has content. Required fields: `actor_id`, `verb`, `object_type`, `object_id`, `context_text`, `visibility`, `is_deleted`, `created_at`. Note: the DB columns are `object_type`/`object_id`/`context_text` (NOT `target_type`/`target_id`/`description`). Always log errors with `.catch((err) => console.warn(...))` — never use silent `.catch(() => {})`.
 
 **Badge field name compatibility**: `useAchievements.js` writes badges with BOTH field name formats (`badge_icon` + `icon`, `badge_color` + `color`, `badge_name` + `label`, etc.) because `ProfileScreen.jsx` reads the short names. Always use fallback chains when reading badge data: `badge.icon || badge.badge_icon`, `badge.color || badge.badge_color`, `badge.label || badge.badge_name`.
 
@@ -170,6 +176,9 @@ Full schema documented in **`NOCODEBACKEND_SCHEMA.md`** (985 lines). Key tables:
 | `xp_levels` | 20-tier XP thresholds (seeded data) |
 | `point_rules` | XP values for 20 action types (seeded data) |
 | `milestones` | 26 achievement definitions (seeded data) |
+| `activities` | Feed entries: actor + verb + target per user action |
+| `leaderboards` | XP rankings by period (daily/weekly/season/all-time) |
+| `direct_dilemmas` | 1v1 challenges between friends |
 
 Tables must be created in a specific order due to foreign key dependencies — see `NOCODEBACKEND_SCHEMA.md` for the full creation order and relationship map.
 
@@ -178,11 +187,11 @@ Tables must be created in a specific order due to foreign key dependencies — s
 The API layer exports 20+ namespaced objects. Each provides CRUD methods for its table:
 
 ```js
-import API, { auth, dilemmas, votes, friendships, ... } from './services/api';
-// or
-API.dilemmas.getAll()
-API.votes.create({ user_id, dilemma_id, chosen_option })
-API.friendships.getByUser(userId)
+import { auth, dilemmas, votes, friendships, ... } from './services/api';
+// Named exports only — there is NO default export
+dilemmas.getAll()
+votes.create({ user_id, dilemma_id, chosen_option })
+friendships.getFriends(userId)
 ```
 
 Notable specialized methods:

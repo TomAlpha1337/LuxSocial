@@ -706,7 +706,7 @@ export default function DirectScreen() {
       receiver_choice: choice,
       status: 'answered',
       answered_at: new Date().toISOString(),
-    }).catch(() => {});
+    }).catch((err) => console.warn('[NCB]', err.message));
   }
 
   async function handleSend(e) {

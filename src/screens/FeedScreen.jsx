@@ -8,6 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
+  auth as authApi,
   activities as activitiesApi,
   reactions as reactionsApi,
   comments as commentsApi,
@@ -1129,7 +1130,21 @@ export default function FeedScreen() {
         eventsApi.getActive().catch(() => []),
         user?.id ? friendshipsApi.getFriends(user.id).catch(() => []) : Promise.resolve([]),
       ]);
-      setAllFeed(Array.isArray(data) ? data : []);
+      // Enrich activities with user profiles
+      const rawFeed = Array.isArray(data) ? data : [];
+      const uniqueActorIds = [...new Set(rawFeed.map(a => a.actor_id).filter(Boolean))];
+      const userMap = {};
+      await Promise.all(uniqueActorIds.map(async (id) => {
+        try {
+          const u = await authApi.getUser(id);
+          if (u) userMap[id] = u;
+        } catch { /* skip */ }
+      }));
+      setAllFeed(rawFeed.map(a => ({
+        ...a,
+        actor: userMap[a.actor_id] || { username: 'User', id: a.actor_id },
+        description: a.context_text || a.description || '',
+      })));
       const eventsList = Array.isArray(eventsData) ? eventsData : [];
       setEventActive(eventsList.length > 0);
       setActiveEvent(eventsList.length > 0 ? eventsList[0] : null);

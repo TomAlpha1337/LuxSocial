@@ -80,7 +80,10 @@ function read(table, filters = '') {
 
 // Resilient read: returns [] if table doesn't exist yet
 function safeRead(table, filters) {
-  return read(table, filters).catch(() => []);
+  return read(table, filters).catch((err) => {
+    console.warn(`[NCB] safeRead ${table} failed:`, err.message);
+    return [];
+  });
 }
 
 function create(table, body) {
@@ -156,7 +159,7 @@ export const votes = {
 // ============================================================
 export const directDilemmas = {
   send: (data) => create('direct_dilemmas', data),
-  getInbox: (userId) => read('direct_dilemmas', `receiver_id=${userId}&record_status=pending`),
+  getInbox: (userId) => read('direct_dilemmas', `receiver_id=${userId}&record_record_status=pending`),
   getSent: (userId) => read('direct_dilemmas', `sender_id=${userId}`),
   answer: (id, data) => update('direct_dilemmas', id, data),
   getById: (id) => read('direct_dilemmas', `id=${id}`),
@@ -167,11 +170,11 @@ export const directDilemmas = {
 // ============================================================
 export const friendships = {
   sendRequest: (data) => create('friendships', data),
-  getRequests: (userId) => read('friendships', `friend_id=${userId}&status=pending`),
+  getRequests: (userId) => read('friendships', `friend_id=${userId}&record_status=pending`),
   getFriends: async (userId) => {
     const [sent, received] = await Promise.all([
-      safeRead('friendships', `user_id=${userId}&status=accepted`),
-      safeRead('friendships', `friend_id=${userId}&status=accepted`),
+      safeRead('friendships', `user_id=${userId}&record_status=accepted`),
+      safeRead('friendships', `friend_id=${userId}&record_status=accepted`),
     ]);
     const map = new Map();
     [...(Array.isArray(sent) ? sent : []), ...(Array.isArray(received) ? received : [])]
@@ -189,7 +192,7 @@ export const friendships = {
       ...(Array.isArray(dir2) ? dir2 : []),
     ];
     // Return non-rejected friendships
-    return all.filter(f => f.status !== 'rejected');
+    return all.filter(f => f.record_status !== 'rejected');
   },
   // Get ALL friendships for a user (any status, both directions)
   getAllForUser: async (userId) => {
@@ -299,7 +302,7 @@ async function upsertLeaderboard(userId, periodType, periodKey, pointsToAdd, use
         updated_at: new Date().toISOString(),
       });
     }
-  } catch { /* non-critical */ }
+  } catch (err) { console.warn('[NCB]', err.message); }
 }
 
 // ── Record XP helper ─────────────────────────────────────
@@ -329,7 +332,7 @@ export async function recordXp(userId, xpAmount, user = {}) {
       const s = seasonArr[0];
       promises.push(upsertLeaderboard(userId, 'season', `season-${s.id}`, xpAmount, username, avatarUrl));
     }
-  } catch { /* no active season */ }
+  } catch (err) { console.warn('[NCB] season lookup:', err.message); }
 
   await Promise.allSettled(promises);
 }
@@ -380,7 +383,7 @@ export const shares = {
 export const reports = {
   create: (data) => create('reports', data),
   getAll: () => read('reports'),
-  getPending: () => read('reports', 'record_status=pending'),
+  getPending: () => read('reports', 'record_record_status=pending'),
   update: (id, data) => update('reports', id, data),
 };
 

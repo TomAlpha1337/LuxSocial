@@ -218,7 +218,7 @@ export default function FriendsScreen() {
         const pendingOrAccepted = new Set();
         allFriendships.forEach(f => {
           const otherId = f.user_id === user.id ? f.friend_id : f.user_id;
-          if (f.status === 'pending' || f.status === 'accepted' || f.record_status === 'pending' || f.record_status === 'accepted') {
+          if (f.record_status === 'pending' || f.record_status === 'accepted') {
             pendingOrAccepted.add(otherId);
           }
         });
@@ -279,12 +279,14 @@ export default function FriendsScreen() {
   const handleAccept = async (request) => {
     try {
       if (user?.id && request.id) {
-        await API.friendships.update(request.id, { status: 'accepted', accepted_at: new Date().toISOString() });
+        await API.friendships.update(request.id, { record_status: 'accepted', accepted_at: new Date().toISOString() });
         // Create activity
         await API.activities.create({
           actor_id: user.id,
           verb: 'friend_with',
-          description: `became friends with ${request.username}`,
+          object_type: 'user',
+          object_id: request.user_id,
+          context_text: `became friends with ${request.username}`,
           visibility: 'public',
           is_deleted: 0,
           created_at: new Date().toISOString(),
@@ -297,7 +299,7 @@ export default function FriendsScreen() {
           is_read: false,
           reference_id: user.id,
           created_at: new Date().toISOString(),
-        }).catch(() => {});
+        }).catch((err) => console.warn('[NCB]', err.message));
       }
     } catch (err) {
       console.error('Accept friend error:', err);
@@ -314,7 +316,7 @@ export default function FriendsScreen() {
   const handleReject = async (request) => {
     try {
       if (user?.id && request.id) {
-        await API.friendships.update(request.id, { status: 'rejected' });
+        await API.friendships.update(request.id, { record_status: 'rejected' });
       }
     } catch (err) {
       console.error('Reject friend error:', err);
@@ -351,7 +353,7 @@ export default function FriendsScreen() {
       await API.friendships.sendRequest({
         user_id: user.id,
         friend_id: target.id,
-        status: 'pending',
+        record_status: 'pending',
         requested_at: new Date().toISOString(),
       });
 
@@ -363,7 +365,7 @@ export default function FriendsScreen() {
         is_read: false,
         reference_id: user.id,
         created_at: new Date().toISOString(),
-      }).catch(() => {});
+      }).catch((err) => console.warn('[NCB]', err.message));
     } catch (err) {
       console.error('Add friend error:', err);
     }

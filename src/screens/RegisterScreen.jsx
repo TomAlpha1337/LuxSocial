@@ -617,8 +617,8 @@ export default function RegisterScreen() {
         if (profile && profile.id) {
           appUser = { ...user, ...profile, authId: user.id, email: email.trim() };
         }
-      } catch {
-        console.warn('Could not create user profile');
+      } catch (err) {
+        console.warn('[NCB] Could not create user profile:', err.message);
       }
 
       login(appUser);

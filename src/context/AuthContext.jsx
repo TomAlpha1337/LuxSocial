@@ -31,7 +31,6 @@ export function AuthProvider({ children }) {
       const existingArr = Array.isArray(existing) ? existing : existing ? [existing] : [];
 
       if (existingArr.length > 0) {
-        // Already recorded today -- do not show modal again this session
         return null;
       }
 
@@ -39,7 +38,6 @@ export function AuthProvider({ children }) {
       const allLogins = await dailyLogins.getByUser(userId);
       const loginsArr = Array.isArray(allLogins) ? allLogins : [];
 
-      // Sort dates descending to find consecutive streak
       const dates = loginsArr
         .map((l) => l.login_date)
         .filter(Boolean)
@@ -62,13 +60,10 @@ export function AuthProvider({ children }) {
         }
       }
 
-      // consecutiveDays = how many days in a row BEFORE today
-      // The streak day index (0-based within the 7-day cycle)
-      const streakDay = consecutiveDays % 7; // 0-6
+      const streakDay = consecutiveDays % 7;
       const bonusXp = DAILY_BONUS_XP[streakDay];
-      const newStreak = consecutiveDays + 1; // including today
+      const newStreak = consecutiveDays + 1;
 
-      // Record today's login
       await dailyLogins.record({
         user_id: userId,
         login_date: today,
@@ -77,7 +72,7 @@ export function AuthProvider({ children }) {
         consecutive_days: newStreak,
       });
 
-      // Update streak record in streaks table
+      // Update streak record
       try {
         const streakData = await streaksApi.get(userId);
         const streakArr = Array.isArray(streakData) ? streakData : streakData ? [streakData] : [];
@@ -96,71 +91,65 @@ export function AuthProvider({ children }) {
             last_login_date: today,
           });
         }
-      } catch {
-        // Streak update is non-critical
+      } catch (err) {
+        console.warn('[NCB] Streak update failed:', err.message);
       }
 
-      // Award bonus XP to the user
+      // Award bonus XP
       try {
         const u = await authApi.getUser(userId);
         if (u && u.id) {
           const currentXp = u.xp || 0;
-
-          // Check if we hit a streak milestone for extra XP
           let milestoneBonus = 0;
           let milestoneInfo = null;
           if (STREAK_MILESTONES[newStreak]) {
             milestoneBonus = STREAK_MILESTONES[newStreak].xp;
             milestoneInfo = { ...STREAK_MILESTONES[newStreak], day: newStreak };
           }
-
           const totalBonus = bonusXp + milestoneBonus;
           await authApi.updateUser(u.id, { xp: currentXp + totalBonus });
-
-          // Record in leaderboard entries
-          recordXp(u.id, totalBonus, u).catch(() => {});
-
-          if (milestoneInfo) {
-            setStreakMilestone(milestoneInfo);
-          }
+          recordXp(u.id, totalBonus, u).catch((err) => console.warn('[NCB] recordXp:', err.message));
+          if (milestoneInfo) setStreakMilestone(milestoneInfo);
         }
-      } catch {
-        // XP update non-critical
+      } catch (err) {
+        console.warn('[NCB] XP bonus update failed:', err.message);
       }
 
-      // Build the week calendar data with real day-of-week labels
       const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       const weekDays = [];
       for (let i = 0; i < 7; i++) {
-        // Calculate the actual date for this slot in the streak cycle
         const slotDate = new Date();
         slotDate.setDate(slotDate.getDate() - (streakDay - i));
         weekDays.push({
           day: i + 1,
           xp: DAILY_BONUS_XP[i],
-          completed: i < streakDay, // days before today in cycle
+          completed: i < streakDay,
           isToday: i === streakDay,
           label: DAY_LABELS[slotDate.getDay()],
         });
       }
 
-      return {
-        bonusXp,
-        streakDay: streakDay + 1, // 1-based for display
-        consecutiveDays: newStreak,
-        weekDays,
-      };
-    } catch {
+      return { bonusXp, streakDay: streakDay + 1, consecutiveDays: newStreak, weekDays };
+    } catch (err) {
+      console.warn('[NCB] recordDailyLogin failed:', err.message);
       return null;
     }
   }, []);
 
-  // --- Energy helpers -------------------------------------------
+  // --- Energy helpers (stores on users table: energy_current, energy_last_update) ---
   const initEnergy = useCallback((userData) => {
+    // If the users table has energy columns, use them; otherwise default to max
     const dbCurrent = userData.energy_current != null ? Number(userData.energy_current) : ENERGY_MAX;
     const dbLastUpdate = userData.energy_last_update || new Date().toISOString();
     energyDbRef.current = { current: dbCurrent, lastUpdate: dbLastUpdate };
-    setEnergy(calculateEnergy(dbCurrent, dbLastUpdate, ENERGY_MAX));
+    const computed = calculateEnergy(dbCurrent, dbLastUpdate, ENERGY_MAX);
+    setEnergy(computed);
+    if (userData.energy_current != null) {
+      console.log('[NCB] Energy loaded from DB:', dbCurrent, '→ computed:', computed);
+    } else {
+      console.warn('[NCB] energy_current column not found on user profile — using default', ENERGY_MAX,
+        '. Add energy_current (int) and energy_last_update (varchar) columns to the users table in NCB dashboard.');
+    }
   }, []);
 
   const spendEnergy = useCallback(async (amount = ENERGY_PER_PLAY) => {
@@ -170,12 +159,14 @@ export function AuthProvider({ children }) {
     energyDbRef.current = { current: newEnergy, lastUpdate: now };
     setEnergy(newEnergy);
 
-    // Persist to DB + localStorage
     if (user?.id) {
-      authApi.updateUser(user.id, { energy_current: newEnergy, energy_last_update: now }).catch(() => {});
-      const updated = { ...user, energy_current: newEnergy, energy_last_update: now };
-      setUser(updated);
-      localStorage.setItem('luxsocial_user', JSON.stringify(updated));
+      try {
+        await authApi.updateUser(user.id, { energy_current: newEnergy, energy_last_update: now });
+        console.log('[NCB] Energy spent:', amount, '→', newEnergy);
+      } catch (err) {
+        console.error('[NCB] spendEnergy failed:', err.message,
+          '— if "Unknown column", add energy_current (int) and energy_last_update (varchar) to users table in NCB dashboard');
+      }
     }
   }, [user]);
 
@@ -185,10 +176,12 @@ export function AuthProvider({ children }) {
     setEnergy(ENERGY_MAX);
 
     if (user?.id) {
-      authApi.updateUser(user.id, { energy_current: ENERGY_MAX, energy_last_update: now }).catch(() => {});
-      const updated = { ...user, energy_current: ENERGY_MAX, energy_last_update: now };
-      setUser(updated);
-      localStorage.setItem('luxsocial_user', JSON.stringify(updated));
+      try {
+        await authApi.updateUser(user.id, { energy_current: ENERGY_MAX, energy_last_update: now });
+        console.log('[NCB] Energy refilled to', ENERGY_MAX);
+      } catch (err) {
+        console.error('[NCB] refillEnergy failed:', err.message);
+      }
     }
   }, [user]);
 
@@ -203,21 +196,8 @@ export function AuthProvider({ children }) {
     return () => clearInterval(interval);
   }, []);
 
-  // --- Session bootstrap ----------------------------------------
+  // --- Session bootstrap (NO localStorage — always from NCB) ----------
   useEffect(() => {
-    let cachedUser = null;
-    const saved = localStorage.getItem('luxsocial_user');
-    if (saved) {
-      try {
-        cachedUser = JSON.parse(saved);
-        setUser(cachedUser);
-        initEnergy(cachedUser);
-      } catch {
-        localStorage.removeItem('luxsocial_user');
-      }
-    }
-
-    // Helper: refresh profile from users table by id or email
     const refreshProfile = async (baseUser) => {
       try {
         const profile = baseUser.email
@@ -226,7 +206,9 @@ export function AuthProvider({ children }) {
         if (profile && profile.id) {
           return { ...baseUser, ...profile, authId: baseUser.authId || baseUser.id, email: baseUser.email || profile.email };
         }
-      } catch { /* non-critical */ }
+      } catch (err) {
+        console.warn('[NCB] refreshProfile failed:', err.message);
+      }
       return baseUser;
     };
 
@@ -234,88 +216,55 @@ export function AuthProvider({ children }) {
       .then(async (res) => {
         const sessionUser = res?.user || null;
         if (sessionUser) {
-          // Resolve the app profile (integer ID) from users table by email
           const appUser = await refreshProfile(sessionUser);
           setUser(appUser);
-          localStorage.setItem('luxsocial_user', JSON.stringify(appUser));
           initEnergy(appUser);
+          console.log('[NCB] Session loaded, user:', appUser.id, appUser.username || appUser.name);
 
-          // Record daily login and compute bonus (use integer id)
           const bonus = await recordDailyLogin(appUser.id);
-          if (bonus) {
-            setDailyBonusInfo(bonus);
-          }
-        } else if (cachedUser) {
-          // Session expired but we have cached data – refresh profile in background
-          const refreshed = await refreshProfile(cachedUser);
-          setUser(refreshed);
-          localStorage.setItem('luxsocial_user', JSON.stringify(refreshed));
-          initEnergy(refreshed);
+          if (bonus) setDailyBonusInfo(bonus);
         } else {
+          console.log('[NCB] No active session');
           setUser(null);
         }
       })
-      .catch(async () => {
-        // Session check failed – still try to refresh cached profile
-        if (cachedUser) {
-          try {
-            const refreshed = await refreshProfile(cachedUser);
-            setUser(refreshed);
-            localStorage.setItem('luxsocial_user', JSON.stringify(refreshed));
-            initEnergy(refreshed);
-          } catch { /* keep stale cache */ }
-        }
+      .catch((err) => {
+        console.error('[NCB] getSession failed:', err.message);
+        setUser(null);
       })
       .finally(() => setLoading(false));
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const login = useCallback(async (userData) => {
     setUser(userData);
-    localStorage.setItem('luxsocial_user', JSON.stringify(userData));
     initEnergy(userData);
+    console.log('[NCB] Login, user:', userData.id, userData.username || userData.name);
 
-    // Record daily login after manual sign-in too
     const bonus = await recordDailyLogin(userData.id);
-    if (bonus) {
-      setDailyBonusInfo(bonus);
-    }
-  }, [recordDailyLogin]);
+    if (bonus) setDailyBonusInfo(bonus);
+  }, [recordDailyLogin, initEnergy]);
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('luxsocial_user');
     setDailyBonusInfo(null);
     setStreakMilestone(null);
+    setEnergy(ENERGY_MAX);
+    energyDbRef.current = { current: ENERGY_MAX, lastUpdate: null };
   };
 
   const updateUser = (updates) => {
-    const updated = { ...user, ...updates };
-    setUser(updated);
-    localStorage.setItem('luxsocial_user', JSON.stringify(updated));
+    setUser((prev) => prev ? { ...prev, ...updates } : prev);
   };
 
-  const dismissDailyBonus = useCallback(() => {
-    setDailyBonusInfo(null);
-  }, []);
-
-  const dismissStreakMilestone = useCallback(() => {
-    setStreakMilestone(null);
-  }, []);
+  const dismissDailyBonus = useCallback(() => setDailyBonusInfo(null), []);
+  const dismissStreakMilestone = useCallback(() => setStreakMilestone(null), []);
 
   return (
     <AuthContext.Provider value={{
-      user,
-      loading,
-      login,
-      logout,
-      updateUser,
-      dailyBonusInfo,
-      dismissDailyBonus,
-      streakMilestone,
-      dismissStreakMilestone,
-      energy,
-      spendEnergy,
-      refillEnergy,
+      user, loading, login, logout, updateUser,
+      dailyBonusInfo, dismissDailyBonus,
+      streakMilestone, dismissStreakMilestone,
+      energy, spendEnergy, refillEnergy,
     }}>
       {children}
     </AuthContext.Provider>
