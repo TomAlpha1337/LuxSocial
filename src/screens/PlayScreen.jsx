@@ -1512,92 +1512,101 @@ export default function PlayScreen() {
         )}
       </AnimatePresence>
 
-      {/* ── Top Stats Bar ──────────────────────────────── */}
+      {/* ── Energy Bar + Stats ────────────────────────── */}
       <div style={{
-        width: '100%', maxWidth: 520, padding: '16px 20px 0', boxSizing: 'border-box',
+        width: '100%', maxWidth: 520, padding: '12px 20px 0', boxSizing: 'border-box',
       }}>
-        {/* Stats Pills Row */}
+        {/* Energy bar visual */}
         <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 8,
+          background: 'rgba(255,255,255,0.03)',
+          border: `1px solid ${energyDisplay < 20 ? 'rgba(255,107,53,0.15)' : 'rgba(57,255,20,0.08)'}`,
+          borderRadius: 16, padding: '10px 14px',
+          position: 'relative', overflow: 'hidden',
         }}>
-          {/* Streak */}
+          {/* Background glow */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            background: 'rgba(0,212,255,0.06)',
-            border: '1px solid rgba(0,212,255,0.12)',
-            borderRadius: 20, padding: '8px 14px',
-            fontSize: 13, fontWeight: 700,
-          }}>
-            <Flame size={15} color="#00D4FF" style={{ animation: 'ps-streak-fire 2s ease-in-out infinite' }} />
-            <span style={{ color: '#00D4FF' }}>{streak}</span>
-            <span style={{ color: '#64748b', fontSize: 11 }}>streak</span>
-          </div>
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            background: energyDisplay < 20
+              ? 'radial-gradient(ellipse at 30% 50%, rgba(255,107,53,0.06) 0%, transparent 70%)'
+              : 'radial-gradient(ellipse at 30% 50%, rgba(57,255,20,0.04) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }} />
 
-          {/* Energy */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            background: energyDisplay < 20 ? 'rgba(255,107,53,0.06)' : 'rgba(57,255,20,0.06)',
-            border: `1px solid ${energyDisplay < 20 ? 'rgba(255,107,53,0.12)' : 'rgba(57,255,20,0.12)'}`,
-            borderRadius: 20, padding: '8px 14px',
-            fontSize: 13, fontWeight: 700,
+            display: 'flex', alignItems: 'center', gap: 10, position: 'relative', zIndex: 1,
           }}>
-            <Zap size={14} color={energyDisplay < 20 ? '#FF6B35' : '#39FF14'} />
-            <span style={{ color: energyDisplay < 20 ? '#FF6B35' : '#39FF14' }}>{energyDisplay}</span>
-            <span style={{ color: '#64748b', fontSize: 11 }}>energy</span>
+            {/* Zap icon */}
+            <div style={{
+              width: 32, height: 32, borderRadius: 10,
+              background: energyDisplay < 20 ? 'rgba(255,107,53,0.12)' : 'rgba(57,255,20,0.10)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Zap size={16} color={energyDisplay < 20 ? '#FF6B35' : '#39FF14'}
+                style={energyDisplay < 20 ? { animation: 'energyLowPulse 1.5s ease-in-out infinite' } : {}}
+              />
+            </div>
+
+            {/* Bar + label */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5,
+              }}>
+                <span style={{
+                  fontSize: 11, fontWeight: 700, color: '#94a3b8', letterSpacing: 0.5, textTransform: 'uppercase',
+                }}>Energy</span>
+                <span style={{
+                  fontSize: 12, fontWeight: 800,
+                  color: energyDisplay < 20 ? '#FF6B35' : '#39FF14',
+                }}>{energyDisplay}<span style={{ color: '#475569', fontWeight: 600 }}>/{ENERGY_MAX}</span></span>
+              </div>
+              {/* Bar track */}
+              <div style={{
+                width: '100%', height: 6, background: 'rgba(255,255,255,0.06)',
+                borderRadius: 3, overflow: 'hidden', position: 'relative',
+              }}>
+                <motion.div
+                  animate={{ width: `${(energyDisplay / ENERGY_MAX) * 100}%` }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  style={{
+                    height: '100%', borderRadius: 3,
+                    background: energyDisplay < 20
+                      ? 'linear-gradient(90deg, #FF6B35, #FF2D78)'
+                      : 'linear-gradient(90deg, #39FF14, #00D4FF)',
+                    boxShadow: energyDisplay < 20
+                      ? '0 0 8px rgba(255,107,53,0.4)'
+                      : '0 0 8px rgba(57,255,20,0.3)',
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Session stats pills */}
+            <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+              {streak > 0 && (
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 3,
+                  padding: '4px 8px', borderRadius: 10,
+                  background: 'rgba(255,107,53,0.08)',
+                  border: '1px solid rgba(255,107,53,0.12)',
+                }}>
+                  <Flame size={11} color="#FF6B35" />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#FF6B35' }}>{streak}</span>
+                </div>
+              )}
+              {totalXpEarned > 0 && (
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 3,
+                  padding: '4px 8px', borderRadius: 10,
+                  background: 'rgba(0,212,255,0.08)',
+                  border: '1px solid rgba(0,212,255,0.12)',
+                }}>
+                  <Star size={11} color="#00D4FF" />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#00D4FF' }}>+{totalXpEarned}</span>
+                </div>
+              )}
+            </div>
           </div>
-
-          {/* XP earned */}
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            background: 'rgba(0,212,255,0.06)',
-            border: '1px solid rgba(0,212,255,0.12)',
-            borderRadius: 20, padding: '8px 14px',
-            fontSize: 13, fontWeight: 700,
-          }}>
-            <Zap size={15} color="#00D4FF" />
-            <span style={{ color: '#00D4FF' }}>+{totalXpEarned}</span>
-            <span style={{ color: '#64748b', fontSize: 11 }}>XP</span>
-          </div>
-        </div>
-
-        {/* Progress Section */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-          <p style={{
-            fontSize: 13, fontWeight: 700, color: '#94a3b8', margin: 0,
-            letterSpacing: 0.5,
-          }}>
-            <span style={{ color: '#00D4FF' }}>Dilemma {currentIndex + 1}</span>
-            <span style={{ color: '#475569' }}> of </span>
-            <span style={{ color: '#e2e8f0' }}>{totalCount || '...'}</span>
-          </p>
-
-          {/* Progress bar */}
-          <div style={{
-            width: '100%', height: 4,
-            background: 'rgba(255,255,255,0.06)',
-            borderRadius: 2, overflow: 'hidden',
-            position: 'relative',
-          }}>
-            <motion.div
-              animate={{ width: totalCount ? `${(answeredCount / totalCount) * 100}%` : '0%' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              style={{
-                height: '100%', borderRadius: 2,
-                background: 'linear-gradient(90deg, #00D4FF, #FF2D78)',
-                animation: 'ps-progress-glow 2s ease-in-out infinite',
-              }}
-            />
-          </div>
-
-          {/* Progress dots */}
-          {totalCount > 0 && (
-            <ProgressDots
-              current={currentIndex}
-              total={totalCount}
-              answeredIds={answeredIds}
-              dilemmasList={dilemmasList}
-            />
-          )}
         </div>
       </div>
 

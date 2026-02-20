@@ -392,7 +392,7 @@ export default function ProfileScreen() {
         user_id: user.id,
         friend_id: userId,
         status: 'pending',
-        created_at: new Date().toISOString(),
+        requested_at: new Date().toISOString(),
       });
       setFriendStatus('pending');
     } catch (err) {

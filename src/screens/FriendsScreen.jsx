@@ -260,7 +260,7 @@ export default function FriendsScreen() {
   const handleAccept = async (request) => {
     try {
       if (user?.id && request.id) {
-        await API.friendships.update(request.id, { record_status: 'accepted' });
+        await API.friendships.update(request.id, { status: 'accepted', accepted_at: new Date().toISOString() });
         // Create activity
         await API.activities.create({
           actor_id: user.id,
@@ -295,7 +295,7 @@ export default function FriendsScreen() {
   const handleReject = async (request) => {
     try {
       if (user?.id && request.id) {
-        await API.friendships.update(request.id, { record_status: 'rejected' });
+        await API.friendships.update(request.id, { status: 'rejected' });
       }
     } catch (err) {
       console.error('Reject friend error:', err);
@@ -332,8 +332,8 @@ export default function FriendsScreen() {
       await API.friendships.sendRequest({
         user_id: user.id,
         friend_id: target.id,
-        record_status: 'pending',
-        created_at: new Date().toISOString(),
+        status: 'pending',
+        requested_at: new Date().toISOString(),
       });
 
       // Notify the target user

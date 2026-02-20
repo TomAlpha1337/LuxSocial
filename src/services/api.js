@@ -167,11 +167,11 @@ export const directDilemmas = {
 // ============================================================
 export const friendships = {
   sendRequest: (data) => create('friendships', data),
-  getRequests: (userId) => read('friendships', `friend_id=${userId}&record_status=pending`),
+  getRequests: (userId) => read('friendships', `friend_id=${userId}&status=pending`),
   getFriends: async (userId) => {
     const [sent, received] = await Promise.all([
-      safeRead('friendships', `user_id=${userId}&record_status=accepted`),
-      safeRead('friendships', `friend_id=${userId}&record_status=accepted`),
+      safeRead('friendships', `user_id=${userId}&status=accepted`),
+      safeRead('friendships', `friend_id=${userId}&status=accepted`),
     ]);
     const map = new Map();
     [...(Array.isArray(sent) ? sent : []), ...(Array.isArray(received) ? received : [])]
@@ -189,7 +189,7 @@ export const friendships = {
       ...(Array.isArray(dir2) ? dir2 : []),
     ];
     // Return non-rejected friendships
-    return all.filter(f => f.record_status !== 'rejected');
+    return all.filter(f => f.status !== 'rejected' && f.record_status !== 'rejected');
   },
   update: (id, data) => update('friendships', id, data),
   remove: (id) => remove('friendships', id),

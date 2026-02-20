@@ -79,7 +79,7 @@ const styles = {
   },
 
   logo: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 900,
     letterSpacing: -0.4,
     background: `linear-gradient(135deg, ${GOLD} 0%, ${GOLD_LIGHT} 45%, ${GOLD} 100%)`,
@@ -92,6 +92,7 @@ const styles = {
     animation: 'gradientShift 3s ease infinite',
     textShadow: 'none',
     lineHeight: 1,
+    whiteSpace: 'nowrap',
   },
 
   levelBadge: {
@@ -127,8 +128,8 @@ const styles = {
   xpPill: {
     display: 'flex',
     alignItems: 'center',
-    gap: 4,
-    padding: '3px 10px 3px 6px',
+    gap: 3,
+    padding: '3px 8px 3px 5px',
     borderRadius: 9999,
     background: 'rgba(0, 212, 255, 0.08)',
     border: `1px solid rgba(0, 212, 255, 0.15)`,
@@ -137,28 +138,19 @@ const styles = {
   },
 
   xpPillText: {
-    fontSize: '0.72rem',
+    fontSize: '0.68rem',
     fontWeight: 800,
     color: CYAN,
     letterSpacing: '0.02em',
     lineHeight: 1,
   },
 
-  xpPillLabel: {
-    fontSize: '0.62rem',
-    fontWeight: 700,
-    color: 'rgba(0, 212, 255, 0.6)',
-    letterSpacing: '0.02em',
-    lineHeight: 1,
-    marginLeft: 1,
-  },
-
   /* Energy pill */
   energyPill: {
     display: 'flex',
     alignItems: 'center',
-    gap: 4,
-    padding: '3px 10px 3px 6px',
+    gap: 3,
+    padding: '3px 8px 3px 5px',
     borderRadius: 9999,
     background: 'rgba(57, 255, 20, 0.08)',
     border: '1px solid rgba(57, 255, 20, 0.15)',
@@ -167,27 +159,18 @@ const styles = {
   },
 
   energyPillText: {
-    fontSize: '0.72rem',
+    fontSize: '0.68rem',
     fontWeight: 800,
     color: '#39FF14',
     letterSpacing: '0.02em',
     lineHeight: 1,
   },
 
-  energyPillLabel: {
-    fontSize: '0.62rem',
-    fontWeight: 700,
-    color: 'rgba(57, 255, 20, 0.6)',
-    letterSpacing: '0.02em',
-    lineHeight: 1,
-    marginLeft: 1,
-  },
-
   /* ── Right cluster: xp + streak + bell ─────────────── */
   headerRight: {
     display: 'flex',
     alignItems: 'center',
-    gap: 5,
+    gap: 4,
     position: 'relative',
     zIndex: 1,
   },
@@ -196,8 +179,8 @@ const styles = {
   streakPill: {
     display: 'flex',
     alignItems: 'center',
-    gap: 4,
-    padding: '4px 10px 4px 7px',
+    gap: 3,
+    padding: '3px 8px 3px 5px',
     borderRadius: 9999,
     background: 'rgba(255, 107, 53, 0.1)',
     border: '1px solid rgba(255, 107, 53, 0.15)',
@@ -206,7 +189,7 @@ const styles = {
   },
 
   streakCount: {
-    fontSize: '0.78rem',
+    fontSize: '0.68rem',
     fontWeight: 800,
     color: '#FF6B35',
     letterSpacing: '0.02em',
@@ -219,8 +202,8 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 34,
-    height: 34,
+    width: 30,
+    height: 30,
     borderRadius: '50%',
     border: '1px solid rgba(255,255,255,0.06)',
     background: 'rgba(255, 255, 255, 0.04)',
@@ -386,8 +369,8 @@ export default function Layout({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: 34,
-            height: 34,
+            width: 30,
+            height: 30,
             borderRadius: '50%',
             border: profileHover
               ? `1px solid rgba(0, 212, 255, 0.3)`
@@ -443,9 +426,8 @@ export default function Layout({
             }}
             title={`${xp}/${xpToNext} XP to next level`}
           >
-            <Gem size={12} color={CYAN} strokeWidth={2.4} />
+            <Gem size={11} color={CYAN} strokeWidth={2.4} />
             <span style={styles.xpPillText}>{xp}</span>
-            <span style={styles.xpPillLabel}>XP</span>
           </div>
 
           {/* Energy display */}
@@ -460,15 +442,11 @@ export default function Layout({
             }}
             title={`${energy}/${ENERGY_MAX} Energy`}
           >
-            <Zap size={12} color={energy < 20 ? '#FF6B35' : '#39FF14'} strokeWidth={2.4} />
+            <Zap size={11} color={energy < 20 ? '#FF6B35' : '#39FF14'} strokeWidth={2.4} />
             <span style={{
               ...styles.energyPillText,
               color: energy < 20 ? '#FF6B35' : '#39FF14',
             }}>{energy}</span>
-            <span style={{
-              ...styles.energyPillLabel,
-              color: energy < 20 ? 'rgba(255, 107, 53, 0.6)' : 'rgba(57, 255, 20, 0.6)',
-            }}>EN</span>
           </div>
 
           {/* Streak counter */}
