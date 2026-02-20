@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Flame, Zap, Crown, Gem, Shield } from 'lucide-react';
+import { Bell, Flame, Zap, Crown, Gem, Shield, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { ENERGY_MAX } from '../utils/constants';
 import BottomNav from './BottomNav';
 import DailyBonusModal from './DailyBonusModal';
 import OnboardingModal from './OnboardingModal';
@@ -152,6 +153,36 @@ const styles = {
     marginLeft: 1,
   },
 
+  /* Energy pill */
+  energyPill: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 4,
+    padding: '3px 10px 3px 6px',
+    borderRadius: 9999,
+    background: 'rgba(57, 255, 20, 0.08)',
+    border: '1px solid rgba(57, 255, 20, 0.15)',
+    cursor: 'default',
+    transition: 'all 0.25s ease',
+  },
+
+  energyPillText: {
+    fontSize: '0.72rem',
+    fontWeight: 800,
+    color: '#39FF14',
+    letterSpacing: '0.02em',
+    lineHeight: 1,
+  },
+
+  energyPillLabel: {
+    fontSize: '0.62rem',
+    fontWeight: 700,
+    color: 'rgba(57, 255, 20, 0.6)',
+    letterSpacing: '0.02em',
+    lineHeight: 1,
+    marginLeft: 1,
+  },
+
   /* ── Right cluster: xp + streak + bell ─────────────── */
   headerRight: {
     display: 'flex',
@@ -293,10 +324,11 @@ export default function Layout({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, energy } = useAuth();
   const [bellHover, setBellHover] = useState(false);
   const [bellActive, setBellActive] = useState(false);
   const [adminHover, setAdminHover] = useState(false);
+  const [profileHover, setProfileHover] = useState(false);
   const isAdmin = user?.role === 'admin';
   const pageRef = useRef(null);
 
@@ -348,6 +380,56 @@ export default function Layout({
           </div>
         </div>
 
+        {/* Center: Profile button */}
+        <button
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 34,
+            height: 34,
+            borderRadius: '50%',
+            border: profileHover
+              ? `1px solid rgba(0, 212, 255, 0.3)`
+              : `1px solid rgba(255,255,255,0.1)`,
+            background: profileHover
+              ? 'rgba(0, 212, 255, 0.1)'
+              : 'rgba(255, 255, 255, 0.06)',
+            cursor: 'pointer',
+            transition: 'all 0.25s ease',
+            WebkitTapHighlightColor: 'transparent',
+            outline: 'none',
+            overflow: 'hidden',
+            padding: 0,
+            position: 'relative',
+            zIndex: 1,
+          }}
+          onClick={() => navigate('/profile')}
+          onMouseEnter={() => setProfileHover(true)}
+          onMouseLeave={() => setProfileHover(false)}
+          aria-label="My Profile"
+        >
+          {user?.image ? (
+            <img
+              src={user.image}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: '50%',
+              }}
+            />
+          ) : (
+            <User
+              size={16}
+              color={profileHover ? CYAN : '#9898B0'}
+              strokeWidth={1.8}
+              style={{ transition: 'color 0.2s ease' }}
+            />
+          )}
+        </button>
+
         {/* Right: XP + Streak + Bell */}
         <div style={styles.headerRight}>
           {/* XP display with gem */}
@@ -364,6 +446,29 @@ export default function Layout({
             <Gem size={12} color={CYAN} strokeWidth={2.4} />
             <span style={styles.xpPillText}>{xp}</span>
             <span style={styles.xpPillLabel}>XP</span>
+          </div>
+
+          {/* Energy display */}
+          <div
+            style={{
+              ...styles.energyPill,
+              ...(energy < 20 ? {
+                animation: 'energyLowPulse 1.5s ease-in-out infinite',
+                borderColor: 'rgba(255, 107, 53, 0.3)',
+                background: 'rgba(255, 107, 53, 0.08)',
+              } : {}),
+            }}
+            title={`${energy}/${ENERGY_MAX} Energy`}
+          >
+            <Zap size={12} color={energy < 20 ? '#FF6B35' : '#39FF14'} strokeWidth={2.4} />
+            <span style={{
+              ...styles.energyPillText,
+              color: energy < 20 ? '#FF6B35' : '#39FF14',
+            }}>{energy}</span>
+            <span style={{
+              ...styles.energyPillLabel,
+              color: energy < 20 ? 'rgba(255, 107, 53, 0.6)' : 'rgba(57, 255, 20, 0.6)',
+            }}>EN</span>
           </div>
 
           {/* Streak counter */}

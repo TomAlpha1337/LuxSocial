@@ -5,9 +5,10 @@
 export const APP_NAME = "Social Dilemma's";
 export const APP_TAGLINE = 'Choose. Compare. Connect.';
 
-// Daily play limits
-export const DEFAULT_DAILY_PLAYS = 10;
-export const BONUS_PLAY_COST = 50; // points to unlock a bonus play
+// Energy system
+export const ENERGY_MAX = 100;
+export const ENERGY_PER_PLAY = 10;
+export const ENERGY_REGEN_PER_HOUR = 10;
 
 // Point values (fallback if point_rules table is unavailable)
 export const POINTS = {

@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { auth as authApi, dailyLogins, streaks as streaksApi, recordXp } from '../services/api';
-import { DAILY_BONUS_XP, STREAK_MILESTONES } from '../utils/constants';
+import { DAILY_BONUS_XP, STREAK_MILESTONES, ENERGY_MAX, ENERGY_PER_PLAY } from '../utils/constants';
+import { calculateEnergy } from '../utils/energy';
 
 const AuthContext = createContext(null);
 
@@ -16,6 +17,10 @@ export function AuthProvider({ children }) {
   const [dailyBonusInfo, setDailyBonusInfo] = useState(null);
   // Streak milestone hit this login (consumed by DailyBonusModal)
   const [streakMilestone, setStreakMilestone] = useState(null);
+
+  // Energy system state
+  const [energy, setEnergy] = useState(ENERGY_MAX);
+  const energyDbRef = useRef({ current: ENERGY_MAX, lastUpdate: null });
 
   // --- Record daily login & compute bonus -----------------------
   const recordDailyLogin = useCallback(async (userId) => {
@@ -150,6 +155,54 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // --- Energy helpers -------------------------------------------
+  const initEnergy = useCallback((userData) => {
+    const dbCurrent = userData.energy_current != null ? Number(userData.energy_current) : ENERGY_MAX;
+    const dbLastUpdate = userData.energy_last_update || new Date().toISOString();
+    energyDbRef.current = { current: dbCurrent, lastUpdate: dbLastUpdate };
+    setEnergy(calculateEnergy(dbCurrent, dbLastUpdate, ENERGY_MAX));
+  }, []);
+
+  const spendEnergy = useCallback(async (amount = ENERGY_PER_PLAY) => {
+    const now = new Date().toISOString();
+    const current = calculateEnergy(energyDbRef.current.current, energyDbRef.current.lastUpdate, ENERGY_MAX);
+    const newEnergy = Math.max(0, current - amount);
+    energyDbRef.current = { current: newEnergy, lastUpdate: now };
+    setEnergy(newEnergy);
+
+    // Persist to DB + localStorage
+    if (user?.id) {
+      authApi.updateUser(user.id, { energy_current: newEnergy, energy_last_update: now }).catch(() => {});
+      const updated = { ...user, energy_current: newEnergy, energy_last_update: now };
+      setUser(updated);
+      localStorage.setItem('luxsocial_user', JSON.stringify(updated));
+    }
+  }, [user]);
+
+  const refillEnergy = useCallback(async () => {
+    const now = new Date().toISOString();
+    energyDbRef.current = { current: ENERGY_MAX, lastUpdate: now };
+    setEnergy(ENERGY_MAX);
+
+    if (user?.id) {
+      authApi.updateUser(user.id, { energy_current: ENERGY_MAX, energy_last_update: now }).catch(() => {});
+      const updated = { ...user, energy_current: ENERGY_MAX, energy_last_update: now };
+      setUser(updated);
+      localStorage.setItem('luxsocial_user', JSON.stringify(updated));
+    }
+  }, [user]);
+
+  // Tick energy regen every 60 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const { current, lastUpdate } = energyDbRef.current;
+      if (lastUpdate) {
+        setEnergy(calculateEnergy(current, lastUpdate, ENERGY_MAX));
+      }
+    }, 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
   // --- Session bootstrap ----------------------------------------
   useEffect(() => {
     let cachedUser = null;
@@ -158,6 +211,7 @@ export function AuthProvider({ children }) {
       try {
         cachedUser = JSON.parse(saved);
         setUser(cachedUser);
+        initEnergy(cachedUser);
       } catch {
         localStorage.removeItem('luxsocial_user');
       }
@@ -184,6 +238,7 @@ export function AuthProvider({ children }) {
           const appUser = await refreshProfile(sessionUser);
           setUser(appUser);
           localStorage.setItem('luxsocial_user', JSON.stringify(appUser));
+          initEnergy(appUser);
 
           // Record daily login and compute bonus (use integer id)
           const bonus = await recordDailyLogin(appUser.id);
@@ -195,6 +250,7 @@ export function AuthProvider({ children }) {
           const refreshed = await refreshProfile(cachedUser);
           setUser(refreshed);
           localStorage.setItem('luxsocial_user', JSON.stringify(refreshed));
+          initEnergy(refreshed);
         } else {
           setUser(null);
         }
@@ -206,6 +262,7 @@ export function AuthProvider({ children }) {
             const refreshed = await refreshProfile(cachedUser);
             setUser(refreshed);
             localStorage.setItem('luxsocial_user', JSON.stringify(refreshed));
+            initEnergy(refreshed);
           } catch { /* keep stale cache */ }
         }
       })
@@ -215,6 +272,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (userData) => {
     setUser(userData);
     localStorage.setItem('luxsocial_user', JSON.stringify(userData));
+    initEnergy(userData);
 
     // Record daily login after manual sign-in too
     const bonus = await recordDailyLogin(userData.id);
@@ -255,6 +313,9 @@ export function AuthProvider({ children }) {
       dismissDailyBonus,
       streakMilestone,
       dismissStreakMilestone,
+      energy,
+      spendEnergy,
+      refillEnergy,
     }}>
       {children}
     </AuthContext.Provider>

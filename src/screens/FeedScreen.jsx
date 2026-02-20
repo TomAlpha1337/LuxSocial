@@ -13,7 +13,7 @@ import {
   comments as commentsApi,
   events as eventsApi,
 } from '../services/api';
-import { REACTION_TYPES, ACTIVITY_VERBS, POINTS, DEFAULT_DAILY_PLAYS } from '../utils/constants';
+import { REACTION_TYPES, ACTIVITY_VERBS, POINTS, ENERGY_MAX } from '../utils/constants';
 import { shareContent } from '../utils/share';
 
 // ============================================================
@@ -1108,7 +1108,7 @@ function EmptyState({ onStartPlaying }) {
 // FeedScreen -- Main Export
 // ============================================================
 export default function FeedScreen() {
-  const { user } = useAuth();
+  const { user, energy } = useAuth();
   const navigate = useNavigate();
   const [feed, setFeed] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -1116,9 +1116,6 @@ export default function FeedScreen() {
   const [eventActive, setEventActive] = useState(false);
   const [activeEvent, setActiveEvent] = useState(null);
   const [activeTab, setActiveTab] = useState('everyone');
-
-  const dailyPlaysUsed = user?.daily_plays_used ?? 0;
-  const dailyPlaysMax = DEFAULT_DAILY_PLAYS;
   const streak = user?.current_streak ?? 0;
   const displayName = user?.username || user?.display_name || 'Explorer';
 
@@ -1150,8 +1147,7 @@ export default function FeedScreen() {
     setTimeout(() => setRefreshing(false), 600);
   };
 
-  const playsRemaining = dailyPlaysMax - dailyPlaysUsed;
-  const playsPercent = (playsRemaining / dailyPlaysMax) * 100;
+  const energyPercent = (energy / ENERGY_MAX) * 100;
 
   // -- Render ---------------------------------------------------
   return (
@@ -1252,7 +1248,7 @@ export default function FeedScreen() {
           </motion.div>
         </div>
 
-        {/* Daily Plays Progress */}
+        {/* Energy Progress */}
         <div style={{
           margin: '14px 0 0',
           display: 'flex',
@@ -1264,14 +1260,14 @@ export default function FeedScreen() {
             alignItems: 'center',
             gap: 5,
           }}>
-            <Zap size={13} color={GOLD} />
+            <Zap size={13} color={energy < 20 ? '#FF6B35' : GOLD} />
             <span style={{
               fontSize: 12,
               color: TEXT_DIM,
               fontWeight: 600,
               whiteSpace: 'nowrap',
             }}>
-              {playsRemaining}/{dailyPlaysMax} plays
+              {energy}/{ENERGY_MAX} energy
             </span>
           </div>
           <div style={{
@@ -1284,7 +1280,7 @@ export default function FeedScreen() {
           }}>
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: `${playsPercent}%` }}
+              animate={{ width: `${energyPercent}%` }}
               transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
               style={{
                 height: '100%',

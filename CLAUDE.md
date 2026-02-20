@@ -22,8 +22,9 @@ No test framework is configured. There are no test commands.
 ### Key Layers
 
 - **`src/services/api.js`** — Single API module exporting 20+ namespaced objects (`auth`, `dilemmas`, `votes`, `friendships`, etc.) with CRUD helpers. Generic `request()` wrapper handles NCB response format `{ status, data }`. Uses `safeRead()` for tables that may not exist yet.
-- **`src/context/AuthContext.jsx`** — App-wide user state via React Context. Handles session bootstrap, localStorage caching (with background API refresh to keep fields like `role` current), daily login bonus calculation, and streak tracking. Access via `useAuth()` hook.
-- **`src/utils/constants.js`** — Game configuration: point values, XP levels (20 tiers), badge definitions, streak milestones, daily bonus schedule. These are fallback values; some may be overridden by NCB tables.
+- **`src/context/AuthContext.jsx`** — App-wide user state via React Context. Handles session bootstrap, localStorage caching (with background API refresh to keep fields like `role` current), daily login bonus calculation, streak tracking, and energy system state. Access via `useAuth()` hook. Exposes `energy`, `spendEnergy(amount)`, and `refillEnergy()`.
+- **`src/utils/constants.js`** — Game configuration: point values, XP levels (20 tiers), badge definitions, streak milestones, daily bonus schedule, energy system constants. These are fallback values; some may be overridden by NCB tables.
+- **`src/utils/energy.js`** — Pure helper functions for the energy system: `calculateEnergy(current, lastUpdate, max)` computes real-time energy based on elapsed time, `timeUntilNextEnergy(current, lastUpdate, max)` returns ms until next regen tick.
 - **`src/hooks/useAchievements.js`** — Badge/achievement checking logic, called after votes to evaluate unlock conditions.
 
 ### Routing
@@ -63,6 +64,20 @@ The largest/most complex screens: `PlayScreen.jsx` (core game loop), `ProfileScr
 **Cloudinary uploads**: Profile photos use unsigned uploads via `src/services/cloudinary.js`. Requires an upload preset named `social_dilemmas` (unsigned) configured in the Cloudinary dashboard. Cloud name and preset come from `VITE_CLOUDINARY_*` env vars.
 
 **Vite proxy**: `vite.config.js` proxies `/api/*` to NCB and strips `__Secure-`/`__Host-` prefixes from Set-Cookie headers so auth cookies work on localhost.
+
+**NCB pagination**: Default page limit is **10 rows**. Any query that may return more must include `limit=500` (or appropriate value) in the filter string. Key queries in `api.js` already have this — always add it for new `getAll`-style reads.
+
+**NCB `like:` filter is broken**: The `column=like:value` partial match filter does not work. Use client-side filtering instead (fetch all rows, then `.filter()` in JS). See `FriendsScreen.jsx` search for an example.
+
+**XP tracking**: The `recordXp(userId, xpAmount, user)` helper in `api.js` updates leaderboard entries for daily/weekly/season periods. Call it alongside any `authApi.updateUser(id, { xp })` call. It's already wired into `PlayScreen` (session complete) and `AuthContext` (daily login bonus).
+
+**Friendships are bidirectional**: `getFriends(userId)` queries both `user_id=X` and `friend_id=X` directions, then deduplicates. `checkExisting(userId, friendId)` checks both directions before sending a new request. When extracting a friend's user ID from a friendship record, always check which side the current user is on: `f.user_id === userId ? f.friend_id : f.user_id`.
+
+**Badge field name compatibility**: `useAchievements.js` writes badges with BOTH field name formats (`badge_icon` + `icon`, `badge_color` + `color`, `badge_name` + `label`, etc.) because `ProfileScreen.jsx` reads the short names. Always use fallback chains when reading badge data: `badge.icon || badge.badge_icon`, `badge.color || badge.badge_color`, `badge.label || badge.badge_name`.
+
+**Energy system**: Replaces the old daily play limit. Users have max 100 energy (`ENERGY_MAX`), spend 10 per dilemma (`ENERGY_PER_PLAY`), and regenerate +10/hour (`ENERGY_REGEN_PER_HOUR`). Energy is computed in real time from `energy_current` and `energy_last_update` fields on the user profile. `AuthContext` ticks regen every 60 seconds via interval. `spendEnergy()` deducts and persists to DB + localStorage. `refillEnergy()` is a test-only reset to max. PlayScreen gates `handleChoice()` on sufficient energy and shows a "Not Enough Energy" modal when depleted.
+
+**Seasons**: Managed via Admin > Events tab. Only one season should be `active` at a time. The `leaderboards` table stores entries with `period_type=season` and `period_key=season-{id}`. The "All Time" leaderboard reads directly from the `users` table instead.
 
 ## NoCodeBackend (NCB) — How It Works
 
@@ -120,6 +135,9 @@ In production (Netlify), a **Netlify Edge Function** (`netlify/edge-functions/ap
 
 ## Deployment (Netlify)
 
+- **Live URL**: https://luxsocial.netlify.app/
+- **GitHub**: https://github.com/TomAlpha1337/LuxSocial
+
 Hosted on Netlify via GitHub integration. Config in `netlify.toml`:
 - **Build command**: `npm run build`
 - **Publish directory**: `dist`
@@ -171,8 +189,9 @@ Notable specialized methods:
 - `auth.getSession()` / `auth.signUp()` / `auth.signIn()` / `auth.signOut()`
 - `auth.getByEmail(email)` — looks up user profile in `users` table
 - `dilemmas.getFeatured()` — fetches `is_featured=true` dilemmas
-- `leaderboard.getTop(limit)` — reads `users` sorted by XP descending
 - `events.getActive()` — fetches events where status is `active`
+- `seasons.getActive()` — fetches current active season
+- `recordXp(userId, xpAmount, user)` — updates leaderboard entries for all active periods
 
 ## MCP Server (Model Context Protocol)
 
@@ -194,6 +213,17 @@ Configuration (`.mcp.json`):
 ```
 
 For full setup guide (including how to use this with new projects), see **`NOCODEBACKEND_MCP_GUIDE.md`**.
+
+**MCP caveat**: The `count_records` tool hits NCB's default 10-row page limit and may undercount. For accurate counts, use `read_records` with `limit=2000` and count client-side, or query via the Vite proxy directly.
+
+**MCP writes require auth**: The MCP server uses public API access (no auth cookies). It can read and create records, but cannot update or delete (NCB returns 403). For write operations, use the Vite proxy with authenticated session cookies (see `seed_questions.mjs` for an example pattern).
+
+## Seed Scripts
+
+- `seed_questions.mjs` — Batch 1: 379 "Would you rather" dilemmas across all categories
+- `seed_questions_batch2.mjs` — Batch 2: 210 more dilemmas
+
+Both scripts authenticate via the Vite dev proxy (`localhost:5179`) using test credentials, then insert questions with minimal fields (`question_text`, `option_a`, `option_b`, `category`, `record_status`). NCB rejects extra fields like `is_mystery`, `total_votes` etc. on insert — only send fields the table accepts.
 
 ## Environment Variables
 

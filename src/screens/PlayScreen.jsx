@@ -9,7 +9,8 @@ import {
   dilemmas as dilemmasApi, votes as votesApi, activities as activitiesApi,
   auth as authApi, featuredTracking, events as eventsApi, recordXp,
 } from '../services/api';
-import { CATEGORIES, POINTS, DEFAULT_DAILY_PLAYS, FEATURED_XP_MULTIPLIER } from '../utils/constants';
+import { CATEGORIES, POINTS, ENERGY_MAX, ENERGY_PER_PLAY, FEATURED_XP_MULTIPLIER } from '../utils/constants';
+import { timeUntilNextEnergy } from '../utils/energy';
 import { useAchievements } from '../hooks/useAchievements';
 import { shareContent } from '../utils/share';
 
@@ -632,10 +633,48 @@ function ResultBar({ label, percentage, color, gradientFrom, gradientTo, isUserC
 }
 
 // ============================================================
+// EnergyRegenTimer -- shows countdown to next energy point
+// ============================================================
+function EnergyRegenTimer({ energy, user, regenTimer, setRegenTimer }) {
+  useEffect(() => {
+    if (energy >= ENERGY_MAX) {
+      setRegenTimer('');
+      return;
+    }
+    const tick = () => {
+      const dbCurrent = user?.energy_current != null ? Number(user.energy_current) : ENERGY_MAX;
+      const dbLastUpdate = user?.energy_last_update || null;
+      const ms = timeUntilNextEnergy(dbCurrent, dbLastUpdate, ENERGY_MAX);
+      if (ms <= 0) {
+        setRegenTimer('now');
+      } else {
+        const mins = Math.floor(ms / 60000);
+        const secs = Math.floor((ms % 60000) / 1000);
+        setRegenTimer(`${mins}:${secs.toString().padStart(2, '0')}`);
+      }
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [energy, user?.energy_current, user?.energy_last_update, setRegenTimer]);
+
+  if (!regenTimer || energy >= ENERGY_MAX) return null;
+
+  return (
+    <div style={{
+      fontSize: 13, color: '#BF5AF2', fontWeight: 700,
+      marginBottom: 16, letterSpacing: 0.3,
+    }}>
+      Next energy in {regenTimer}
+    </div>
+  );
+}
+
+// ============================================================
 // PlayScreen -- Main Export
 // ============================================================
 export default function PlayScreen() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, energy, spendEnergy, refillEnergy } = useAuth();
   const { checkAchievements, resetSession } = useAchievements();
 
   const [dilemmasList, setDilemmasList] = useState([]);
@@ -652,6 +691,10 @@ export default function PlayScreen() {
   const [hoverB, setHoverB] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const [screenShake, setScreenShake] = useState(false);
+
+  // Energy modal state
+  const [showEnergyModal, setShowEnergyModal] = useState(false);
+  const [regenTimer, setRegenTimer] = useState('');
 
   // Combo counter: increases when answering within 5 seconds
   const [combo, setCombo] = useState(0);
@@ -731,20 +774,6 @@ export default function PlayScreen() {
         // Build set of already-answered dilemma IDs
         const previouslyAnsweredIds = new Set(votesArr.map((v) => v.dilemma_id));
 
-        // Count how many were answered TODAY for daily limit tracking
-        const todayCount = votesArr.filter((v) => {
-          const voteDate = (v.created_at || '').slice(0, 10);
-          return voteDate === todayStr;
-        }).length;
-
-        // Pre-populate answeredIds so the daily counter starts from the real count
-        const initialAnsweredIds = new Set(
-          votesArr
-            .filter((v) => (v.created_at || '').slice(0, 10) === todayStr)
-            .map((v) => v.dilemma_id)
-        );
-        setAnsweredIds(initialAnsweredIds);
-
         // Filter out already-answered dilemmas (and exclude the featured one)
         const featuredId = featuredArr.length > 0 ? featuredArr[0].id : null;
         const unanswered = dilemmasArr.filter((d) =>
@@ -757,9 +786,7 @@ export default function PlayScreen() {
           [unanswered[i], unanswered[j]] = [unanswered[j], unanswered[i]];
         }
 
-        // Only show up to remaining daily plays
-        const remainingPlays = Math.max(0, DEFAULT_DAILY_PLAYS - todayCount);
-        setDilemmasList(unanswered.slice(0, remainingPlays));
+        setDilemmasList(unanswered);
       } catch {
         setDilemmasList([]);
       } finally {
@@ -774,6 +801,15 @@ export default function PlayScreen() {
   const handleChoice = useCallback(
     (option) => {
       if (chosen || !dilemma) return;
+
+      // Energy gate: check if user has enough energy
+      if (energy < ENERGY_PER_PLAY) {
+        setShowEnergyModal(true);
+        return;
+      }
+
+      // Deduct energy
+      spendEnergy(ENERGY_PER_PLAY);
 
       // Combo logic: if answered within 5 seconds, increase combo
       const elapsed = (Date.now() - cardShownTimeRef.current) / 1000;
@@ -832,7 +868,7 @@ export default function PlayScreen() {
       setTimeout(() => setShowXp(false), 2200);
       setTimeout(() => setShowCelebration(false), 1500);
     },
-    [chosen, dilemma, user, checkAchievements],
+    [chosen, dilemma, user, checkAchievements, energy, spendEnergy],
   );
 
   // ── Advance to next dilemma ────────────────────────────
@@ -1014,7 +1050,7 @@ export default function PlayScreen() {
     }),
   };
 
-  const playsRemaining = DEFAULT_DAILY_PLAYS - answeredCount;
+  const energyDisplay = energy;
 
   // ── Render ─────────────────────────────────────────────
   return (
@@ -1497,17 +1533,17 @@ export default function PlayScreen() {
             <span style={{ color: '#64748b', fontSize: 11 }}>streak</span>
           </div>
 
-          {/* Daily limit */}
+          {/* Energy */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: 6,
-            background: 'rgba(191,90,242,0.06)',
-            border: '1px solid rgba(191,90,242,0.12)',
+            background: energyDisplay < 20 ? 'rgba(255,107,53,0.06)' : 'rgba(57,255,20,0.06)',
+            border: `1px solid ${energyDisplay < 20 ? 'rgba(255,107,53,0.12)' : 'rgba(57,255,20,0.12)'}`,
             borderRadius: 20, padding: '8px 14px',
             fontSize: 13, fontWeight: 700,
           }}>
-            <Clock size={14} color="#BF5AF2" />
-            <span style={{ color: '#BF5AF2' }}>{playsRemaining > 0 ? playsRemaining : 0}</span>
-            <span style={{ color: '#64748b', fontSize: 11 }}>left today</span>
+            <Zap size={14} color={energyDisplay < 20 ? '#FF6B35' : '#39FF14'} />
+            <span style={{ color: energyDisplay < 20 ? '#FF6B35' : '#39FF14' }}>{energyDisplay}</span>
+            <span style={{ color: '#64748b', fontSize: 11 }}>energy</span>
           </div>
 
           {/* XP earned */}
@@ -2338,6 +2374,104 @@ export default function PlayScreen() {
           )}
         </div>
       ) : null}
+
+      {/* ── Not Enough Energy Modal ──────────────────────── */}
+      <AnimatePresence>
+        {showEnergyModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 9999,
+              background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: 20,
+            }}
+            onClick={() => setShowEnergyModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: 'linear-gradient(145deg, #0f0f1e, #0a0a18)',
+                border: '1px solid rgba(255,107,53,0.2)',
+                borderRadius: 24, padding: 32, width: '100%', maxWidth: 380,
+                textAlign: 'center',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+              }}
+            >
+              <div style={{
+                width: 64, height: 64, borderRadius: '50%',
+                background: 'rgba(255,107,53,0.1)',
+                border: '2px solid rgba(255,107,53,0.3)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 16px',
+              }}>
+                <Zap size={28} color="#FF6B35" />
+              </div>
+
+              <h3 style={{
+                fontSize: 20, fontWeight: 800, color: '#f0f0f8', margin: '0 0 8px',
+              }}>Not Enough Energy</h3>
+
+              <p style={{
+                fontSize: 14, color: '#94a3b8', margin: '0 0 20px', lineHeight: 1.5,
+              }}>
+                You need {ENERGY_PER_PLAY} energy to answer a dilemma.
+                You currently have <span style={{ color: '#FF6B35', fontWeight: 700 }}>{energy}</span> energy.
+              </p>
+
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                padding: '10px 16px', borderRadius: 12,
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.06)',
+                marginBottom: 20, fontSize: 13, color: '#94a3b8',
+              }}>
+                <Clock size={14} color="#BF5AF2" />
+                <span>Regenerates <span style={{ color: '#BF5AF2', fontWeight: 700 }}>+10/hour</span></span>
+              </div>
+
+              <EnergyRegenTimer
+                energy={energy}
+                user={user}
+                regenTimer={regenTimer}
+                setRegenTimer={setRegenTimer}
+              />
+
+              <button
+                onClick={() => { refillEnergy(); setShowEnergyModal(false); }}
+                style={{
+                  width: '100%', padding: '14px 24px', borderRadius: 14,
+                  border: 'none', cursor: 'pointer',
+                  background: 'linear-gradient(135deg, #FF6B35, #FF2D78)',
+                  color: '#fff', fontSize: 15, fontWeight: 800,
+                  boxShadow: '0 4px 20px rgba(255,107,53,0.25)',
+                  marginBottom: 10, letterSpacing: 0.3,
+                }}
+              >
+                Refill Energy (Test)
+              </button>
+
+              <button
+                onClick={() => setShowEnergyModal(false)}
+                style={{
+                  width: '100%', padding: '12px 24px', borderRadius: 14,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'transparent', color: '#94a3b8',
+                  fontSize: 14, fontWeight: 600, cursor: 'pointer',
+                  letterSpacing: 0.3,
+                }}
+              >
+                Come back later
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
