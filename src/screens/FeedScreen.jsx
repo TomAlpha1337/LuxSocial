@@ -717,7 +717,7 @@ function ActivityCard({ activity, index }) {
                 src={actor.avatar_url}
                 alt={actor.username}
                 style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
-                onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'inline'; }}
+                onError={(e) => { e.target.style.display = 'none'; if (e.target.nextSibling) e.target.nextSibling.style.display = 'inline'; }}
               />
             ) : null}
             <span style={{ display: actor.avatar_url ? 'none' : 'inline' }}>

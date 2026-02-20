@@ -853,7 +853,7 @@ export default function PlayScreen() {
 
       // Fire-and-forget: update the dilemma's vote counts
       const voteField = option === 'a' ? 'votes_a_count' : 'votes_b_count';
-      const currentCount = option === 'a' ? (dilemma.votes_a_count_count || 0) : (dilemma.votes_b_count_count || 0);
+      const currentCount = option === 'a' ? (dilemma.votes_a_count || 0) : (dilemma.votes_b_count || 0);
       dilemmasApi.update(dilemma.id, {
         [voteField]: currentCount + 1,
         total_votes: (dilemma.total_votes || 0) + 1,
@@ -971,6 +971,20 @@ export default function PlayScreen() {
       total_votes: (featuredDilemma.total_votes || 0) + 1,
     }).catch((err) => console.warn('Featured vote count update failed:', err.message));
 
+    // Create activity for featured answer
+    const chosenText = option === 'a' ? featuredDilemma.option_a : featuredDilemma.option_b;
+    activitiesApi.create({
+      actor_id: user.id,
+      actor_name: user.username || user.name || 'Anonymous',
+      verb: 'answered',
+      description: `answered featured: chose "${chosenText.length > 60 ? chosenText.slice(0, 57) + '...' : chosenText}"`,
+      target_type: 'dilemma',
+      target_id: featuredDilemma.id,
+      visibility: 'public',
+      is_deleted: 0,
+      created_at: new Date().toISOString(),
+    }).catch(() => {});
+
     // Record featured tracking (no user_id)
     const todayStr = new Date().toISOString().slice(0, 10);
     featuredTracking.record({
@@ -1020,6 +1034,13 @@ export default function PlayScreen() {
     setAnsweredIds(new Set());
     setTotalXpEarned(0);
     setCompleted(false);
+    // Reset featured states
+    setFeaturedChosen(null);
+    setFeaturedShowResults(false);
+    setFeaturedShowXp(false);
+    setFeaturedCelebration(false);
+    setShowFeatured(false);
+    setFeaturedAnswered(false);
   };
 
   // ── Calculate percentages ──────────────────────────────

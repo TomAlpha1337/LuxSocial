@@ -474,10 +474,10 @@ export default function ProfileScreen() {
     setEditSaving(true);
     try {
       const updates = {};
-      if (editUsername.trim() && editUsername.trim() !== p?.username) {
+      if (editUsername.trim() && editUsername.trim() !== profile?.username) {
         updates.username = editUsername.trim();
       }
-      if (editBio.trim() !== (p?.bio || '')) {
+      if (editBio.trim() !== (profile?.bio || '')) {
         updates.bio = editBio.trim();
       }
       if (Object.keys(updates).length > 0) {

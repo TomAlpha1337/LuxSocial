@@ -189,7 +189,7 @@ export const friendships = {
       ...(Array.isArray(dir2) ? dir2 : []),
     ];
     // Return non-rejected friendships
-    return all.filter(f => f.status !== 'rejected' && f.record_status !== 'rejected');
+    return all.filter(f => f.status !== 'rejected');
   },
   // Get ALL friendships for a user (any status, both directions)
   getAllForUser: async (userId) => {

@@ -6,7 +6,7 @@ import {
   Swords, Shield, Target, Crosshair, Flame, Crown, Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { directDilemmas, friendships } from '../services/api';
+import { auth as authApi, directDilemmas, friendships } from '../services/api';
 import { POINTS } from '../utils/constants';
 
 // ── Keyframes ───────────────────────────────────────────────
@@ -671,7 +671,18 @@ export default function DirectScreen() {
       const parseRes = (r) => Array.isArray(r) ? r : r ? [r] : [];
       setInbox(parseRes(inboxRes));
       setSent(parseRes(sentRes));
-      setFriends(parseRes(friendsRes));
+      // Enrich friendship records with user profile data
+      const friendRecords = parseRes(friendsRes);
+      const enriched = await Promise.all(
+        friendRecords.map(async (f) => {
+          const friendId = f.user_id === userId ? f.friend_id : f.user_id;
+          try {
+            const u = await authApi.getUser(friendId);
+            return u ? { ...u, friendship_id: f.id } : null;
+          } catch { return null; }
+        })
+      );
+      setFriends(enriched.filter(Boolean));
     } catch {
       setInbox([]);
       setSent([]);

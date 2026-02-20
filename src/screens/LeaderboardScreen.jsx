@@ -415,7 +415,7 @@ export default function LeaderboardScreen() {
   const nextEntry = userIdx > 0 ? entries[userIdx - 1] : null;
   const pointsToNext = nextEntry && userEntry ? nextEntry.points - userEntry.points : 0;
   const progressPct = nextEntry && userEntry && pointsToNext > 0
-    ? Math.min(100, Math.max(0, ((userEntry.points) / (nextEntry.points)) * 100))
+    ? Math.min(100, Math.max(0, (userEntry.points / nextEntry.points) * 100))
     : 100;
 
   const top3 = entries.slice(0, 3);
