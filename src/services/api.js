@@ -168,7 +168,29 @@ export const directDilemmas = {
 export const friendships = {
   sendRequest: (data) => create('friendships', data),
   getRequests: (userId) => read('friendships', `friend_id=${userId}&record_status=pending`),
-  getFriends: (userId) => read('friendships', `user_id=${userId}&record_status=accepted`),
+  getFriends: async (userId) => {
+    const [sent, received] = await Promise.all([
+      safeRead('friendships', `user_id=${userId}&record_status=accepted`),
+      safeRead('friendships', `friend_id=${userId}&record_status=accepted`),
+    ]);
+    const map = new Map();
+    [...(Array.isArray(sent) ? sent : []), ...(Array.isArray(received) ? received : [])]
+      .forEach(f => map.set(f.id, f));
+    return [...map.values()];
+  },
+  // Check if a friendship already exists between two users (either direction)
+  checkExisting: async (userId, friendId) => {
+    const [dir1, dir2] = await Promise.all([
+      safeRead('friendships', `user_id=${userId}&friend_id=${friendId}`),
+      safeRead('friendships', `user_id=${friendId}&friend_id=${userId}`),
+    ]);
+    const all = [
+      ...(Array.isArray(dir1) ? dir1 : []),
+      ...(Array.isArray(dir2) ? dir2 : []),
+    ];
+    // Return non-rejected friendships
+    return all.filter(f => f.record_status !== 'rejected');
+  },
   update: (id, data) => update('friendships', id, data),
   remove: (id) => remove('friendships', id),
 };

@@ -5,6 +5,7 @@ import {
   Eye, EyeOff, Lock, TrendingUp, ChevronDown, ChevronUp, Send,
   Award, Crown, Sparkles, Users, Globe,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   activities as activitiesApi,
@@ -1036,7 +1037,7 @@ function FeedSkeleton() {
 // ============================================================
 // Empty State
 // ============================================================
-function EmptyState() {
+function EmptyState({ onStartPlaying }) {
   return (
     <div style={{
       textAlign: 'center',
@@ -1078,21 +1079,24 @@ function EmptyState() {
       }}>
         Be the first to play! Start a dilemma and watch the feed come alive.
       </p>
-      <div style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 8,
-        padding: '12px 28px',
-        borderRadius: 28,
-        background: `linear-gradient(135deg, ${GOLD}, ${ORANGE})`,
-        color: '#fff',
-        fontWeight: 700,
-        fontSize: 14,
-        cursor: 'pointer',
-        border: 'none',
-        boxShadow: `0 4px 20px ${GOLD}44`,
-        letterSpacing: 0.3,
-      }}>
+      <div
+        onClick={onStartPlaying}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          padding: '12px 28px',
+          borderRadius: 28,
+          background: `linear-gradient(135deg, ${GOLD}, ${ORANGE})`,
+          color: '#fff',
+          fontWeight: 700,
+          fontSize: 14,
+          cursor: 'pointer',
+          border: 'none',
+          boxShadow: `0 4px 20px ${GOLD}44`,
+          letterSpacing: 0.3,
+        }}
+      >
         <Zap size={16} />
         Start Playing
       </div>
@@ -1105,6 +1109,7 @@ function EmptyState() {
 // ============================================================
 export default function FeedScreen() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [feed, setFeed] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -1485,7 +1490,7 @@ export default function FeedScreen() {
         {loading ? (
           <FeedSkeleton />
         ) : feed.length === 0 ? (
-          <EmptyState />
+          <EmptyState onStartPlaying={() => navigate('/play')} />
         ) : (
           <AnimatePresence>
             {feed.map((item, i) => (

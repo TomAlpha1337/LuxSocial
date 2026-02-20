@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, Crown, ChevronUp, ChevronDown, Flame, Star, TrendingUp, TrendingDown, Award, Zap, Medal, Swords, Clock, Minus } from 'lucide-react';
+import { Trophy, Crown, ChevronUp, ChevronDown, Flame, Star, TrendingUp, TrendingDown, Award, Zap, Medal, Swords, Clock, Minus, Users, UserPlus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { leaderboards, admin, seasons } from '../services/api';
+import { leaderboards, admin, seasons, friendships, auth } from '../services/api';
 import { XP_LEVELS } from '../utils/constants';
 
 // ── Keyframes ───────────────────────────────────────────────
@@ -121,10 +122,11 @@ if (typeof document !== 'undefined' && !document.getElementById(keyframesId)) {
 }
 
 const PERIODS = [
-  { key: 'daily',  label: 'Daily',    icon: Zap },
-  { key: 'weekly', label: 'Weekly',   icon: Flame },
-  { key: 'season', label: 'Season',   icon: Award },
-  { key: 'all',    label: 'All Time', icon: Trophy },
+  { key: 'daily',   label: 'Daily',    icon: Zap },
+  { key: 'weekly',  label: 'Weekly',   icon: Flame },
+  { key: 'season',  label: 'Season',   icon: Award },
+  { key: 'all',     label: 'All Time', icon: Trophy },
+  { key: 'friends', label: 'Friends',  icon: Users },
 ];
 
 const MEDAL_COLORS = {
@@ -301,6 +303,7 @@ function RankChange({ change }) {
 // ── Component ───────────────────────────────────────────────
 export default function LeaderboardScreen() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [period, setPeriod] = useState('all');
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -314,6 +317,7 @@ export default function LeaderboardScreen() {
     setLoading(true);
     try {
       let data;
+      const userId = user?.id;
       const now = new Date();
       const today = now.toISOString().slice(0, 10);
       const jan4 = new Date(now.getFullYear(), 0, 4);
@@ -332,6 +336,37 @@ export default function LeaderboardScreen() {
           data = await leaderboards.getSeason(`season-${seasonArr[0].id}`);
         } else {
           data = [];
+        }
+      } else if (period === 'friends') {
+        // Friends leaderboard: fetch friends, then their user data
+        if (!userId) {
+          data = [];
+        } else {
+          const friendsList = await friendships.getFriends(userId).catch(() => []);
+          const friendsArr = Array.isArray(friendsList) ? friendsList : [];
+          // Get friend user IDs
+          const friendUserIds = new Set();
+          friendsArr.forEach((f) => {
+            const friendId = f.user_id === userId ? f.friend_id : f.user_id;
+            friendUserIds.add(friendId);
+          });
+          // Include self
+          friendUserIds.add(userId);
+          // Get all users and filter to friends
+          const allUsers = await admin.getAllUsers().catch(() => []);
+          const usersArr = Array.isArray(allUsers) ? allUsers : [];
+          data = usersArr
+            .filter((u) => friendUserIds.has(u.id) && u.record_status !== 'banned')
+            .map((u) => ({
+              id: u.id,
+              user_id: u.id,
+              username: u.username,
+              avatar_url: u.avatar_url,
+              points: u.xp || 0,
+              xp: u.xp || 0,
+              level: u.level || 1,
+              current_streak: u.current_streak || 0,
+            }));
         }
       } else {
         // "All Time" — read from users table directly
@@ -546,13 +581,42 @@ export default function LeaderboardScreen() {
         </div>
       ) : entries.length === 0 ? (
         <div style={{ textAlign: 'center', padding: 80, color: 'rgba(255,255,255,0.3)' }}>
-          <Trophy size={56} style={{ marginBottom: 20, opacity: 0.2 }} />
-          <p style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: 'rgba(255,255,255,0.4)' }}>
-            No rankings yet
-          </p>
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.25)' }}>
-            Start playing to claim your spot on the leaderboard!
-          </p>
+          {period === 'friends' ? (
+            <>
+              <Users size={56} style={{ marginBottom: 20, opacity: 0.2 }} />
+              <p style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: 'rgba(255,255,255,0.4)' }}>
+                No friends to compare
+              </p>
+              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.25)', marginBottom: 20 }}>
+                Add friends to see how you stack up against them!
+              </p>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/friends')}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  padding: '12px 24px', borderRadius: 16,
+                  background: 'linear-gradient(135deg, #BF5AF2, #9B30E0)',
+                  border: 'none', color: '#fff', fontWeight: 700,
+                  fontSize: 14, cursor: 'pointer',
+                  boxShadow: '0 4px 20px rgba(191,90,242,0.3)',
+                }}
+              >
+                <UserPlus size={16} />
+                Find Friends
+              </motion.button>
+            </>
+          ) : (
+            <>
+              <Trophy size={56} style={{ marginBottom: 20, opacity: 0.2 }} />
+              <p style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: 'rgba(255,255,255,0.4)' }}>
+                No rankings yet
+              </p>
+              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.25)' }}>
+                Start playing to claim your spot on the leaderboard!
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <>

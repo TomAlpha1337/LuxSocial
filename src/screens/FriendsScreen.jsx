@@ -270,6 +270,15 @@ export default function FriendsScreen() {
           is_deleted: 0,
           created_at: new Date().toISOString(),
         });
+        // Notify the sender that their request was accepted
+        await API.notifications.create({
+          user_id: request.user_id,
+          type: 'friend_accepted',
+          message: `${user.username || user.name} accepted your friend request`,
+          is_read: false,
+          reference_id: user.id,
+          created_at: new Date().toISOString(),
+        }).catch(() => {});
       }
     } catch (err) {
       console.error('Accept friend error:', err);
@@ -307,18 +316,35 @@ export default function FriendsScreen() {
     setFriends((prev) => prev.filter((f) => f.id !== friend.id));
   };
 
-  // Send friend request
+  // Send friend request (with duplicate check + notification)
   const handleAddFriend = async (target) => {
-    setSentRequests((prev) => new Set([...prev, target.id]));
+    if (!user?.id) return;
     try {
-      if (user?.id) {
-        await API.friendships.sendRequest({
-          user_id: user.id,
-          friend_id: target.id,
-          record_status: 'pending',
-          created_at: new Date().toISOString(),
-        });
+      // Check for existing friendship/request (both directions)
+      const existing = await API.friendships.checkExisting(user.id, target.id);
+      if (existing.length > 0) {
+        // Already have a pending or accepted friendship
+        setSentRequests((prev) => new Set([...prev, target.id]));
+        return;
       }
+
+      setSentRequests((prev) => new Set([...prev, target.id]));
+      await API.friendships.sendRequest({
+        user_id: user.id,
+        friend_id: target.id,
+        record_status: 'pending',
+        created_at: new Date().toISOString(),
+      });
+
+      // Notify the target user
+      await API.notifications.create({
+        user_id: target.id,
+        type: 'friend_request',
+        message: `${user.username || user.name} sent you a friend request`,
+        is_read: false,
+        reference_id: user.id,
+        created_at: new Date().toISOString(),
+      }).catch(() => {});
     } catch (err) {
       console.error('Add friend error:', err);
     }

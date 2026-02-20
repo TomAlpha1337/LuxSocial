@@ -6,7 +6,7 @@ import {
   Flame, Trophy, Star, Award, Eye, EyeOff, LogOut, ChevronRight,
   Zap, MessageCircle, Heart, Target, Crown, Sparkles,
   Swords, TrendingUp, Calendar, BarChart3, Lock, Share2, Grid,
-  Camera, Save, Loader, Snowflake,
+  Camera, Save, Loader, Snowflake, Rocket, Moon, Sunrise, Users, Vote,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import * as API from '../services/api';
@@ -88,6 +88,15 @@ const badgeIconMap = {
   zap: Zap,
   star: Star,
   sparkles: Sparkles,
+  trophy: Trophy,
+  shield: Shield,
+  users: Users,
+  trendingup: TrendingUp,
+  rocket: Rocket,
+  moon: Moon,
+  sunrise: Sunrise,
+  vote: Vote,
+  award: Award,
 };
 
 // ── Keyframe Animations (injected once) ─────────────────────
@@ -1568,8 +1577,9 @@ export default function ProfileScreen() {
               gap: 14, paddingBottom: 6,
             }}>
               {badges.map((badge, i) => {
-                const Icon = badgeIconMap[badge.icon] || Award;
-                const color = badge.color || GOLD;
+                const iconKey = badge.icon || (badge.badge_icon || '').toLowerCase();
+                const Icon = badgeIconMap[iconKey] || Award;
+                const color = badge.color || badge.badge_color || GOLD;
                 return (
                   <motion.div
                     key={badge.id}
@@ -1611,7 +1621,7 @@ export default function ProfileScreen() {
                       fontSize: 10, color: MUTED_LIGHT, textAlign: 'center',
                       maxWidth: 80, whiteSpace: 'nowrap', overflow: 'hidden',
                       textOverflow: 'ellipsis', fontWeight: 600,
-                    }}>{badge.label || badge.badge_type}</span>
+                    }}>{badge.label || badge.badge_name || badge.badge_type || badge.badge_id}</span>
                   </motion.div>
                 );
               })}
