@@ -837,6 +837,20 @@ export default function PlayScreen() {
         chosen_option: option,
       }).catch((err) => console.warn('Vote cast failed:', err.message));
 
+      // Fire-and-forget: create feed activity for this vote
+      const chosenText = option === 'a' ? dilemma.option_a : dilemma.option_b;
+      activitiesApi.create({
+        actor_id: user.id,
+        actor_name: user.username || user.name || user.email || 'User',
+        verb: 'answered',
+        description: `chose "${chosenText.length > 60 ? chosenText.slice(0, 57) + '...' : chosenText}"`,
+        target_type: 'dilemma',
+        target_id: dilemma.id,
+        visibility: 'public',
+        is_deleted: 0,
+        created_at: new Date().toISOString(),
+      }).catch(() => {});
+
       // Fire-and-forget: update the dilemma's vote counts
       const voteField = option === 'a' ? 'votes_a_count' : 'votes_b_count';
       const currentCount = option === 'a' ? (dilemma.votes_a_count_count || 0) : (dilemma.votes_b_count_count || 0);

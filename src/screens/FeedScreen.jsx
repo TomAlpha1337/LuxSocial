@@ -12,6 +12,7 @@ import {
   reactions as reactionsApi,
   comments as commentsApi,
   events as eventsApi,
+  friendships as friendshipsApi,
 } from '../services/api';
 import { REACTION_TYPES, ACTIVITY_VERBS, POINTS, ENERGY_MAX } from '../utils/constants';
 import { shareContent } from '../utils/share';
@@ -1110,7 +1111,8 @@ function EmptyState({ onStartPlaying }) {
 export default function FeedScreen() {
   const { user, energy } = useAuth();
   const navigate = useNavigate();
-  const [feed, setFeed] = useState([]);
+  const [allFeed, setAllFeed] = useState([]);
+  const [friendIds, setFriendIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [eventActive, setEventActive] = useState(false);
@@ -1122,20 +1124,30 @@ export default function FeedScreen() {
   // -- Load feed ------------------------------------------------
   const loadFeed = useCallback(async () => {
     try {
-      const [data, eventsData] = await Promise.all([
+      const [data, eventsData, friendsData] = await Promise.all([
         activitiesApi.getFeed(),
         eventsApi.getActive().catch(() => []),
+        user?.id ? friendshipsApi.getFriends(user.id).catch(() => []) : Promise.resolve([]),
       ]);
-      setFeed(Array.isArray(data) ? data : []);
+      setAllFeed(Array.isArray(data) ? data : []);
       const eventsList = Array.isArray(eventsData) ? eventsData : [];
       setEventActive(eventsList.length > 0);
       setActiveEvent(eventsList.length > 0 ? eventsList[0] : null);
+
+      // Build friend ID set for filtering
+      const fList = Array.isArray(friendsData) ? friendsData : [];
+      const ids = new Set();
+      fList.forEach(f => {
+        const fid = f.user_id === user?.id ? f.friend_id : f.user_id;
+        if (fid) ids.add(fid);
+      });
+      setFriendIds(ids);
     } catch {
-      setFeed([]);
+      setAllFeed([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user?.id]);
 
   useEffect(() => {
     loadFeed();
@@ -1146,6 +1158,11 @@ export default function FeedScreen() {
     await loadFeed();
     setTimeout(() => setRefreshing(false), 600);
   };
+
+  // Filter feed by active tab
+  const feed = activeTab === 'friends'
+    ? allFeed.filter(item => friendIds.has(item.actor_id) || item.actor_id === user?.id)
+    : allFeed;
 
   const energyPercent = (energy / ENERGY_MAX) * 100;
 
