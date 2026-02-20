@@ -80,15 +80,15 @@ export function AuthProvider({ children }) {
           const s = streakArr[0];
           await streaksApi.update(s.id, {
             current_streak: newStreak,
-            last_login_date: today,
-            longest_streak: Math.max(s.longest_streak || 0, newStreak),
+            last_activity_date: today,
+            best_streak: Math.max(s.best_streak || 0, newStreak),
           });
         } else {
           await streaksApi.create({
             user_id: userId,
             current_streak: newStreak,
-            longest_streak: newStreak,
-            last_login_date: today,
+            best_streak: newStreak,
+            last_activity_date: today,
           });
         }
       } catch (err) {

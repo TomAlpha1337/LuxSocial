@@ -6,6 +6,7 @@ import { ENERGY_MAX } from '../utils/constants';
 import BottomNav from './BottomNav';
 import DailyBonusModal from './DailyBonusModal';
 import OnboardingModal from './OnboardingModal';
+import Mascot from './Mascot';
 
 /* ── Color tokens ────────────────────────────────────────── */
 const GOLD = '#00D4FF';
@@ -351,6 +352,11 @@ export default function Layout({
 
         {/* Left: Logo + Level badge */}
         <div style={styles.headerLeft}>
+          <Mascot
+            size={28}
+            animate={false}
+            mood={energy > 50 ? 'happy' : energy > 20 ? 'thinking' : 'sad'}
+          />
           <span style={styles.logo}>Social Dilemma's</span>
 
           <div

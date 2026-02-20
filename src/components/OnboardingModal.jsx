@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Users, Flame, Trophy, ArrowRight, Sparkles, Crown } from 'lucide-react';
+import Mascot from './Mascot';
 
 const GOLD = '#00D4FF';
 const GOLD_LIGHT = '#33E0FF';
@@ -75,6 +76,8 @@ export default function OnboardingModal() {
   const s = STEPS[step];
   const isLast = step === STEPS.length - 1;
   const Icon = s.icon;
+  const mascotMoods = ['waving', 'happy', 'happy', 'thinking', 'excited'];
+  const mascotMood = mascotMoods[step] || 'happy';
 
   return (
     <AnimatePresence>
@@ -114,6 +117,18 @@ export default function OnboardingModal() {
               boxShadow: '0 24px 80px rgba(0, 212, 255, 0.12), 0 0 60px rgba(0, 212, 255, 0.04)',
             }}
           >
+            {/* Dilly mascot companion */}
+            <div style={{
+              position: 'absolute',
+              bottom: 12,
+              right: 12,
+              zIndex: 2,
+              opacity: 0.85,
+              pointerEvents: 'none',
+            }}>
+              <Mascot mood={mascotMood} size={48} animate={true} />
+            </div>
+
             {/* Ambient glow */}
             <div style={{
               position: 'absolute',

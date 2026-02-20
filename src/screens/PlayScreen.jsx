@@ -8,11 +8,13 @@ import { useAuth } from '../context/AuthContext';
 import {
   dilemmas as dilemmasApi, votes as votesApi, activities as activitiesApi,
   auth as authApi, featuredTracking, events as eventsApi, recordXp,
+  purchases as purchasesApi,
 } from '../services/api';
 import { CATEGORIES, POINTS, ENERGY_MAX, ENERGY_PER_PLAY, FEATURED_XP_MULTIPLIER } from '../utils/constants';
 import { timeUntilNextEnergy } from '../utils/energy';
 import { useAchievements } from '../hooks/useAchievements';
 import { shareContent } from '../utils/share';
+import Mascot from '../components/Mascot';
 
 // ============================================================
 // Inject Global Keyframe Animations
@@ -212,21 +214,28 @@ const CATEGORY_EMOJIS = {
 // ============================================================
 // Timer Bar Component (visual countdown for urgency)
 // ============================================================
-function TimerBar({ isActive, duration = 30 }) {
+function TimerBar({ isActive, duration = 30, onExpire }) {
   const [timeLeft, setTimeLeft] = useState(duration);
   const intervalRef = useRef(null);
+  const expiredRef = useRef(false);
 
   useEffect(() => {
     if (!isActive) {
       setTimeLeft(duration);
+      expiredRef.current = false;
       if (intervalRef.current) clearInterval(intervalRef.current);
       return;
     }
     setTimeLeft(duration);
+    expiredRef.current = false;
     intervalRef.current = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev <= 0) {
+        if (prev <= 1) {
           clearInterval(intervalRef.current);
+          if (!expiredRef.current) {
+            expiredRef.current = true;
+            onExpire?.();
+          }
           return 0;
         }
         return prev - 1;
@@ -235,7 +244,7 @@ function TimerBar({ isActive, duration = 30 }) {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isActive, duration]);
+  }, [isActive, duration, onExpire]);
 
   const pct = (timeLeft / duration) * 100;
   const isLow = timeLeft <= 10;
@@ -695,6 +704,7 @@ export default function PlayScreen() {
   // Energy modal state
   const [showEnergyModal, setShowEnergyModal] = useState(false);
   const [regenTimer, setRegenTimer] = useState('');
+  const [purchaseStep, setPurchaseStep] = useState('offer'); // 'offer' | 'processing' | 'success'
 
   // Combo counter: increases when answering within 5 seconds
   const [combo, setCombo] = useState(0);
@@ -703,6 +713,28 @@ export default function PlayScreen() {
 
   // Hot streak: consecutive answers without skipping
   const [hotStreak, setHotStreak] = useState(0);
+
+  // ── Purchase processing: fake delay then refill ──
+  useEffect(() => {
+    if (purchaseStep !== 'processing') return;
+    const t = setTimeout(() => {
+      setPurchaseStep('success');
+      purchasesApi.create({
+        user_id: user?.id,
+        item_type: 'energy_refill',
+        amount_cents: 99,
+        currency: 'EUR',
+        record_status: 'completed',
+        created_at: new Date().toISOString(),
+      }).catch(err => console.warn('[NCB] purchase log:', err.message));
+      refillEnergy();
+    }, 1500);
+    return () => clearTimeout(t);
+  }, [purchaseStep, user?.id, refillEnergy]);
+
+  // Timer expired flag — halves XP for this dilemma
+  const [timerExpired, setTimerExpired] = useState(false);
+  const handleTimerExpire = useCallback(() => setTimerExpired(true), []);
 
   // ── Question of the Day (Featured) state ──────────────────
   const [featuredDilemma, setFeaturedDilemma] = useState(null);
@@ -830,13 +862,24 @@ export default function PlayScreen() {
       setScreenShake(true);
       setTimeout(() => setScreenShake(false), 500);
 
-      // Fire-and-forget: save vote to API
+      // Fire-and-forget: save vote to API with answer time
       // user.id is the integer profile ID from the users table (resolved at login)
+      const answerTime = Math.round(elapsed * 10) / 10; // 1 decimal
       votesApi.cast({
         user_id: user.id,
         dilemma_id: dilemma.id,
         chosen_option: option,
+        answer_time_seconds: answerTime,
       }).catch((err) => console.warn('Vote cast failed:', err.message));
+
+      // Update running average answer time on user profile
+      const prevTotal = user.total_answers || 0;
+      const prevAvg = user.avg_answer_time || 0;
+      const newTotal = prevTotal + 1;
+      const newAvg = Math.round(((prevAvg * prevTotal + answerTime) / newTotal) * 10) / 10;
+      authApi.updateUser(user.id, { avg_answer_time: newAvg, total_answers: newTotal })
+        .then(() => updateUser({ avg_answer_time: newAvg, total_answers: newTotal }))
+        .catch((err) => console.warn('[NCB] avg answer time:', err.message));
 
       // Fire-and-forget: create feed activity for this vote
       const chosenText = option === 'a' ? dilemma.option_a : dilemma.option_b;
@@ -863,7 +906,16 @@ export default function PlayScreen() {
         setShowResults(true);
         setShowXp(true);
         setAnsweredIds((prev) => new Set(prev).add(dilemma.id));
-        setTotalXpEarned((prev) => prev + Math.round(POINTS.answer_dilemma * eventMultiplier));
+        const baseXp = Math.round(POINTS.answer_dilemma * eventMultiplier);
+        const earnedXp = timerExpired ? Math.round(baseXp / 2) : baseXp;
+        setTotalXpEarned((prev) => prev + earnedXp);
+
+        // Persist XP immediately so header updates in real time
+        const newXp = (user.xp || 0) + earnedXp;
+        authApi.updateUser(user.id, { xp: newXp })
+          .then(() => updateUser({ xp: newXp }))
+          .catch((err) => console.warn('[NCB] per-answer XP:', err.message));
+        recordXp(user.id, earnedXp, user).catch((err) => console.warn('[NCB] recordXp:', err.message));
 
         // Check achievements after vote (with slight delay for results to compute)
         setTimeout(() => {
@@ -882,7 +934,7 @@ export default function PlayScreen() {
       setTimeout(() => setShowXp(false), 2200);
       setTimeout(() => setShowCelebration(false), 1500);
     },
-    [chosen, dilemma, user, checkAchievements, energy, spendEnergy],
+    [chosen, dilemma, user, checkAchievements, energy, spendEnergy, timerExpired, updateUser],
   );
 
   // ── Advance to next dilemma ────────────────────────────
@@ -896,6 +948,7 @@ export default function PlayScreen() {
     setShowResults(false);
     setShowXp(false);
     setShowCelebration(false);
+    setTimerExpired(false);
     setCurrentIndex((i) => i + 1);
     cardShownTimeRef.current = Date.now();
   }, [currentIndex, dilemmasList.length]);
@@ -911,6 +964,7 @@ export default function PlayScreen() {
     setShowResults(false);
     setShowXp(false);
     setShowCelebration(false);
+    setTimerExpired(false);
     setCurrentIndex((i) => i + 1);
     cardShownTimeRef.current = Date.now();
     // Skipping breaks both combo and hot streak
@@ -918,23 +972,11 @@ export default function PlayScreen() {
     setHotStreak(0);
   }, [currentIndex, dilemmasList.length]);
 
-  // ── Persist XP & activity when session completes ───────
+  // ── Create activity summary when session completes ───────
   useEffect(() => {
     if (!completed || !user?.id || totalXpEarned === 0) return;
 
-    // Update user's XP in the database
-    const newXp = (user.xp || 0) + totalXpEarned;
-    authApi.updateUser(user.id, { xp: newXp })
-      .then(() => {
-        // Also update local auth context so UI reflects new XP
-        updateUser({ xp: newXp });
-      })
-      .catch((err) => console.warn('[NCB]', err.message));
-
-    // Record XP in leaderboard entries (daily/weekly/season)
-    recordXp(user.id, totalXpEarned, user).catch((err) => console.warn('[NCB] recordXp:', err.message));
-
-    // Create an activity record for the feed
+    // XP already persisted per-answer — just create the feed summary
     activitiesApi.create({
       actor_id: user.id,
       verb: 'answered',
@@ -1004,6 +1046,13 @@ export default function PlayScreen() {
       setTotalXpEarned((prev) => prev + featuredXp);
       setFeaturedAnswered(true);
 
+      // Persist featured XP immediately so header updates in real time
+      const newXp = (user.xp || 0) + featuredXp;
+      authApi.updateUser(user.id, { xp: newXp })
+        .then(() => updateUser({ xp: newXp }))
+        .catch((err) => console.warn('[NCB] featured XP:', err.message));
+      recordXp(user.id, featuredXp, user).catch((err) => console.warn('[NCB] recordXp:', err.message));
+
       // Check achievements
       setTimeout(() => {
         const extraA = option === 'a' ? 1 : 0;
@@ -1033,6 +1082,7 @@ export default function PlayScreen() {
     setShowResults(false);
     setShowXp(false);
     setShowCelebration(false);
+    setTimerExpired(false);
     setAnsweredIds(new Set());
     setTotalXpEarned(0);
     setCompleted(false);
@@ -1681,7 +1731,7 @@ export default function PlayScreen() {
             />
           ))}
 
-          {/* Trophy with glow */}
+          {/* Dilly mascot celebrating */}
           <motion.div
             style={{ position: 'relative', marginBottom: 8, zIndex: 1 }}
             animate={{ rotate: [0, 5, -5, 5, 0], scale: [1, 1.05, 1] }}
@@ -1698,7 +1748,7 @@ export default function PlayScreen() {
               animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0.8, 0.4] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             />
-            <Trophy size={60} color="#00D4FF" style={{ filter: 'drop-shadow(0 0 20px rgba(0,212,255,0.4))' }} />
+            <Mascot mood="excited" size={80} />
           </motion.div>
 
           <motion.h2
@@ -1947,7 +1997,7 @@ export default function PlayScreen() {
 
               {/* Timer Bar */}
               {!showResults && !chosen && (
-                <TimerBar isActive={!chosen && !showResults} duration={30} />
+                <TimerBar isActive={!chosen && !showResults} duration={30} onExpire={handleTimerExpire} />
               )}
 
               {/* Category Badge with Emoji */}
@@ -2332,7 +2382,7 @@ export default function PlayScreen() {
                           animate={{ scale: [0.5, 1.3, 1] }}
                           transition={{ duration: 0.5, times: [0, 0.6, 1] }}
                         >
-                          +{Math.round(POINTS.answer_dilemma * eventMultiplier)} XP
+                          +{timerExpired ? Math.round(POINTS.answer_dilemma * eventMultiplier / 2) : Math.round(POINTS.answer_dilemma * eventMultiplier)} XP{timerExpired ? ' (half)' : ''}
                         </motion.div>
                         {eventMultiplier > 1 && (
                           <motion.span
@@ -2434,7 +2484,7 @@ export default function PlayScreen() {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               padding: 20,
             }}
-            onClick={() => setShowEnergyModal(false)}
+            onClick={() => { setShowEnergyModal(false); setPurchaseStep('offer'); }}
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -2443,77 +2493,154 @@ export default function PlayScreen() {
               onClick={(e) => e.stopPropagation()}
               style={{
                 background: 'linear-gradient(145deg, #0f0f1e, #0a0a18)',
-                border: '1px solid rgba(255,107,53,0.2)',
+                border: `1px solid ${purchaseStep === 'success' ? 'rgba(57,255,20,0.3)' : 'rgba(255,107,53,0.2)'}`,
                 borderRadius: 24, padding: 32, width: '100%', maxWidth: 380,
                 textAlign: 'center',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+                boxShadow: purchaseStep === 'success'
+                  ? '0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(57,255,20,0.1)'
+                  : '0 20px 60px rgba(0,0,0,0.5)',
+                transition: 'all 0.3s ease',
               }}
             >
-              <div style={{
-                width: 64, height: 64, borderRadius: '50%',
-                background: 'rgba(255,107,53,0.1)',
-                border: '2px solid rgba(255,107,53,0.3)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 16px',
-              }}>
-                <Zap size={28} color="#FF6B35" />
-              </div>
+              {/* ── OFFER step ── */}
+              {purchaseStep === 'offer' && (
+                <>
+                  <div style={{ margin: '0 auto 16px' }}>
+                    <Mascot mood="sad" size={64} />
+                  </div>
 
-              <h3 style={{
-                fontSize: 20, fontWeight: 800, color: '#f0f0f8', margin: '0 0 8px',
-              }}>Not Enough Energy</h3>
+                  <h3 style={{
+                    fontSize: 20, fontWeight: 800, color: '#f0f0f8', margin: '0 0 8px',
+                  }}>Not Enough Energy</h3>
 
-              <p style={{
-                fontSize: 14, color: '#94a3b8', margin: '0 0 20px', lineHeight: 1.5,
-              }}>
-                You need {ENERGY_PER_PLAY} energy to answer a dilemma.
-                You currently have <span style={{ color: '#FF6B35', fontWeight: 700 }}>{energy}</span> energy.
-              </p>
+                  <p style={{
+                    fontSize: 14, color: '#94a3b8', margin: '0 0 20px', lineHeight: 1.5,
+                  }}>
+                    You need {ENERGY_PER_PLAY} energy to answer a dilemma.
+                    You currently have <span style={{ color: '#FF6B35', fontWeight: 700 }}>{energy}</span> energy.
+                  </p>
 
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                padding: '10px 16px', borderRadius: 12,
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                marginBottom: 20, fontSize: 13, color: '#94a3b8',
-              }}>
-                <Clock size={14} color="#BF5AF2" />
-                <span>Regenerates <span style={{ color: '#BF5AF2', fontWeight: 700 }}>+10/hour</span></span>
-              </div>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    padding: '10px 16px', borderRadius: 12,
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    marginBottom: 20, fontSize: 13, color: '#94a3b8',
+                  }}>
+                    <Clock size={14} color="#BF5AF2" />
+                    <span>Regenerates <span style={{ color: '#BF5AF2', fontWeight: 700 }}>+10/hour</span></span>
+                  </div>
 
-              <EnergyRegenTimer
-                energy={energy}
-                user={user}
-                regenTimer={regenTimer}
-                setRegenTimer={setRegenTimer}
-              />
+                  <EnergyRegenTimer
+                    energy={energy}
+                    user={user}
+                    regenTimer={regenTimer}
+                    setRegenTimer={setRegenTimer}
+                  />
 
-              <button
-                onClick={() => { refillEnergy(); setShowEnergyModal(false); }}
-                style={{
-                  width: '100%', padding: '14px 24px', borderRadius: 14,
-                  border: 'none', cursor: 'pointer',
-                  background: 'linear-gradient(135deg, #FF6B35, #FF2D78)',
-                  color: '#fff', fontSize: 15, fontWeight: 800,
-                  boxShadow: '0 4px 20px rgba(255,107,53,0.25)',
-                  marginBottom: 10, letterSpacing: 0.3,
-                }}
-              >
-                Refill Energy (Test)
-              </button>
+                  <button
+                    onClick={() => setPurchaseStep('processing')}
+                    style={{
+                      width: '100%', padding: '14px 24px', borderRadius: 14,
+                      border: 'none', cursor: 'pointer',
+                      background: 'linear-gradient(135deg, #39FF14, #00D4FF)',
+                      color: '#050510', fontSize: 15, fontWeight: 800,
+                      boxShadow: '0 4px 20px rgba(57,255,20,0.25)',
+                      marginBottom: 10, letterSpacing: 0.3,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    }}
+                  >
+                    <Zap size={18} /> Refill Energy — €0,99
+                  </button>
 
-              <button
-                onClick={() => setShowEnergyModal(false)}
-                style={{
-                  width: '100%', padding: '12px 24px', borderRadius: 14,
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  background: 'transparent', color: '#94a3b8',
-                  fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                  letterSpacing: 0.3,
-                }}
-              >
-                Come back later
-              </button>
+                  <button
+                    onClick={() => { setShowEnergyModal(false); setPurchaseStep('offer'); }}
+                    style={{
+                      width: '100%', padding: '12px 24px', borderRadius: 14,
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      background: 'transparent', color: '#94a3b8',
+                      fontSize: 14, fontWeight: 600, cursor: 'pointer',
+                      letterSpacing: 0.3,
+                    }}
+                  >
+                    Come back later
+                  </button>
+                </>
+              )}
+
+              {/* ── PROCESSING step ── */}
+              {purchaseStep === 'processing' && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{ padding: '20px 0' }}
+                >
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    style={{ margin: '0 auto 20px', width: 40, height: 40 }}
+                  >
+                    <RefreshCw size={40} color="#00D4FF" />
+                  </motion.div>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#f0f0f8', margin: '0 0 8px' }}>
+                    Processing Payment...
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#94a3b8', margin: 0 }}>
+                    Connecting to payment provider...
+                  </p>
+                </motion.div>
+              )}
+
+              {/* ── SUCCESS step ── */}
+              {purchaseStep === 'success' && (
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                >
+                  <div style={{ margin: '0 auto 16px' }}>
+                    <Mascot mood="excited" size={72} />
+                  </div>
+
+                  <h3 style={{
+                    fontSize: 22, fontWeight: 900, margin: '0 0 8px',
+                    background: 'linear-gradient(135deg, #39FF14, #00D4FF)',
+                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                  }}>
+                    Purchase Successful!
+                  </h3>
+
+                  <p style={{
+                    fontSize: 14, color: '#94a3b8', margin: '0 0 8px', lineHeight: 1.5,
+                  }}>
+                    Your energy has been fully refilled!
+                  </p>
+
+                  <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                    padding: '8px 16px', borderRadius: 10,
+                    background: 'rgba(57,255,20,0.08)',
+                    border: '1px solid rgba(57,255,20,0.2)',
+                    marginBottom: 20, fontSize: 14, fontWeight: 700, color: '#39FF14',
+                  }}>
+                    <Zap size={16} /> {ENERGY_MAX}/{ENERGY_MAX} Energy
+                  </div>
+
+                  <button
+                    onClick={() => { setShowEnergyModal(false); setPurchaseStep('offer'); }}
+                    style={{
+                      width: '100%', padding: '14px 24px', borderRadius: 14,
+                      border: 'none', cursor: 'pointer',
+                      background: 'linear-gradient(135deg, #00D4FF, #BF5AF2)',
+                      color: '#fff', fontSize: 15, fontWeight: 800,
+                      boxShadow: '0 4px 20px rgba(0,212,255,0.25)',
+                      letterSpacing: 0.3,
+                    }}
+                  >
+                    Keep Playing!
+                  </button>
+                </motion.div>
+              )}
             </motion.div>
           </motion.div>
         )}

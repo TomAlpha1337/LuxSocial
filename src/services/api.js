@@ -422,16 +422,50 @@ export const sessionDilemmas = {
 // ADMIN (dashboard helpers)
 // ============================================================
 export const admin = {
-  getStats: () => read('admin_stats'),
-  getActivity: () => read('admin_activity'),
-  getBannedUsers: () => read('users', 'is_banned=1'),
+  getStats: async () => {
+    const [users, dilemmas, votes] = await Promise.all([
+      safeRead('users', 'limit=500'),
+      safeRead('dilemmas', 'limit=500'),
+      safeRead('votes', 'limit=500'),
+    ]);
+    const today = new Date().toISOString().slice(0, 10);
+    const activeToday = votes.filter(v => (v.voted_at || v.created_at || '').slice(0, 10) === today)
+      .reduce((set, v) => set.add(v.user_id), new Set()).size;
+    return { totalUsers: users.length, totalDilemmas: dilemmas.length, totalAnswers: votes.length, activeToday };
+  },
+  getActivity: async () => {
+    const acts = await safeRead('activities', 'limit=500');
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const counts = {};
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      counts[d.toISOString().slice(0, 10)] = 0;
+    }
+    acts.forEach(a => {
+      const date = (a.created_at || '').slice(0, 10);
+      if (date in counts) counts[date]++;
+    });
+    return Object.entries(counts).map(([date, value]) => ({
+      day: days[new Date(date).getDay()],
+      value,
+    }));
+  },
+  getBannedUsers: () => read('users', 'record_status=banned'),
   getAllUsers: () => read('users', 'limit=500'),
   searchUsers: (query) => read('users', `username=${query}`),
-  banUser: (id) => update('users', id, { is_banned: 1 }),
-  unbanUser: (id) => update('users', id, { is_banned: 0 }),
+  banUser: (id) => update('users', id, { record_status: 'banned' }),
+  unbanUser: (id) => update('users', id, { record_status: 'active' }),
   giveXP: (id, currentXP, amount) => update('users', id, { xp: currentXP + amount }),
   getAllVotes: () => read('votes', 'limit=500'),
   getAllDilemmas: () => read('dilemmas', 'limit=500'),
+};
+
+// ============================================================
+// PURCHASES -- NoCodeBackend (purchases table)
+// ============================================================
+export const purchases = {
+  getByUser: (userId) => safeRead('purchases', `user_id=${userId}&limit=500`),
+  create: (data) => create('purchases', data),
 };
 
 // ============================================================

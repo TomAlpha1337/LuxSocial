@@ -11,7 +11,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import * as API from '../services/api';
 import { uploadImage } from '../services/cloudinary';
-import { XP_LEVELS, POINTS, CATEGORIES, STREAK_FREEZE_PER_WEEK } from '../utils/constants';
+import { XP_LEVELS, POINTS, CATEGORIES, STREAK_FREEZE_PER_WEEK, BADGE_DEFINITIONS } from '../utils/constants';
 import { shareContent } from '../utils/share';
 
 // ── Theme ────────────────────────────────────────────────────
@@ -1580,9 +1580,11 @@ export default function ProfileScreen() {
               gap: 14, paddingBottom: 6,
             }}>
               {badges.map((badge, i) => {
-                const iconKey = badge.icon || (badge.badge_icon || '').toLowerCase();
+                // Enrich from BADGE_DEFINITIONS using source field (badge ID)
+                const def = BADGE_DEFINITIONS[badge.source] || {};
+                const iconKey = badge.icon || (badge.badge_icon || def.icon || '').toLowerCase();
                 const Icon = badgeIconMap[iconKey] || Award;
-                const color = badge.color || badge.badge_color || GOLD;
+                const color = badge.color || badge.badge_color || def.color || GOLD;
                 return (
                   <motion.div
                     key={badge.id}
@@ -1624,7 +1626,7 @@ export default function ProfileScreen() {
                       fontSize: 10, color: MUTED_LIGHT, textAlign: 'center',
                       maxWidth: 80, whiteSpace: 'nowrap', overflow: 'hidden',
                       textOverflow: 'ellipsis', fontWeight: 600,
-                    }}>{badge.label || badge.badge_name || badge.badge_type || badge.badge_id}</span>
+                    }}>{badge.label || badge.badge_name || def.name || badge.source}</span>
                   </motion.div>
                 );
               })}

@@ -17,6 +17,7 @@ import {
 } from '../services/api';
 import { REACTION_TYPES, ACTIVITY_VERBS, POINTS, ENERGY_MAX } from '../utils/constants';
 import { shareContent } from '../utils/share';
+import Mascot from '../components/Mascot';
 
 // ============================================================
 // Keyframe Animations (style tag injection)
@@ -1047,19 +1048,8 @@ function EmptyState({ onStartPlaying }) {
       textAlign: 'center',
       padding: '60px 30px',
     }}>
-      <div style={{
-        width: 100,
-        height: 100,
-        borderRadius: '50%',
-        background: `linear-gradient(135deg, ${GOLD_DIM}, ${PURPLE_DIM})`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '0 auto 24px',
-        animation: 'feedEmptyFloat 4s ease-in-out infinite',
-        border: `1px solid ${GOLD}22`,
-      }}>
-        <Sparkles size={40} color={GOLD} style={{ opacity: 0.8 }} />
+      <div style={{ margin: '0 auto 24px' }}>
+        <Mascot mood="waving" size={80} message="No activity yet — go play!" />
       </div>
       <h3 style={{
         fontSize: 20,

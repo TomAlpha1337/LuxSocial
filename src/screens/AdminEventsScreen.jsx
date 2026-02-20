@@ -289,8 +289,11 @@ export default function AdminEventsScreen() {
       showToast('Please fill in all season fields', 'error'); return;
     }
     const newSeason = {
-      id: 's_' + Date.now(), ...seasonForm, record_status: 'active',
-      description: `A new competitive season: ${seasonForm.name}`,
+      name: seasonForm.name,
+      start_date: new Date(seasonForm.start_date).toISOString(),
+      end_date: new Date(seasonForm.end_date).toISOString(),
+      record_status: 'active',
+      created_at: new Date().toISOString(),
     };
     try {
       const res = await API.seasons.create(newSeason);
@@ -305,7 +308,15 @@ export default function AdminEventsScreen() {
     if (!eventForm.name.trim() || !eventForm.start_date || !eventForm.end_date) {
       showToast('Please fill in all event fields', 'error'); return;
     }
-    const newEvent = { id: 'e_' + Date.now(), ...eventForm, record_status: 'active' };
+    const newEvent = {
+      name: eventForm.name,
+      event_type: eventForm.type,
+      multiplier: eventForm.multiplier,
+      start_date: new Date(eventForm.start_date).toISOString(),
+      end_date: new Date(eventForm.end_date).toISOString(),
+      record_status: 'active',
+      created_at: new Date().toISOString(),
+    };
     try {
       const res = await API.events.create(newEvent);
       setEventsList(prev => [...prev, res || newEvent]);
@@ -544,7 +555,7 @@ export default function AdminEventsScreen() {
               <div style={{ ...s.emptyState, ...s.chartCard }}>No active events.</div>
             ) : (
               eventsList.map(event => {
-                const evtType = EVENT_TYPES.find(t => t.value === event.type) || EVENT_TYPES[0];
+                const evtType = EVENT_TYPES.find(t => t.value === event.event_type) || EVENT_TYPES[0];
                 const EvtIcon = evtType.icon;
                 const cd = getCountdown(event.end_date);
                 return (

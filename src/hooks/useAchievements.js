@@ -157,23 +157,15 @@ export function useAchievements() {
             user_id: userId,
             badge_id: badgeId,
             badge_name: def.name,
-            badge_rarity: def.rarity,
             earned_at: new Date().toISOString(),
           });
 
-          // Also save to badges table (write both field formats for compatibility)
+          // Also save to badges table (only valid columns)
           await badgesApi.award({
             user_id: userId,
-            badge_id: badgeId,
             badge_name: def.name,
             badge_icon: def.icon,
-            badge_color: def.color,
-            badge_rarity: def.rarity,
-            // ProfileScreen reads these field names:
-            icon: def.icon.toLowerCase(),
-            color: def.color,
-            label: def.name,
-            badge_type: badgeId,
+            source: badgeId,
             earned_at: new Date().toISOString(),
           });
         } catch (err) {

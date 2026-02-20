@@ -430,8 +430,8 @@ export default function AdminScreen() {
   const mostPopularDilemma = useMemo(() => {
     if (!dilemmaList.length) return null;
     return dilemmaList.reduce((best, d) => {
-      const total = (d.votes_a || 0) + (d.votes_b || 0);
-      const bestTotal = (best.votes_a || 0) + (best.votes_b || 0);
+      const total = (d.votes_a_count || 0) + (d.votes_b_count || 0);
+      const bestTotal = (best.votes_a_count || 0) + (best.votes_b_count || 0);
       return total > bestTotal ? d : best;
     }, dilemmaList[0]);
   }, [dilemmaList]);
@@ -439,12 +439,12 @@ export default function AdminScreen() {
   const mostControversialDilemma = useMemo(() => {
     if (!dilemmaList.length) return null;
     return dilemmaList.reduce((best, d) => {
-      const total = (d.votes_a || 0) + (d.votes_b || 0);
+      const total = (d.votes_a_count || 0) + (d.votes_b_count || 0);
       if (total < 5) return best;
-      const ratio = Math.min((d.votes_a || 0), (d.votes_b || 0)) / Math.max((d.votes_a || 0), (d.votes_b || 0), 1);
-      const bestTotal = (best.votes_a || 0) + (best.votes_b || 0);
+      const ratio = Math.min((d.votes_a_count || 0), (d.votes_b_count || 0)) / Math.max((d.votes_a_count || 0), (d.votes_b_count || 0), 1);
+      const bestTotal = (best.votes_a_count || 0) + (best.votes_b_count || 0);
       if (bestTotal < 5) return d;
-      const bestRatio = Math.min((best.votes_a || 0), (best.votes_b || 0)) / Math.max((best.votes_a || 0), (best.votes_b || 0), 1);
+      const bestRatio = Math.min((best.votes_a_count || 0), (best.votes_b_count || 0)) / Math.max((best.votes_a_count || 0), (best.votes_b_count || 0), 1);
       return ratio > bestRatio ? d : best;
     }, dilemmaList[0]);
   }, [dilemmaList]);
@@ -454,7 +454,7 @@ export default function AdminScreen() {
     dilemmaList.forEach(d => {
       const cat = d.category || 'other';
       if (!map[cat]) map[cat] = { name: cat, votes: 0, count: 0 };
-      map[cat].votes += (d.votes_a || 0) + (d.votes_b || 0);
+      map[cat].votes += (d.votes_a_count || 0) + (d.votes_b_count || 0);
       map[cat].count += 1;
     });
     return Object.values(map).sort((a, b) => b.votes - a.votes);
@@ -478,15 +478,15 @@ export default function AdminScreen() {
     switch (dilemmaSort) {
       case 'newest': list.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0)); break;
       case 'oldest': list.sort((a, b) => new Date(a.created_at || 0) - new Date(b.created_at || 0)); break;
-      case 'most_voted': list.sort((a, b) => ((b.votes_a || 0) + (b.votes_b || 0)) - ((a.votes_a || 0) + (a.votes_b || 0))); break;
+      case 'most_voted': list.sort((a, b) => ((b.votes_a_count || 0) + (b.votes_b_count || 0)) - ((a.votes_a_count || 0) + (a.votes_b_count || 0))); break;
       case 'controversial': list.sort((a, b) => {
-        const aT = (a.votes_a || 0) + (a.votes_b || 0);
-        const bT = (b.votes_a || 0) + (b.votes_b || 0);
+        const aT = (a.votes_a_count || 0) + (a.votes_b_count || 0);
+        const bT = (b.votes_a_count || 0) + (b.votes_b_count || 0);
         if (aT < 5 && bT < 5) return 0;
         if (aT < 5) return 1;
         if (bT < 5) return -1;
-        const aR = Math.min(a.votes_a || 0, a.votes_b || 0) / Math.max(a.votes_a || 0, a.votes_b || 0, 1);
-        const bR = Math.min(b.votes_a || 0, b.votes_b || 0) / Math.max(b.votes_a || 0, b.votes_b || 0, 1);
+        const aR = Math.min(a.votes_a_count || 0, a.votes_b_count || 0) / Math.max(a.votes_a_count || 0, a.votes_b_count || 0, 1);
+        const bR = Math.min(b.votes_a_count || 0, b.votes_b_count || 0) / Math.max(b.votes_a_count || 0, b.votes_b_count || 0, 1);
         return bR - aR;
       }); break;
       default: break;
@@ -609,14 +609,13 @@ export default function AdminScreen() {
       showToast('Please fill in all required fields', 'error'); return;
     }
     const newDilemma = {
-      id: 'd_' + Date.now(),
       question_text: dilemmaForm.question.trim(),
       option_a: dilemmaForm.option_a.trim(),
       option_b: dilemmaForm.option_b.trim(),
       category: dilemmaForm.category,
       is_mystery: dilemmaForm.is_mystery ? 1 : 0,
       is_featured: dilemmaForm.is_featured ? 1 : 0,
-      record_status: 'active', votes_a: 0, votes_b: 0, created_at: new Date().toISOString(),
+      record_status: 'active', votes_a_count: 0, votes_b_count: 0, total_votes: 0, created_at: new Date().toISOString(),
     };
     try {
       const res = await API.dilemmas.create(newDilemma);
@@ -950,13 +949,13 @@ export default function AdminScreen() {
                 <h3 style={s.chartTitle}><Trophy size={18} color={C.gold} /> Most Popular</h3>
                 {mostPopularDilemma ? (
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', lineHeight: 1.4 }}>{mostPopularDilemma.question}</p>
+                    <p style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', lineHeight: 1.4 }}>{mostPopularDilemma.question_text}</p>
                     <div style={{ display: 'flex', gap: 16, fontSize: 12, color: C.textMuted }}>
-                      <span style={{ color: C.gold }}>{mostPopularDilemma.votes_a || 0} votes A</span>
-                      <span style={{ color: C.purple }}>{mostPopularDilemma.votes_b || 0} votes B</span>
+                      <span style={{ color: C.gold }}>{mostPopularDilemma.votes_a_count || 0} votes A</span>
+                      <span style={{ color: C.purple }}>{mostPopularDilemma.votes_b_count || 0} votes B</span>
                     </div>
                     <p style={{ fontSize: 24, fontWeight: 800, color: C.gold, margin: '8px 0 0' }}>
-                      {formatNumber((mostPopularDilemma.votes_a || 0) + (mostPopularDilemma.votes_b || 0))} <span style={{ fontSize: 13, fontWeight: 500, color: C.textMuted }}>total votes</span>
+                      {formatNumber((mostPopularDilemma.votes_a_count || 0) + (mostPopularDilemma.votes_b_count || 0))} <span style={{ fontSize: 13, fontWeight: 500, color: C.textMuted }}>total votes</span>
                     </p>
                   </div>
                 ) : <p style={{ color: C.textDim, fontSize: 13, margin: 0 }}>No data yet</p>}
@@ -965,12 +964,12 @@ export default function AdminScreen() {
               <div style={{ ...s.chartCard, marginBottom: 0 }}>
                 <h3 style={s.chartTitle}><Target size={18} color={C.red} /> Most Controversial</h3>
                 {mostControversialDilemma ? (() => {
-                  const total = (mostControversialDilemma.votes_a || 0) + (mostControversialDilemma.votes_b || 0);
-                  const pctA = total > 0 ? ((mostControversialDilemma.votes_a || 0) / total * 100).toFixed(1) : 50;
-                  const pctB = total > 0 ? ((mostControversialDilemma.votes_b || 0) / total * 100).toFixed(1) : 50;
+                  const total = (mostControversialDilemma.votes_a_count || 0) + (mostControversialDilemma.votes_b_count || 0);
+                  const pctA = total > 0 ? ((mostControversialDilemma.votes_a_count || 0) / total * 100).toFixed(1) : 50;
+                  const pctB = total > 0 ? ((mostControversialDilemma.votes_b_count || 0) / total * 100).toFixed(1) : 50;
                   return (
                     <div>
-                      <p style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', lineHeight: 1.4 }}>{mostControversialDilemma.question}</p>
+                      <p style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', lineHeight: 1.4 }}>{mostControversialDilemma.question_text}</p>
                       <div style={s.voteBar}>
                         <div style={{ ...s.voteBarA, width: `${pctA}%` }} />
                         <div style={{ ...s.voteBarB, width: `${pctB}%` }} />
@@ -1201,8 +1200,8 @@ export default function AdminScreen() {
               <div style={s.emptyState}>No dilemmas found for this filter.</div>
             ) : (
               filteredDilemmas.map(d => {
-                const totalVotes = (d.votes_a || 0) + (d.votes_b || 0);
-                const pctA = totalVotes > 0 ? ((d.votes_a || 0) / totalVotes) * 100 : 50;
+                const totalVotes = (d.votes_a_count || 0) + (d.votes_b_count || 0);
+                const pctA = totalVotes > 0 ? ((d.votes_a_count || 0) / totalVotes) * 100 : 50;
                 const isSelected = selectedDilemmas.has(d.id);
                 return (
                   <div key={d.id}
@@ -1235,9 +1234,9 @@ export default function AdminScreen() {
                           <div style={{ ...s.voteBarB, width: `${100 - pctA}%` }} />
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 11, color: C.textDim }}>
-                          <span>{d.votes_a} votes ({pctA.toFixed(0)}%)</span>
+                          <span>{d.votes_a_count} votes ({pctA.toFixed(0)}%)</span>
                           <span>{totalVotes} total</span>
-                          <span>{d.votes_b} votes ({(100 - pctA).toFixed(0)}%)</span>
+                          <span>{d.votes_b_count} votes ({(100 - pctA).toFixed(0)}%)</span>
                         </div>
                       </>
                     )}
