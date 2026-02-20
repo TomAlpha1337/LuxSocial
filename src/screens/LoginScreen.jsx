@@ -544,7 +544,8 @@ export default function LoginScreen() {
             appUser = { ...user, ...newProfile, authId: user.id, email: user.email || email };
           }
         }
-      } catch {
+      } catch (err) {
+        console.warn('[NCB]', err.message);
         console.warn('Could not verify/create user profile');
       }
 

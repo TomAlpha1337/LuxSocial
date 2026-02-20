@@ -292,7 +292,8 @@ export default function ProfileScreen() {
               const hasPending = Array.isArray(reqs) && reqs.some((r) => r.user_id === user.id);
               setFriendStatus(hasPending ? 'pending' : null);
             }
-          } catch {
+          } catch (err) {
+            console.warn('[NCB]', err.message);
             setFriendStatus(null);
           }
         }
@@ -435,9 +436,11 @@ export default function ProfileScreen() {
     try {
       await API.reports.create({
         reporter_id: user.id,
-        reported_id: userId,
+        reported_user_id: userId,
+        content_type: 'user',
+        content_id: userId,
         reason: 'user_report',
-        status: 'pending',
+        record_status: 'pending',
         created_at: new Date().toISOString(),
       });
       alert('Report submitted. Thank you.');

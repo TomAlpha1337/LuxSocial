@@ -166,7 +166,8 @@ export default function FriendsScreen() {
               try {
                 const u = await API.auth.getUser(friendId);
                 return { ...u, friendship_id: f.id };
-              } catch {
+              } catch (err) {
+                console.warn('[NCB]', err.message);
                 return { id: friendId, username: 'User', friendship_id: f.id, xp: 0, current_streak: 0 };
               }
             })
@@ -181,7 +182,8 @@ export default function FriendsScreen() {
               try {
                 const u = await API.auth.getUser(r.user_id);
                 return { ...r, username: u.username, avatar_url: u.avatar_url };
-              } catch {
+              } catch (err) {
+                console.warn('[NCB]', err.message);
                 return { ...r, username: 'User', avatar_url: null };
               }
             })
@@ -233,7 +235,8 @@ export default function FriendsScreen() {
         // Sort by XP descending so most active users show first
         suggestions.sort((a, b) => (b.xp || 0) - (a.xp || 0));
         if (!cancelled) setSuggestedUsers(suggestions.slice(0, 10));
-      } catch {
+      } catch (err) {
+        console.warn('[NCB]', err.message);
         if (!cancelled) setSuggestedUsers([]);
       }
       if (!cancelled) setSuggestedLoading(false);
@@ -268,7 +271,8 @@ export default function FriendsScreen() {
           (u.username || '').toLowerCase().includes(q)
         );
         setSearchResults(res);
-      } catch {
+      } catch (err) {
+        console.warn('[NCB]', err.message);
         setSearchResults([]);
       }
       setSearchLoading(false);

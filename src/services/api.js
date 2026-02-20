@@ -159,7 +159,7 @@ export const votes = {
 // ============================================================
 export const directDilemmas = {
   send: (data) => create('direct_dilemmas', data),
-  getInbox: (userId) => read('direct_dilemmas', `receiver_id=${userId}&record_record_status=pending`),
+  getInbox: (userId) => read('direct_dilemmas', `receiver_id=${userId}&record_status=pending`),
   getSent: (userId) => read('direct_dilemmas', `sender_id=${userId}`),
   answer: (id, data) => update('direct_dilemmas', id, data),
   getById: (id) => read('direct_dilemmas', `id=${id}`),
@@ -355,7 +355,7 @@ export const badges = {
 // SEASONS & EVENTS
 // ============================================================
 export const seasons = {
-  getActive: () => read('seasons', 'status=active'),
+  getActive: () => read('seasons', 'record_status=active'),
   getAll: () => read('seasons', 'limit=50'),
   create: (data) => create('seasons', data),
   update: (id, data) => update('seasons', id, data),
@@ -383,7 +383,7 @@ export const shares = {
 export const reports = {
   create: (data) => create('reports', data),
   getAll: () => read('reports'),
-  getPending: () => read('reports', 'record_record_status=pending'),
+  getPending: () => read('reports', 'record_status=pending'),
   update: (id, data) => update('reports', id, data),
 };
 

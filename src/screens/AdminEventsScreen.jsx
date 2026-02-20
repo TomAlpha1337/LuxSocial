@@ -272,10 +272,10 @@ export default function AdminEventsScreen() {
       }
       if (allEventsRes.status === 'fulfilled') {
         const data = Array.isArray(allEventsRes.value) ? allEventsRes.value : allEventsRes.value ? [allEventsRes.value] : [];
-        setEventsHistory(data.filter(e => e.status !== 'active' && e.record_status !== 'active'));
+        setEventsHistory(data.filter(e => e.record_status !== 'active'));
       }
-    } catch {
-      // silent
+    } catch (err) {
+      console.warn('[NCB] fetchData:', err.message);
     } finally {
       setLoading(false);
     }
@@ -289,7 +289,7 @@ export default function AdminEventsScreen() {
       showToast('Please fill in all season fields', 'error'); return;
     }
     const newSeason = {
-      id: 's_' + Date.now(), ...seasonForm, status: 'active',
+      id: 's_' + Date.now(), ...seasonForm, record_status: 'active',
       description: `A new competitive season: ${seasonForm.name}`,
     };
     try {
@@ -298,30 +298,30 @@ export default function AdminEventsScreen() {
       setShowSeasonForm(false);
       setSeasonForm({ name: '', start_date: '', end_date: '' });
       showToast('New season created');
-    } catch { showToast('Failed to create season', 'error'); }
+    } catch (err) { console.warn('[NCB] create season:', err.message); showToast('Failed to create season', 'error'); }
   };
 
   const handleCreateEvent = async () => {
     if (!eventForm.name.trim() || !eventForm.start_date || !eventForm.end_date) {
       showToast('Please fill in all event fields', 'error'); return;
     }
-    const newEvent = { id: 'e_' + Date.now(), ...eventForm, status: 'active', record_status: 'active' };
+    const newEvent = { id: 'e_' + Date.now(), ...eventForm, record_status: 'active' };
     try {
       const res = await API.events.create(newEvent);
       setEventsList(prev => [...prev, res || newEvent]);
       setShowEventForm(false);
       setEventForm({ name: '', type: 'xp_multiplier', multiplier: 2, start_date: '', end_date: '', category: '' });
       showToast('Event created');
-    } catch { showToast('Failed to create event', 'error'); }
+    } catch (err) { console.warn('[NCB] create event:', err.message); showToast('Failed to create event', 'error'); }
   };
 
   const handleEndEvent = async (event) => {
     try {
-      await API.events.update(event.id, { status: 'ended', record_status: 'ended' });
+      await API.events.update(event.id, { record_status: 'ended' });
       setEventsList(prev => prev.filter(e => e.id !== event.id));
-      setEventsHistory(prev => [...prev, { ...event, status: 'ended' }]);
+      setEventsHistory(prev => [...prev, { ...event, record_status: 'ended' }]);
       showToast('Event ended');
-    } catch { showToast('Failed to end event', 'error'); }
+    } catch (err) { console.warn('[NCB] end event:', err.message); showToast('Failed to end event', 'error'); }
   };
 
   // ── Access check ───────────────────────────────────────
@@ -403,7 +403,7 @@ export default function AdminEventsScreen() {
                       <p style={{ fontSize: 13, color: C.textMuted, margin: 0 }}>{currentSeason.description}</p>
                     </div>
                     <span style={{ ...s.badge, ...s.badgeActive, fontSize: 12, padding: '6px 14px' }}>
-                      {currentSeason.status?.toUpperCase() || 'ACTIVE'}
+                      {(currentSeason.record_status || currentSeason.status || 'active').toUpperCase()}
                     </span>
                   </div>
                   <div style={{ display: 'flex', gap: 24, marginTop: 16 }}>
@@ -574,7 +574,7 @@ export default function AdminEventsScreen() {
                       <span style={{ ...s.badge, background: evtType.color + '22', color: evtType.color }}>{evtType.label}</span>
                       {event.multiplier > 1 && <span style={{ ...s.badge, ...s.badgeFeatured }}>{event.multiplier}x</span>}
                       {event.category && <span style={{ ...s.badge, ...s.badgeCategory }}>{event.category}</span>}
-                      <span style={{ ...s.badge, ...s.badgeActive }}>{event.status}</span>
+                      <span style={{ ...s.badge, ...s.badgeActive }}>{event.record_status || event.status}</span>
                       <button style={s.btnDanger} onClick={() => handleEndEvent(event)}><Power size={13} /> End</button>
                     </div>
                   </div>

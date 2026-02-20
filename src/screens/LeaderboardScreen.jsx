@@ -400,7 +400,8 @@ export default function LeaderboardScreen() {
       }
 
       setEntries(rows.sort((a, b) => (b.points || 0) - (a.points || 0)));
-    } catch {
+    } catch (err) {
+      console.warn('[NCB]', err.message);
       setEntries([]);
     } finally {
       setLoading(false);

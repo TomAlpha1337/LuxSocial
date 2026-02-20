@@ -1,10 +1,10 @@
 {
   "mcpServers": {
     "nocodebackend": {
-      "command": "node",
-      "args": ["mcp-server.js"],
+      "command": "npx",
+      "args": ["@nocodebackend/mcp"],
       "env": {
-        "NCB_INSTANCE": "53058_luxsocial"
+        "NCB_TOKEN": "ncb_8bb785d0f6f3c17ce43caee59c4e819835b9e029f0967517"
       }
     }
   }

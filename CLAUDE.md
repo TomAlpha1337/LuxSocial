@@ -22,7 +22,7 @@ No test framework is configured. There are no test commands.
 ### Key Layers
 
 - **`src/services/api.js`** — Single API module exporting 20+ namespaced objects (`auth`, `dilemmas`, `votes`, `friendships`, etc.) with CRUD helpers. Generic `request()` wrapper handles NCB response format `{ status, data }`. Uses `safeRead()` for tables that may not exist yet.
-- **`src/context/AuthContext.jsx`** — App-wide user state via React Context. Handles session bootstrap, localStorage caching (with background API refresh to keep fields like `role` current), daily login bonus calculation, streak tracking, and energy system state. Access via `useAuth()` hook. Exposes `energy`, `spendEnergy(amount)`, and `refillEnergy()`.
+- **`src/context/AuthContext.jsx`** — App-wide user state via React Context. Bootstraps from NCB session on every load (no localStorage). Handles daily login bonus, streak tracking, and energy system. Access via `useAuth()` hook. Exposes `energy`, `spendEnergy(amount)`, and `refillEnergy()`.
 - **`src/utils/constants.js`** — Game configuration: point values, XP levels (20 tiers), badge definitions, streak milestones, daily bonus schedule, energy system constants. These are fallback values; some may be overridden by NCB tables.
 - **`src/utils/energy.js`** — Pure helper functions for the energy system: `calculateEnergy(current, lastUpdate, max)` computes real-time energy based on elapsed time, `timeUntilNextEnergy(current, lastUpdate, max)` returns ms until next regen tick.
 - **`src/hooks/useAchievements.js`** — Badge/achievement checking logic, called after votes to evaluate unlock conditions.
@@ -57,9 +57,9 @@ The largest/most complex screens: `PlayScreen.jsx` (core game loop), `ProfileScr
 
 **React hooks ordering**: Hooks MUST be called before any early returns (`if (loading) return ...`). ProfileScreen had a production crash from this — always place `useMemo`/`useEffect` before conditional returns.
 
-**API error handling**: Most API calls use `.catch(() => {})` (silent). An `ErrorBoundary` component wraps the app for crash recovery, but individual API failures don't show user-facing errors yet.
+**API error handling**: All API `.catch()` blocks log warnings with `[NCB]` prefix (e.g., `console.warn('[NCB] ...', err.message)`). Never use silent `.catch(() => {})` — always log the error. An `ErrorBoundary` component wraps the app for crash recovery, but individual API failures don't show user-facing errors yet.
 
-**Auth data freshness**: `AuthContext` caches user data in localStorage. On bootstrap, it always refreshes the profile from the API to pick up fields that may have been added after the cache was written (e.g., `role`).
+**Auth data freshness**: `AuthContext` has NO localStorage — it bootstraps entirely from NCB on every page load via `getSession()` + `refreshProfile()`. This ensures fields like `role` are always current.
 
 **Cloudinary uploads**: Profile photos use unsigned uploads via `src/services/cloudinary.js`. Requires an upload preset named `social_dilemmas` (unsigned) configured in the Cloudinary dashboard. Cloud name and preset come from `VITE_CLOUDINARY_*` env vars.
 
@@ -81,7 +81,7 @@ The largest/most complex screens: `PlayScreen.jsx` (core game loop), `ProfileScr
 
 **Badge field name compatibility**: `useAchievements.js` writes badges with BOTH field name formats (`badge_icon` + `icon`, `badge_color` + `color`, `badge_name` + `label`, etc.) because `ProfileScreen.jsx` reads the short names. Always use fallback chains when reading badge data: `badge.icon || badge.badge_icon`, `badge.color || badge.badge_color`, `badge.label || badge.badge_name`.
 
-**Energy system**: Replaces the old daily play limit. Users have max 100 energy (`ENERGY_MAX`), spend 10 per dilemma (`ENERGY_PER_PLAY`), and regenerate +10/hour (`ENERGY_REGEN_PER_HOUR`). Energy is computed in real time from `energy_current` and `energy_last_update` fields on the user profile. `AuthContext` ticks regen every 60 seconds via interval. `spendEnergy()` deducts and persists to DB + localStorage. `refillEnergy()` is a test-only reset to max. PlayScreen gates `handleChoice()` on sufficient energy and shows a "Not Enough Energy" modal when depleted.
+**Energy system**: Replaces the old daily play limit. Users have max 100 energy (`ENERGY_MAX`), spend 10 per dilemma (`ENERGY_PER_PLAY`), and regenerate +10/hour (`ENERGY_REGEN_PER_HOUR`). Energy is computed in real time from `energy_current` (INT, default 100) and `energy_last_update` (VARCHAR) fields on the `users` table. `AuthContext` ticks regen every 60 seconds via interval. `spendEnergy()` deducts and persists to DB only (no localStorage). `refillEnergy()` is a test-only reset to max. PlayScreen gates `handleChoice()` on sufficient energy and shows a "Not Enough Energy" modal when depleted.
 
 **Seasons**: Managed via Admin > Events tab. Only one season should be `active` at a time. The `leaderboards` table stores entries with `period_type=season` and `period_key=season-{id}`. The "All Time" leaderboard reads directly from the `users` table instead.
 
@@ -167,7 +167,7 @@ Full schema documented in **`NOCODEBACKEND_SCHEMA.md`** (985 lines). Key tables:
 | `dilemmas` | Questions with option_a/option_b text |
 | `votes` | User answers: links user_id → dilemma_id with chosen option |
 | `xp_transactions` | XP ledger: every point gain/spend with source + amount |
-| `friendships` | Friend requests/connections with status field |
+| `friendships` | Friend requests/connections (`record_status`: pending/accepted/rejected) |
 | `achievements` | Unlocked badges per user |
 | `streaks` | Daily login streak tracking |
 | `streak_freezes` | Freeze tokens to protect streaks |
@@ -204,28 +204,26 @@ Notable specialized methods:
 
 ## MCP Server (Model Context Protocol)
 
-A custom MCP server (`mcp-server.js`) wraps the NCB Data API and exposes 7 database tools to AI assistants. Configured in `.mcp.json` — Claude Code auto-detects it on startup.
+The **official** `@nocodebackend/mcp` package provides full database access including schema management. Configured in `.mcp.json` — Claude Code auto-detects it on startup.
 
-**Tools available**: `list_tables`, `read_records`, `create_record`, `update_record`, `delete_record`, `count_records`, `describe_table`
+**Tools available**: `login`, `list_databases`, `create_database`, `get_schema`, `get_swagger`, `execute_sql`, `get_integration_guide`, `get_integration_prompts`, `set_rls_policy`
 
 Configuration (`.mcp.json`):
 ```json
 {
   "mcpServers": {
     "nocodebackend": {
-      "command": "node",
-      "args": ["mcp-server.js"],
-      "env": { "NCB_INSTANCE": "53058_luxsocial" }
+      "command": "npx",
+      "args": ["@nocodebackend/mcp"],
+      "env": { "NCB_TOKEN": "<your-api-token>" }
     }
   }
 }
 ```
 
-For full setup guide (including how to use this with new projects), see **`NOCODEBACKEND_MCP_GUIDE.md`**.
+**Key tool — `execute_sql`**: Runs raw SQL (SELECT, ALTER TABLE, CREATE INDEX, etc.) against the database. Use this for schema changes (adding columns/tables) that can't be done via the Data API. Always call `login` first with the token.
 
-**MCP caveat**: The `count_records` tool hits NCB's default 10-row page limit and may undercount. For accurate counts, use `read_records` with `limit=2000` and count client-side, or query via the Vite proxy directly.
-
-**MCP writes require auth**: The MCP server uses public API access (no auth cookies). It can read and create records, but cannot update or delete (NCB returns 403). For write operations, use the Vite proxy with authenticated session cookies (see `seed_questions.mjs` for an example pattern).
+**Legacy custom MCP server**: `mcp-server.js` (still in repo) wraps the NCB Data API with 7 CRUD tools. It uses public API access — can read and create but cannot update or delete (403). The official `@nocodebackend/mcp` is preferred.
 
 ## Seed Scripts
 

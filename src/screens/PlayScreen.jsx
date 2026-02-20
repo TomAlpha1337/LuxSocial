@@ -787,7 +787,8 @@ export default function PlayScreen() {
         }
 
         setDilemmasList(unanswered);
-      } catch {
+      } catch (err) {
+        console.warn('[NCB]', err.message);
         setDilemmasList([]);
       } finally {
         setLoading(false);
@@ -985,13 +986,14 @@ export default function PlayScreen() {
       created_at: new Date().toISOString(),
     }).catch((err) => console.warn('[NCB] featured activity:', err.message));
 
-    // Record featured tracking (no user_id)
+    // Record featured tracking
     const todayStr = new Date().toISOString().slice(0, 10);
     featuredTracking.record({
+      user_id: user.id,
       tracking_date: todayStr,
       dilemma_id: featuredDilemma.id,
       chosen_option: option,
-    }).catch((err) => console.warn('Featured tracking failed:', err.message));
+    }).catch((err) => console.warn('[NCB] Featured tracking failed:', err.message));
 
     // Award 2x XP for featured question
     const featuredXp = Math.round(POINTS.answer_dilemma * FEATURED_XP_MULTIPLIER * eventMultiplier);

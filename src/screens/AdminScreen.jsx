@@ -465,12 +465,12 @@ export default function AdminScreen() {
   // Filtered & sorted dilemmas
   const filteredDilemmas = useMemo(() => {
     let list = [...dilemmaList];
-    if (dilemmaFilter !== 'all') list = list.filter(d => d.status === dilemmaFilter);
+    if (dilemmaFilter !== 'all') list = list.filter(d => d.record_status === dilemmaFilter);
     if (dilemmaCategoryFilter !== 'all') list = list.filter(d => d.category === dilemmaCategoryFilter);
     if (dilemmaSearch.trim()) {
       const q = dilemmaSearch.toLowerCase();
       list = list.filter(d =>
-        (d.question || '').toLowerCase().includes(q) ||
+        (d.question_text || d.question || '').toLowerCase().includes(q) ||
         (d.option_a || '').toLowerCase().includes(q) ||
         (d.option_b || '').toLowerCase().includes(q)
       );
@@ -585,14 +585,15 @@ export default function AdminScreen() {
       }
       if (allEventsRes.status === 'fulfilled') {
         const data = Array.isArray(allEventsRes.value) ? allEventsRes.value : allEventsRes.value ? [allEventsRes.value] : [];
-        setEventsHistory(data.filter(e => e.status !== 'active' && e.record_status !== 'active'));
+        setEventsHistory(data.filter(e => e.record_status !== 'active' && e.record_status !== 'active'));
       }
       if (statsRes.status !== 'fulfilled' && dilemmasRes.status === 'fulfilled') {
         const dilemmaData = Array.isArray(dilemmasRes.value) ? dilemmasRes.value : [];
         setStats(prev => ({ ...prev, totalDilemmas: dilemmaData.length }));
       }
       showToast('Data refreshed successfully');
-    } catch {
+    } catch (err) {
+      console.warn('[NCB] refresh data:', err.message);
       showToast('Failed to refresh data', 'error');
     } finally {
       setLoadingStats(false);
@@ -608,10 +609,14 @@ export default function AdminScreen() {
       showToast('Please fill in all required fields', 'error'); return;
     }
     const newDilemma = {
-      id: 'd_' + Date.now(), ...dilemmaForm,
+      id: 'd_' + Date.now(),
+      question_text: dilemmaForm.question.trim(),
+      option_a: dilemmaForm.option_a.trim(),
+      option_b: dilemmaForm.option_b.trim(),
+      category: dilemmaForm.category,
       is_mystery: dilemmaForm.is_mystery ? 1 : 0,
       is_featured: dilemmaForm.is_featured ? 1 : 0,
-      status: 'active', votes_a: 0, votes_b: 0, created_at: new Date().toISOString(),
+      record_status: 'active', votes_a: 0, votes_b: 0, created_at: new Date().toISOString(),
     };
     try {
       const res = await API.dilemmas.create(newDilemma);
@@ -619,27 +624,27 @@ export default function AdminScreen() {
       setDilemmaForm({ question: '', option_a: '', option_b: '', category: 'lifestyle', is_mystery: false, is_featured: false });
       setShowCreateForm(false);
       showToast('Dilemma created successfully');
-    } catch { showToast('Failed to create dilemma', 'error'); }
+    } catch (err) { console.warn('[NCB] create dilemma:', err.message); showToast('Failed to create dilemma', 'error'); }
   };
 
   const handleUpdateDilemma = async () => {
     if (!editingDilemma) return;
-    const updated = { ...editingDilemma, ...dilemmaForm, is_mystery: dilemmaForm.is_mystery ? 1 : 0, is_featured: dilemmaForm.is_featured ? 1 : 0 };
+    const updated = { ...editingDilemma, question_text: dilemmaForm.question.trim(), option_a: dilemmaForm.option_a.trim(), option_b: dilemmaForm.option_b.trim(), category: dilemmaForm.category, is_mystery: dilemmaForm.is_mystery ? 1 : 0, is_featured: dilemmaForm.is_featured ? 1 : 0 };
     try {
       await API.dilemmas.update(editingDilemma.id, updated);
       setDilemmaList(prev => prev.map(d => d.id === editingDilemma.id ? updated : d));
       setEditingDilemma(null);
       setDilemmaForm({ question: '', option_a: '', option_b: '', category: 'lifestyle', is_mystery: false, is_featured: false });
       showToast('Dilemma updated successfully');
-    } catch { showToast('Failed to update dilemma', 'error'); }
+    } catch (err) { console.warn('[NCB] update dilemma:', err.message); showToast('Failed to update dilemma', 'error'); }
   };
 
   const handleDeleteDilemma = async (dilemma) => {
     try {
       await API.dilemmas.delete(dilemma.id);
-      setDilemmaList(prev => prev.map(d => d.id === dilemma.id ? { ...d, status: 'deleted' } : d));
+      setDilemmaList(prev => prev.map(d => d.id === dilemma.id ? { ...d, record_status: 'deleted' } : d));
       showToast('Dilemma deleted');
-    } catch { showToast('Failed to delete dilemma', 'error'); }
+    } catch (err) { console.warn('[NCB] delete dilemma:', err.message); showToast('Failed to delete dilemma', 'error'); }
   };
 
   const handleToggleFeatured = async (dilemma) => {
@@ -648,7 +653,7 @@ export default function AdminScreen() {
       await API.dilemmas.update(dilemma.id, { is_featured: newVal });
       setDilemmaList(prev => prev.map(d => d.id === dilemma.id ? { ...d, is_featured: newVal } : d));
       showToast(newVal ? 'Dilemma featured' : 'Dilemma unfeatured');
-    } catch { showToast('Failed to update dilemma', 'error'); }
+    } catch (err) { console.warn('[NCB] toggle featured:', err.message); showToast('Failed to update dilemma', 'error'); }
   };
 
   const handleFeatureAsQOTD = async (dilemma) => {
@@ -659,16 +664,16 @@ export default function AdminScreen() {
       await API.dilemmas.update(dilemma.id, { is_featured: 1 });
       setDilemmaList(prev => prev.map(d => d.id === dilemma.id ? { ...d, is_featured: 1 } : { ...d, is_featured: 0 }));
       showToast('Set as Question of the Day!');
-    } catch { showToast('Failed to set QOTD', 'error'); }
+    } catch (err) { console.warn('[NCB] set QOTD:', err.message); showToast('Failed to set QOTD', 'error'); }
   };
 
   const handleToggleActive = async (dilemma) => {
-    const newStatus = dilemma.status === 'active' ? 'inactive' : 'active';
+    const newStatus = dilemma.record_status === 'active' ? 'inactive' : 'active';
     try {
-      await API.dilemmas.update(dilemma.id, { status: newStatus });
-      setDilemmaList(prev => prev.map(d => d.id === dilemma.id ? { ...d, status: newStatus } : d));
+      await API.dilemmas.update(dilemma.id, { record_status: newStatus });
+      setDilemmaList(prev => prev.map(d => d.id === dilemma.id ? { ...d, record_status: newStatus } : d));
       showToast(`Dilemma ${newStatus === 'active' ? 'activated' : 'deactivated'}`);
-    } catch { showToast('Failed to toggle status', 'error'); }
+    } catch (err) { console.warn('[NCB] toggle active:', err.message); showToast('Failed to toggle status', 'error'); }
   };
 
   // Bulk actions
@@ -681,54 +686,54 @@ export default function AdminScreen() {
       setDilemmaList(prev => prev.map(d => ids.includes(d.id) ? { ...d, is_featured: 1 } : { ...d, is_featured: 0 }));
       setSelectedDilemmas(new Set());
       showToast(`${ids.length} dilemma(s) featured`);
-    } catch { showToast('Bulk feature failed', 'error'); }
+    } catch (err) { console.warn('[NCB] bulk feature:', err.message); showToast('Bulk feature failed', 'error'); }
   };
 
   const handleBulkDeactivate = async () => {
     if (selectedDilemmas.size === 0) return;
     try {
       const ids = [...selectedDilemmas];
-      await Promise.all(ids.map(id => API.dilemmas.update(id, { status: 'inactive' })));
-      setDilemmaList(prev => prev.map(d => ids.includes(d.id) ? { ...d, status: 'inactive' } : d));
+      await Promise.all(ids.map(id => API.dilemmas.update(id, { record_status: 'inactive' })));
+      setDilemmaList(prev => prev.map(d => ids.includes(d.id) ? { ...d, record_status: 'inactive' } : d));
       setSelectedDilemmas(new Set());
       showToast(`${ids.length} dilemma(s) deactivated`);
-    } catch { showToast('Bulk deactivate failed', 'error'); }
+    } catch (err) { console.warn('[NCB] bulk deactivate:', err.message); showToast('Bulk deactivate failed', 'error'); }
   };
 
   // Report actions
   const handleDismissReport = async (report) => {
     try {
-      await API.reports.update(report.id, { status: 'dismissed' });
+      await API.reports.update(report.id, { record_status: 'dismissed' });
       setReportsList(prev => prev.filter(r => r.id !== report.id));
       showToast('Report dismissed');
-    } catch { showToast('Failed to dismiss report', 'error'); }
+    } catch (err) { console.warn('[NCB] dismiss report:', err.message); showToast('Failed to dismiss report', 'error'); }
   };
 
   const handleWarnUser = async (report) => {
     try {
-      await API.reports.update(report.id, { status: 'warned' });
+      await API.reports.update(report.id, { record_status: 'warned' });
       setReportsList(prev => prev.filter(r => r.id !== report.id));
       showToast(`Warning sent to ${report.reported_username}`);
-    } catch { showToast('Failed to warn user', 'error'); }
+    } catch (err) { console.warn('[NCB] warn user:', err.message); showToast('Failed to warn user', 'error'); }
   };
 
   const handleBanUser = async (report) => {
     try {
-      await API.reports.update(report.id, { status: 'banned' });
+      await API.reports.update(report.id, { record_status: 'banned' });
       setBannedList(prev => [...prev, {
         id: 'b_' + Date.now(), report_id: report.id,
         username: report.reported_username, banned_at: new Date().toISOString(), reason: report.reason,
       }]);
       setReportsList(prev => prev.filter(r => r.id !== report.id));
       showToast(`${report.reported_username} has been banned`, 'error');
-    } catch { showToast('Failed to ban user', 'error'); }
+    } catch (err) { console.warn('[NCB] ban user:', err.message); showToast('Failed to ban user', 'error'); }
   };
 
   const handleUnbanUser = async (banned) => {
     try {
-      if (banned.report_id) await API.reports.update(banned.report_id, { status: 'unbanned' });
+      if (banned.report_id) await API.reports.update(banned.report_id, { record_status: 'unbanned' });
       if (banned.user_id) await API.admin.unbanUser(banned.user_id);
-    } catch (err) { console.error('Unban API error:', err); }
+    } catch (err) { console.warn('[NCB] unban user:', err.message); }
     setBannedList(prev => prev.filter(b => b.id !== banned.id));
     showToast(`${banned.username} has been unbanned`);
   };
@@ -740,7 +745,7 @@ export default function AdminScreen() {
       setAllUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_banned: 1 } : x));
       setBannedList(prev => [...prev, { id: 'b_' + Date.now(), user_id: u.id, username: u.username, banned_at: new Date().toISOString(), reason: 'Admin action' }]);
       showToast(`${u.username} has been banned`, 'error');
-    } catch { showToast('Failed to ban user', 'error'); }
+    } catch (err) { console.warn('[NCB] ban user direct:', err.message); showToast('Failed to ban user', 'error'); }
   };
 
   const handleUnbanUserDirect = async (u) => {
@@ -749,7 +754,7 @@ export default function AdminScreen() {
       setAllUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_banned: 0 } : x));
       setBannedList(prev => prev.filter(b => b.user_id !== u.id && b.username !== u.username));
       showToast(`${u.username} has been unbanned`);
-    } catch { showToast('Failed to unban user', 'error'); }
+    } catch (err) { console.warn('[NCB] unban user direct:', err.message); showToast('Failed to unban user', 'error'); }
   };
 
   const handleGiveXP = async (u) => {
@@ -758,7 +763,7 @@ export default function AdminScreen() {
       await API.admin.giveXP(u.id, u.xp || 0, bonusXPAmount);
       setAllUsers(prev => prev.map(x => x.id === u.id ? { ...x, xp: (x.xp || 0) + bonusXPAmount } : x));
       showToast(`Gave ${bonusXPAmount} XP to ${u.username}`);
-    } catch { showToast('Failed to give XP', 'error'); }
+    } catch (err) { console.warn('[NCB] give XP:', err.message); showToast('Failed to give XP', 'error'); }
   };
 
   const handleViewUserActivity = async (u) => {
@@ -766,7 +771,7 @@ export default function AdminScreen() {
     try {
       const votes = await API.votes.getByUser(u.id);
       setSelectedUserVotes(Array.isArray(votes) ? votes : votes ? [votes] : []);
-    } catch { setSelectedUserVotes([]); }
+    } catch (err) { console.warn('[NCB] view user activity:', err.message); setSelectedUserVotes([]); }
   };
 
   // Season & event actions
@@ -779,51 +784,51 @@ export default function AdminScreen() {
         name: seasonForm.name,
         start_date: seasonForm.start_date,
         end_date: seasonForm.end_date,
-        status: 'active',
+        record_status: 'active',
         created_at: new Date().toISOString(),
       });
-      setCurrentSeason(res || { ...seasonForm, status: 'active' });
+      setCurrentSeason(res || { ...seasonForm, record_status: 'active' });
       setShowSeasonForm(false);
       setSeasonForm({ name: '', start_date: '', end_date: '' });
       showToast('New season created');
-    } catch { showToast('Failed to create season', 'error'); }
+    } catch (err) { console.warn('[NCB] create season:', err.message); showToast('Failed to create season', 'error'); }
   };
 
   const handleEndSeason = async () => {
     if (!currentSeason?.id) return;
     try {
-      await API.seasons.update(currentSeason.id, { status: 'completed' });
+      await API.seasons.update(currentSeason.id, { record_status: 'completed' });
       showToast('Season ended');
       setCurrentSeason(null);
-    } catch { showToast('Failed to end season', 'error'); }
+    } catch (err) { console.warn('[NCB] end season:', err.message); showToast('Failed to end season', 'error'); }
   };
 
   const handleCreateEvent = async () => {
     if (!eventForm.name.trim() || !eventForm.start_date || !eventForm.end_date) {
       showToast('Please fill in all event fields', 'error'); return;
     }
-    const newEvent = { id: 'e_' + Date.now(), ...eventForm, status: 'active' };
+    const newEvent = { id: 'e_' + Date.now(), ...eventForm, record_status: 'active' };
     try {
       const res = await API.events.create(newEvent);
       setEventsList(prev => [...prev, res || newEvent]);
       setShowEventForm(false);
       setEventForm({ name: '', type: 'xp_multiplier', multiplier: 2, start_date: '', end_date: '', category: '' });
       showToast('Event created');
-    } catch { showToast('Failed to create event', 'error'); }
+    } catch (err) { console.warn('[NCB] create event:', err.message); showToast('Failed to create event', 'error'); }
   };
 
   const handleEndEvent = async (event) => {
     try {
-      await API.events.update(event.id, { status: 'ended', record_status: 'ended' });
+      await API.events.update(event.id, { record_status: 'ended' });
       setEventsList(prev => prev.filter(e => e.id !== event.id));
-      setEventsHistory(prev => [...prev, { ...event, status: 'ended' }]);
+      setEventsHistory(prev => [...prev, { ...event, record_status: 'ended' }]);
       showToast('Event ended');
-    } catch { showToast('Failed to end event', 'error'); }
+    } catch (err) { console.warn('[NCB] end event:', err.message); showToast('Failed to end event', 'error'); }
   };
 
   const startEditDilemma = (d) => {
     setEditingDilemma(d);
-    setDilemmaForm({ question: d.question, option_a: d.option_a, option_b: d.option_b, category: d.category, is_mystery: !!d.is_mystery, is_featured: !!d.is_featured });
+    setDilemmaForm({ question: d.question_text || d.question, option_a: d.option_a, option_b: d.option_b, category: d.category, is_mystery: !!d.is_mystery, is_featured: !!d.is_featured });
     setShowCreateForm(true);
   };
 
@@ -1048,8 +1053,8 @@ export default function AdminScreen() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
                 {[
                   { label: 'Pending Reports', value: reportsList.length.toString(), change: reportsList.length > 5 ? 'High' : 'Normal', up: reportsList.length <= 5 },
-                  { label: 'Active Events', value: eventsList.filter(e => e.status === 'active').length.toString(), change: 'Running', up: true },
-                  { label: 'Total Dilemmas', value: dilemmaList.length.toString(), change: dilemmaList.filter(d => d.status === 'active').length + ' active', up: true },
+                  { label: 'Active Events', value: eventsList.filter(e => e.record_status === 'active').length.toString(), change: 'Running', up: true },
+                  { label: 'Total Dilemmas', value: dilemmaList.length.toString(), change: dilemmaList.filter(d => d.record_status === 'active').length + ' active', up: true },
                   { label: 'Banned Users', value: bannedList.length.toString(), change: bannedList.length > 0 ? 'Enforced' : 'None', up: bannedList.length === 0 },
                 ].map(({ label, value, change, up }) => (
                   <div key={label} style={{ padding: '14px 16px', background: 'rgba(255,255,255,0.02)', borderRadius: 12, border: `1px solid ${C.border}` }}>
@@ -1155,7 +1160,7 @@ export default function AdminScreen() {
                   <button key={f} style={{ ...s.filterBtn, ...(dilemmaFilter === f ? s.filterBtnActive : {}) }}
                     onClick={() => setDilemmaFilter(f)}>
                     {f.charAt(0).toUpperCase() + f.slice(1)}
-                    {f !== 'all' && <span style={{ marginLeft: 4, opacity: 0.6 }}>({dilemmaList.filter(d => d.status === f).length})</span>}
+                    {f !== 'all' && <span style={{ marginLeft: 4, opacity: 0.6 }}>({dilemmaList.filter(d => d.record_status === f).length})</span>}
                   </button>
                 ))}
                 <span style={{ color: C.textDim, margin: '0 4px' }}>|</span>
@@ -1209,11 +1214,11 @@ export default function AdminScreen() {
                       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, flex: 1 }}>
                         <input type="checkbox" style={{ ...s.checkbox, marginTop: 3 }} checked={isSelected}
                           onChange={() => toggleSelectDilemma(d.id)} />
-                        <p style={{ fontSize: 15, fontWeight: 600, margin: 0, flex: 1, paddingRight: 12, lineHeight: 1.4 }}>{d.question}</p>
+                        <p style={{ fontSize: 15, fontWeight: 600, margin: 0, flex: 1, paddingRight: 12, lineHeight: 1.4 }}>{d.question_text || d.question}</p>
                       </div>
                       <div style={s.flexRow}>
                         <span style={{ ...s.badge, ...s.badgeCategory }}>{d.category}</span>
-                        <span style={{ ...s.badge, ...(d.status === 'active' ? s.badgeActive : d.status === 'inactive' ? s.badgeInactive : s.badgeDeleted) }}>{d.status}</span>
+                        <span style={{ ...s.badge, ...(d.record_status === 'active' ? s.badgeActive : d.record_status === 'inactive' ? s.badgeInactive : s.badgeDeleted) }}>{d.record_status}</span>
                         {!!d.is_featured && <span style={{ ...s.badge, ...s.badgeFeatured }}>QOTD</span>}
                         {!!d.is_mystery && <span style={{ ...s.badge, ...s.badgeMystery }}>Mystery</span>}
                       </div>
@@ -1242,12 +1247,12 @@ export default function AdminScreen() {
                         onMouseLeave={e => { e.currentTarget.style.color = C.textMuted; e.currentTarget.style.borderColor = C.border; }}>
                         <Edit3 size={13} /> Edit
                       </button>
-                      <button style={d.status === 'active' ? s.btnWarning : s.btnSuccess} onClick={() => handleToggleActive(d)}>
-                        {d.status === 'active' ? <EyeOff size={13} /> : <Eye size={13} />}
-                        {d.status === 'active' ? 'Deactivate' : 'Activate'}
+                      <button style={d.record_status === 'active' ? s.btnWarning : s.btnSuccess} onClick={() => handleToggleActive(d)}>
+                        {d.record_status === 'active' ? <EyeOff size={13} /> : <Eye size={13} />}
+                        {d.record_status === 'active' ? 'Deactivate' : 'Activate'}
                       </button>
                       <button style={s.btnCyan} onClick={() => handleFeatureAsQOTD(d)}><Crown size={13} /> Set as QOTD</button>
-                      {d.status !== 'deleted' && (
+                      {d.record_status !== 'deleted' && (
                         <button style={s.btnDanger} onClick={() => handleDeleteDilemma(d)}><Trash2 size={13} /> Delete</button>
                       )}
                       <button style={d.is_featured ? s.btnWarning : s.btnSuccess} onClick={() => handleToggleFeatured(d)}>
@@ -1284,7 +1289,7 @@ export default function AdminScreen() {
                         <p style={{ fontSize: 13, color: C.textMuted, margin: 0 }}>{currentSeason.description}</p>
                       </div>
                       <span style={{ ...s.badge, ...s.badgeActive, fontSize: 12, padding: '6px 14px' }}>
-                        {currentSeason.status?.toUpperCase() || 'ACTIVE'}
+                        {(currentSeason.record_status || 'active').toUpperCase()}
                       </span>
                     </div>
                     <div style={{ display: 'flex', gap: 24, marginTop: 16 }}>
@@ -1468,7 +1473,7 @@ export default function AdminScreen() {
                       <span style={{ ...s.badge, background: evtType.color + '22', color: evtType.color }}>{evtType.label}</span>
                       {event.multiplier > 1 && <span style={{ ...s.badge, ...s.badgeFeatured }}>{event.multiplier}x</span>}
                       {event.category && <span style={{ ...s.badge, ...s.badgeCategory }}>{event.category}</span>}
-                      <span style={{ ...s.badge, ...s.badgeActive }}>{event.status}</span>
+                      <span style={{ ...s.badge, ...s.badgeActive }}>{event.record_status || event.status}</span>
                       <button style={s.btnDanger} onClick={() => handleEndEvent(event)}><Power size={13} /> End</button>
                     </div>
                   </div>
@@ -1665,7 +1670,7 @@ export default function AdminScreen() {
             {/* Flagged Dilemmas */}
             <h2 style={s.sectionTitle}><AlertTriangle size={20} color={C.red} /> Flagged Dilemmas</h2>
             {(() => {
-              const flagged = dilemmaList.filter(d => d.is_flagged || d.status === 'flagged');
+              const flagged = dilemmaList.filter(d => d.is_flagged || d.record_status === 'flagged');
               return flagged.length === 0 ? (
                 <div style={{ ...s.emptyState, ...s.chartCard }}>
                   <CheckCircle size={32} color={C.green} style={{ marginBottom: 12 }} />
@@ -1676,7 +1681,7 @@ export default function AdminScreen() {
                   <div key={d.id} style={s.listCard}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(239,68,68,0.3)'; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; }}>
-                    <p style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', lineHeight: 1.4 }}>{d.question}</p>
+                    <p style={{ fontSize: 14, fontWeight: 600, margin: '0 0 8px', lineHeight: 1.4 }}>{d.question_text || d.question}</p>
                     <div style={{ display: 'flex', gap: 16, fontSize: 12, color: C.textMuted }}>
                       <span style={{ color: C.gold }}>A: {d.option_a}</span>
                       <span style={{ color: C.purple }}>B: {d.option_b}</span>
@@ -1695,7 +1700,7 @@ export default function AdminScreen() {
             {/* User-Submitted Questions */}
             <h2 style={s.sectionTitle}><MessageSquare size={20} color={C.cyan} /> User-Submitted Questions</h2>
             {(() => {
-              const pending = dilemmaList.filter(d => d.status === 'pending' || d.submitted_by);
+              const pending = dilemmaList.filter(d => d.record_status === 'pending' || d.submitted_by);
               return pending.length === 0 ? (
                 <div style={{ ...s.emptyState, ...s.chartCard }}>
                   <p style={{ margin: 0 }}>No user-submitted questions awaiting review.</p>
@@ -1706,7 +1711,7 @@ export default function AdminScreen() {
                     onMouseEnter={e => { e.currentTarget.style.borderColor = C.cyanGlow; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; }}>
                     <div style={s.flexBetween}>
-                      <p style={{ fontSize: 14, fontWeight: 600, margin: 0, lineHeight: 1.4, flex: 1 }}>{d.question}</p>
+                      <p style={{ fontSize: 14, fontWeight: 600, margin: 0, lineHeight: 1.4, flex: 1 }}>{d.question_text || d.question}</p>
                       <span style={{ ...s.badge, ...s.badgePending }}>Pending</span>
                     </div>
                     <div style={{ display: 'flex', gap: 16, marginTop: 8, fontSize: 12, color: C.textMuted }}>
@@ -1719,10 +1724,10 @@ export default function AdminScreen() {
                     <div style={s.actionRow}>
                       <button style={s.btnSuccess} onClick={async () => {
                         try {
-                          await API.dilemmas.update(d.id, { status: 'active' });
-                          setDilemmaList(prev => prev.map(x => x.id === d.id ? { ...x, status: 'active' } : x));
+                          await API.dilemmas.update(d.id, { record_status: 'active' });
+                          setDilemmaList(prev => prev.map(x => x.id === d.id ? { ...x, record_status: 'active' } : x));
                           showToast('Question approved');
-                        } catch { showToast('Failed to approve', 'error'); }
+                        } catch (err) { console.warn('[NCB] approve dilemma:', err.message); showToast('Failed to approve', 'error'); }
                       }}><CheckCircle size={13} /> Approve</button>
                       <button style={s.btnDanger} onClick={() => handleDeleteDilemma(d)}><Trash2 size={13} /> Reject</button>
                       <button style={s.btnSmall} onClick={() => startEditDilemma(d)}><Edit3 size={13} /> Edit & Approve</button>

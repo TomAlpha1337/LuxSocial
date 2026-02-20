@@ -438,7 +438,8 @@ export default function NotificationsScreen() {
       const res = await notificationsApi.getAll(userId);
       const data = Array.isArray(res) ? res : res ? [res] : [];
       setItems(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
-    } catch {
+    } catch (err) {
+      console.warn('[NCB]', err.message);
       setItems([]);
     } finally {
       setLoading(false);

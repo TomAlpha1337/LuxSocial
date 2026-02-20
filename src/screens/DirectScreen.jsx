@@ -679,11 +679,12 @@ export default function DirectScreen() {
           try {
             const u = await authApi.getUser(friendId);
             return u ? { ...u, friendship_id: f.id } : null;
-          } catch { return null; }
+          } catch (err) { console.warn('[NCB]', err.message); return null; }
         })
       );
       setFriends(enriched.filter(Boolean));
-    } catch {
+    } catch (err) {
+      console.warn('[NCB]', err.message);
       setInbox([]);
       setSent([]);
       setFriends([]);
@@ -695,7 +696,7 @@ export default function DirectScreen() {
   function handleAnswer(dilemmaId, choice) {
     setInbox((prev) =>
       prev.map((d) =>
-        d.id === dilemmaId ? { ...d, status: 'answered', receiver_choice: choice } : d
+        d.id === dilemmaId ? { ...d, record_status: 'answered', receiver_choice: choice } : d
       )
     );
     setXpAnim(dilemmaId);
@@ -704,7 +705,7 @@ export default function DirectScreen() {
     // Fire and forget API call
     directDilemmas.answer(dilemmaId, {
       receiver_choice: choice,
-      status: 'answered',
+      record_status: 'answered',
       answered_at: new Date().toISOString(),
     }).catch((err) => console.warn('[NCB]', err.message));
   }
@@ -718,16 +719,17 @@ export default function DirectScreen() {
       await directDilemmas.send({
         sender_id: userId,
         receiver_id: formFriend,
-        question: formQuestion.trim(),
+        question_text: formQuestion.trim(),
         option_a: formOptionA.trim(),
         option_b: formOptionB.trim(),
         visibility: formVisibility,
-        status: 'pending',
+        record_status: 'pending',
         created_at: new Date().toISOString(),
         expires_at: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
       });
       await loadData();
-    } catch {
+    } catch (err) {
+      console.warn('[NCB]', err.message);
       // Send failed — do nothing
     } finally {
       setSending(false);
@@ -740,15 +742,15 @@ export default function DirectScreen() {
     }
   }
 
-  const pendingCount = inbox.filter((d) => d.status === 'pending').length;
+  const pendingCount = inbox.filter((d) => d.record_status === 'pending').length;
 
   const renderCard = (item, idx, isSent = false) => {
-    const statusStyle = STATUS_STYLES[item.status] || STATUS_STYLES.pending;
+    const statusStyle = STATUS_STYLES[item.record_status] || STATUS_STYLES.pending;
     const StatusIcon = statusStyle.icon;
-    const remaining = item.status === 'pending' ? timeRemaining(item.expires_at) : null;
-    const isExpanded = expandedId === item.id && item.status === 'pending' && !isSent;
-    const isPending = item.status === 'pending';
-    const isAnswered = item.status === 'answered';
+    const remaining = item.record_status === 'pending' ? timeRemaining(item.expires_at) : null;
+    const isExpanded = expandedId === item.id && item.record_status === 'pending' && !isSent;
+    const isPending = item.record_status === 'pending';
+    const isAnswered = item.record_status === 'answered';
     const displayName = isSent ? item.receiver_username : item.sender_username;
     const matched = isAnswered && item.sender_choice && item.receiver_choice && item.sender_choice === item.receiver_choice;
 
@@ -821,7 +823,7 @@ export default function DirectScreen() {
         </div>
 
         {/* Question */}
-        <div style={s.cardQuestion}>{item.question}</div>
+        <div style={s.cardQuestion}>{item.question_text || item.question}</div>
 
         {/* Pending: expiry */}
         {isPending && remaining && (
@@ -897,7 +899,7 @@ export default function DirectScreen() {
         )}
 
         {/* Expired */}
-        {item.status === 'expired' && (
+        {item.record_status === 'expired' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6, fontSize: 12, color: '#ef4444', fontWeight: 500 }}>
             <XCircle size={13} />
             {isSent ? 'Expired without answer' : 'This challenge has expired'}

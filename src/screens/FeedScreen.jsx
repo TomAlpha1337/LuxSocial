@@ -261,7 +261,8 @@ function CommentSection({ activityId, commentCount }) {
       try {
         const data = await commentsApi.getByActivity(activityId);
         setCommentsList(Array.isArray(data) ? data : []);
-      } catch {
+      } catch (err) {
+        console.warn('[NCB] toggleComments failed:', err.message);
         setCommentsList([]);
       } finally {
         setLoadingComments(false);
@@ -273,12 +274,12 @@ function CommentSection({ activityId, commentCount }) {
   const handleSubmitComment = async () => {
     if (!newComment.trim()) return;
     try {
-      await commentsApi.add({ activity_id: activityId, text: newComment.trim() });
+      await commentsApi.add({ activity_id: activityId, body: newComment.trim(), user_id: user?.id, is_deleted: 0, created_at: new Date().toISOString() });
       setNewComment('');
       const data = await commentsApi.getByActivity(activityId);
       setCommentsList(Array.isArray(data) ? data : []);
-    } catch {
-      // silently fail
+    } catch (err) {
+      console.warn('[NCB] handleSubmitComment failed:', err.message);
     }
   };
 
@@ -365,7 +366,7 @@ function CommentSection({ activityId, commentCount }) {
                           {c.author_name || c.username || 'User'}
                         </span>
                         <p style={{ fontSize: 13, color: TEXT_DIM, margin: '2px 0 0', lineHeight: 1.45 }}>
-                          {c.text || c.content}
+                          {c.body || c.text || c.content}
                         </p>
                       </div>
                     </div>
@@ -607,14 +608,15 @@ function ActivityCard({ activity, index }) {
         const result = await reactionsApi.add({
           activity_id: activity.id,
           user_id: user?.id,
-          reaction_type: type,
+          type: type,
           created_at: new Date().toISOString(),
         });
         if (result?.id) {
           setMyReactionIds((prev) => ({ ...prev, [type]: result.id }));
         }
       }
-    } catch {
+    } catch (err) {
+      console.warn('[NCB] handleReaction failed:', err.message);
       // Revert optimistic update on failure
       setMyReactions((prev) => ({ ...prev, [type]: isActive }));
       setLocalReactions((prev) => {
@@ -1127,8 +1129,8 @@ export default function FeedScreen() {
     try {
       const [data, eventsData, friendsData] = await Promise.all([
         activitiesApi.getFeed(),
-        eventsApi.getActive().catch(() => []),
-        user?.id ? friendshipsApi.getFriends(user.id).catch(() => []) : Promise.resolve([]),
+        eventsApi.getActive().catch((err) => { console.warn('[NCB] getActive events:', err.message); return []; }),
+        user?.id ? friendshipsApi.getFriends(user.id).catch((err) => { console.warn('[NCB] getFriends:', err.message); return []; }) : Promise.resolve([]),
       ]);
       // Enrich activities with user profiles
       const rawFeed = Array.isArray(data) ? data : [];
@@ -1138,7 +1140,7 @@ export default function FeedScreen() {
         try {
           const u = await authApi.getUser(id);
           if (u) userMap[id] = u;
-        } catch { /* skip */ }
+        } catch (err) { console.warn('[NCB] getUser for feed actor:', err.message); }
       }));
       setAllFeed(rawFeed.map(a => ({
         ...a,
@@ -1157,7 +1159,8 @@ export default function FeedScreen() {
         if (fid) ids.add(fid);
       });
       setFriendIds(ids);
-    } catch {
+    } catch (err) {
+      console.warn('[NCB] loadFeed failed:', err.message);
       setAllFeed([]);
     } finally {
       setLoading(false);

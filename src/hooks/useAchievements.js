@@ -176,7 +176,8 @@ export function useAchievements() {
             badge_type: badgeId,
             earned_at: new Date().toISOString(),
           });
-        } catch {
+        } catch (err) {
+          console.warn('[NCB]', err.message);
           // Non-critical -- badge may have been awarded by another session
         }
 
@@ -220,13 +221,15 @@ export function useAchievements() {
               });
             }
           }
-        } catch {
+        } catch (err) {
+          console.warn('[NCB]', err.message);
           // Non-critical
         }
       }
 
       return newBadges;
-    } catch {
+    } catch (err) {
+      console.warn('[NCB]', err.message);
       return [];
     }
   }, [user, showAchievementToast]);
