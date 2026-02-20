@@ -191,6 +191,17 @@ export const friendships = {
     // Return non-rejected friendships
     return all.filter(f => f.status !== 'rejected' && f.record_status !== 'rejected');
   },
+  // Get ALL friendships for a user (any status, both directions)
+  getAllForUser: async (userId) => {
+    const [sent, received] = await Promise.all([
+      safeRead('friendships', `user_id=${userId}&limit=500`),
+      safeRead('friendships', `friend_id=${userId}&limit=500`),
+    ]);
+    return [
+      ...(Array.isArray(sent) ? sent : []),
+      ...(Array.isArray(received) ? received : []),
+    ];
+  },
   update: (id, data) => update('friendships', id, data),
   remove: (id) => remove('friendships', id),
 };

@@ -205,11 +205,30 @@ export default function FriendsScreen() {
     (async () => {
       setSuggestedLoading(true);
       try {
-        const allUsers = await API.admin.getAllUsers();
+        // Fetch all users AND all friendships for current user (any status)
+        const [allUsers, allFriendshipsRaw] = await Promise.all([
+          API.admin.getAllUsers(),
+          API.friendships.getAllForUser(user.id),
+        ]);
         const usersArr = Array.isArray(allUsers) ? allUsers : [];
         const friendIds = new Set(friends.map((f) => f.id));
+
+        // Pre-populate sentRequests with users who already have a pending/accepted friendship
+        const allFriendships = Array.isArray(allFriendshipsRaw) ? allFriendshipsRaw : [];
+        const pendingOrAccepted = new Set();
+        allFriendships.forEach(f => {
+          const otherId = f.user_id === user.id ? f.friend_id : f.user_id;
+          if (f.status === 'pending' || f.status === 'accepted' || f.record_status === 'pending' || f.record_status === 'accepted') {
+            pendingOrAccepted.add(otherId);
+          }
+        });
+        if (!cancelled) setSentRequests(prev => {
+          const merged = new Set([...prev, ...pendingOrAccepted]);
+          return merged;
+        });
+
         const suggestions = usersArr.filter(
-          (u) => u.id !== user.id && !friendIds.has(u.id) && u.record_status !== 'banned'
+          (u) => u.id !== user.id && !friendIds.has(u.id) && !pendingOrAccepted.has(u.id) && u.record_status !== 'banned'
         );
         // Sort by XP descending so most active users show first
         suggestions.sort((a, b) => (b.xp || 0) - (a.xp || 0));
